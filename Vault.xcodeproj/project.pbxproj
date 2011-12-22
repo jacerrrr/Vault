@@ -25,6 +25,8 @@
 		70F164DF14A3D8D400532A35 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F164B514A3D8D400532A35 /* Foundation.framework */; };
 		70F164E714A3D8D400532A35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 70F164E514A3D8D400532A35 /* InfoPlist.strings */; };
 		70F164EA14A3D8D400532A35 /* VaultTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 70F164E914A3D8D400532A35 /* VaultTests.m */; };
+		70F164F514A3DDD500532A35 /* ThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70F164F414A3DDD500532A35 /* ThirdViewController.m */; };
+		70F164F814A3DE6800532A35 /* FourthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70F164F714A3DE6800532A35 /* FourthViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,27 +44,31 @@
 		70F164B314A3D8D400532A35 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		70F164B514A3D8D400532A35 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		70F164B714A3D8D400532A35 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		70F164BB14A3D8D400532A35 /* Vault-Info.plist */ = {isa = PBXFileReference; path = "Vault-Info.plist"; sourceTree = "<group>"; };
+		70F164BB14A3D8D400532A35 /* Vault-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Vault-Info.plist"; sourceTree = "<group>"; };
 		70F164BD14A3D8D400532A35 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		70F164BF14A3D8D400532A35 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		70F164C114A3D8D400532A35 /* Vault-Prefix.pch */ = {isa = PBXFileReference; path = "Vault-Prefix.pch"; sourceTree = "<group>"; };
-		70F164C214A3D8D400532A35 /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		70F164C114A3D8D400532A35 /* Vault-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Vault-Prefix.pch"; sourceTree = "<group>"; };
+		70F164C214A3D8D400532A35 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		70F164C314A3D8D400532A35 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		70F164C614A3D8D400532A35 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		70F164C814A3D8D400532A35 /* FirstViewController.h */ = {isa = PBXFileReference; path = FirstViewController.h; sourceTree = "<group>"; };
+		70F164C814A3D8D400532A35 /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
 		70F164C914A3D8D400532A35 /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
 		70F164CB14A3D8D400532A35 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first.png; sourceTree = "<group>"; };
 		70F164CD14A3D8D400532A35 /* first@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first@2x.png"; sourceTree = "<group>"; };
-		70F164CF14A3D8D400532A35 /* SecondViewController.h */ = {isa = PBXFileReference; path = SecondViewController.h; sourceTree = "<group>"; };
+		70F164CF14A3D8D400532A35 /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		70F164D014A3D8D400532A35 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		70F164D214A3D8D400532A35 /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
 		70F164D414A3D8D400532A35 /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
 		70F164DB14A3D8D400532A35 /* VaultTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VaultTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		70F164DC14A3D8D400532A35 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		70F164E414A3D8D400532A35 /* VaultTests-Info.plist */ = {isa = PBXFileReference; path = "VaultTests-Info.plist"; sourceTree = "<group>"; };
+		70F164E414A3D8D400532A35 /* VaultTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VaultTests-Info.plist"; sourceTree = "<group>"; };
 		70F164E614A3D8D400532A35 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		70F164E814A3D8D400532A35 /* VaultTests.h */ = {isa = PBXFileReference; path = VaultTests.h; sourceTree = "<group>"; };
+		70F164E814A3D8D400532A35 /* VaultTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VaultTests.h; sourceTree = "<group>"; };
 		70F164E914A3D8D400532A35 /* VaultTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VaultTests.m; sourceTree = "<group>"; };
+		70F164F314A3DDD500532A35 /* ThirdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdViewController.h; sourceTree = "<group>"; };
+		70F164F414A3DDD500532A35 /* ThirdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdViewController.m; sourceTree = "<group>"; };
+		70F164F614A3DE6800532A35 /* FourthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FourthViewController.h; sourceTree = "<group>"; };
+		70F164F714A3DE6800532A35 /* FourthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FourthViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,8 +137,13 @@
 				70F164CD14A3D8D400532A35 /* first@2x.png */,
 				70F164CF14A3D8D400532A35 /* SecondViewController.h */,
 				70F164D014A3D8D400532A35 /* SecondViewController.m */,
+				70F164F314A3DDD500532A35 /* ThirdViewController.h */,
+				70F164F414A3DDD500532A35 /* ThirdViewController.m */,
+				70F164F614A3DE6800532A35 /* FourthViewController.h */,
+				70F164F714A3DE6800532A35 /* FourthViewController.m */,
 				70F164D214A3D8D400532A35 /* second.png */,
 				70F164D414A3D8D400532A35 /* second@2x.png */,
+				70F164FD14A3E5F700532A35 /* Images */,
 				70F164BA14A3D8D400532A35 /* Supporting Files */,
 			);
 			path = Vault;
@@ -166,6 +177,13 @@
 				70F164E514A3D8D400532A35 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		70F164FD14A3E5F700532A35 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -283,6 +301,8 @@
 				70F164C414A3D8D400532A35 /* AppDelegate.m in Sources */,
 				70F164CA14A3D8D400532A35 /* FirstViewController.m in Sources */,
 				70F164D114A3D8D400532A35 /* SecondViewController.m in Sources */,
+				70F164F514A3DDD500532A35 /* ThirdViewController.m in Sources */,
+				70F164F814A3DE6800532A35 /* FourthViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,6 +474,7 @@
 				70F164EF14A3D8D400532A35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		70F164F014A3D8D400532A35 /* Build configuration list for PBXNativeTarget "VaultTests" */ = {
 			isa = XCConfigurationList;
@@ -462,6 +483,7 @@
 				70F164F214A3D8D400532A35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
