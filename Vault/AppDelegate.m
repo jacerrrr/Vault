@@ -9,6 +9,7 @@
  */
 
 #import "AppDelegate.h"
+#import "LoginViewController.h"
 
 @implementation AppDelegate
 
@@ -16,7 +17,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    /* If user is not authenticated, show login screen */
+    if (!authenticated) {
+        UIStoryboard *storyboard = self.window.rootViewController.storyboard;
+        self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+    }
+    
+    /* If user is authenticated, go to the main view */
+    else {
+        
+    }
+    
     return YES;
 }
 							
