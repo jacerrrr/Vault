@@ -15,11 +15,7 @@
 		70F164C414A3D8D400532A35 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 70F164C314A3D8D400532A35 /* AppDelegate.m */; };
 		70F164C714A3D8D400532A35 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70F164C514A3D8D400532A35 /* MainStoryboard.storyboard */; };
 		70F164CA14A3D8D400532A35 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70F164C914A3D8D400532A35 /* FirstViewController.m */; };
-		70F164CC14A3D8D400532A35 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = 70F164CB14A3D8D400532A35 /* first.png */; };
-		70F164CE14A3D8D400532A35 /* first@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70F164CD14A3D8D400532A35 /* first@2x.png */; };
 		70F164D114A3D8D400532A35 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70F164D014A3D8D400532A35 /* SecondViewController.m */; };
-		70F164D314A3D8D400532A35 /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = 70F164D214A3D8D400532A35 /* second.png */; };
-		70F164D514A3D8D400532A35 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70F164D414A3D8D400532A35 /* second@2x.png */; };
 		70F164DD14A3D8D400532A35 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F164DC14A3D8D400532A35 /* SenTestingKit.framework */; };
 		70F164DE14A3D8D400532A35 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F164B314A3D8D400532A35 /* UIKit.framework */; };
 		70F164DF14A3D8D400532A35 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F164B514A3D8D400532A35 /* Foundation.framework */; };
@@ -28,6 +24,9 @@
 		70F164F514A3DDD500532A35 /* ThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70F164F414A3DDD500532A35 /* ThirdViewController.m */; };
 		70F164F814A3DE6800532A35 /* FourthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70F164F714A3DE6800532A35 /* FourthViewController.m */; };
 		70F1650B14A40C5700532A35 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70F1650A14A40C5700532A35 /* LoginViewController.m */; };
+		70F1652A14A43CDF00532A35 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 70F1652914A43CDF00532A35 /* folder.png */; };
+		70F1653114A43E7B00532A35 /* collaborators.png in Resources */ = {isa = PBXBuildFile; fileRef = 70F1653014A43E7B00532A35 /* collaborators.png */; };
+		70F1653514A4409200532A35 /* mytasks.png in Resources */ = {isa = PBXBuildFile; fileRef = 70F1653414A4409200532A35 /* mytasks.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,12 +53,8 @@
 		70F164C614A3D8D400532A35 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		70F164C814A3D8D400532A35 /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
 		70F164C914A3D8D400532A35 /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
-		70F164CB14A3D8D400532A35 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first.png; sourceTree = "<group>"; };
-		70F164CD14A3D8D400532A35 /* first@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first@2x.png"; sourceTree = "<group>"; };
 		70F164CF14A3D8D400532A35 /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		70F164D014A3D8D400532A35 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
-		70F164D214A3D8D400532A35 /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
-		70F164D414A3D8D400532A35 /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
 		70F164DB14A3D8D400532A35 /* VaultTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VaultTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		70F164DC14A3D8D400532A35 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		70F164E414A3D8D400532A35 /* VaultTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VaultTests-Info.plist"; sourceTree = "<group>"; };
@@ -72,6 +67,9 @@
 		70F164F714A3DE6800532A35 /* FourthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FourthViewController.m; sourceTree = "<group>"; };
 		70F1650914A40C5700532A35 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		70F1650A14A40C5700532A35 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		70F1652914A43CDF00532A35 /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
+		70F1653014A43E7B00532A35 /* collaborators.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = collaborators.png; sourceTree = "<group>"; };
+		70F1653414A4409200532A35 /* mytasks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mytasks.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,16 +136,12 @@
 				70F1650A14A40C5700532A35 /* LoginViewController.m */,
 				70F164C814A3D8D400532A35 /* FirstViewController.h */,
 				70F164C914A3D8D400532A35 /* FirstViewController.m */,
-				70F164CB14A3D8D400532A35 /* first.png */,
-				70F164CD14A3D8D400532A35 /* first@2x.png */,
 				70F164CF14A3D8D400532A35 /* SecondViewController.h */,
 				70F164D014A3D8D400532A35 /* SecondViewController.m */,
 				70F164F314A3DDD500532A35 /* ThirdViewController.h */,
 				70F164F414A3DDD500532A35 /* ThirdViewController.m */,
 				70F164F614A3DE6800532A35 /* FourthViewController.h */,
 				70F164F714A3DE6800532A35 /* FourthViewController.m */,
-				70F164D214A3D8D400532A35 /* second.png */,
-				70F164D414A3D8D400532A35 /* second@2x.png */,
 				70F164FD14A3E5F700532A35 /* Images */,
 				70F164BA14A3D8D400532A35 /* Supporting Files */,
 			);
@@ -187,6 +181,9 @@
 		70F164FD14A3E5F700532A35 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				70F1653014A43E7B00532A35 /* collaborators.png */,
+				70F1653414A4409200532A35 /* mytasks.png */,
+				70F1652914A43CDF00532A35 /* folder.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -264,10 +261,9 @@
 			files = (
 				70F164BE14A3D8D400532A35 /* InfoPlist.strings in Resources */,
 				70F164C714A3D8D400532A35 /* MainStoryboard.storyboard in Resources */,
-				70F164CC14A3D8D400532A35 /* first.png in Resources */,
-				70F164CE14A3D8D400532A35 /* first@2x.png in Resources */,
-				70F164D314A3D8D400532A35 /* second.png in Resources */,
-				70F164D514A3D8D400532A35 /* second@2x.png in Resources */,
+				70F1652A14A43CDF00532A35 /* folder.png in Resources */,
+				70F1653114A43E7B00532A35 /* collaborators.png in Resources */,
+				70F1653514A4409200532A35 /* mytasks.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

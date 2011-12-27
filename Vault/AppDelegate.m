@@ -18,15 +18,15 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     /* If user is not authenticated, show login screen */
-    if (!authenticated) {
-        UIStoryboard *storyboard = self.window.rootViewController.storyboard;
-        self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
-    }
+  //  if (!authenticated) {
+    //    UIStoryboard *storyboard = self.window.rootViewController.storyboard;
+      //  self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+    //}
     
     /* If user is authenticated, go to the main view */
-    else {
+    //else {
         
-    }
+    //}
     
     return YES;
 }

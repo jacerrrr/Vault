@@ -58,7 +58,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="First" image="first" id="7"/>
+                    <tabBarItem key="tabBarItem" title="Documents" image="folder.png" id="7"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="Cal-4H-11t" id="jv1-YE-2Ed"/>
                     </connections>
@@ -121,7 +121,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Second" image="second" id="6"/>
+                    <tabBarItem key="tabBarItem" title="My Tasks" image="mytasks.png" id="6"/>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="3034" y="68"/>
@@ -145,7 +145,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="mostViewed" id="GIp-fb-4Un"/>
+                    <tabBarItem key="tabBarItem" title="Collaborators" image="collaborators.png" id="GIp-fb-4Un"/>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="3025" y="1438"/>
@@ -197,8 +197,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="first" width="16" height="16"/>
-        <image name="second" width="16" height="16"/>
+        <image name="collaborators.png" width="32" height="21"/>
+        <image name="folder.png" width="26" height="26"/>
+        <image name="mytasks.png" width="26" height="21"/>
     </resources>
     <classes>
         <class className="FirstViewController" superclassName="UIViewController">
