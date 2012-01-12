@@ -9,6 +9,8 @@
 #import "LoginViewController.h"
 
 @implementation LoginViewController
+@synthesize emailField;
+@synthesize passwordField;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -17,6 +19,16 @@
         // Custom initialization
     }
     return self;
+}
+
+- (IBAction)login:(id)sender {
+    
+}
+
+- (IBAction)clearFields:(id)sender {
+    emailField.text = nil;
+    passwordField.text = nil;
+    
 }
 
 - (void)didReceiveMemoryWarning
