@@ -14,6 +14,7 @@
 		704AD61E14BF8B1D0088E76B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 704AD61814BF8B1D0088E76B /* MobileCoreServices.framework */; };
 		704AD61F14BF8B1D0088E76B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 704AD61914BF8B1D0088E76B /* Security.framework */; };
 		704AD62014BF8B1D0088E76B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 704AD61A14BF8B1D0088E76B /* SystemConfiguration.framework */; };
+		704AD6A314C117300088E76B /* VaultUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 704AD6A214C117300088E76B /* VaultUser.m */; };
 		70E1B42A14BCB6FE00183C3A /* vault.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E1B42914BCB6FE00183C3A /* vault.png */; };
 		70F164B414A3D8D400532A35 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F164B314A3D8D400532A35 /* UIKit.framework */; };
 		70F164B614A3D8D400532A35 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F164B514A3D8D400532A35 /* Foundation.framework */; };
@@ -90,6 +91,9 @@
 		704AD61814BF8B1D0088E76B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		704AD61914BF8B1D0088E76B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		704AD61A14BF8B1D0088E76B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		704AD67914C0B3980088E76B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		704AD6A114C117300088E76B /* VaultUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VaultUser.h; sourceTree = "<group>"; };
+		704AD6A214C117300088E76B /* VaultUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VaultUser.m; sourceTree = "<group>"; };
 		70E1B42914BCB6FE00183C3A /* vault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vault.png; sourceTree = "<group>"; };
 		70F164AF14A3D8D400532A35 /* Vault.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vault.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70F164B314A3D8D400532A35 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -211,6 +215,9 @@
 				70F1650914A40C5700532A35 /* LoginViewController.h */,
 				70F1650A14A40C5700532A35 /* LoginViewController.m */,
 				70F164C814A3D8D400532A35 /* FirstViewController.h */,
+				704AD6A114C117300088E76B /* VaultUser.h */,
+				704AD6A214C117300088E76B /* VaultUser.m */,
+				704AD67914C0B3980088E76B /* Constants.h */,
 				70F164C914A3D8D400532A35 /* FirstViewController.m */,
 				70F164CF14A3D8D400532A35 /* SecondViewController.h */,
 				70F164D014A3D8D400532A35 /* SecondViewController.m */,
@@ -421,6 +428,7 @@
 				70F164F514A3DDD500532A35 /* ThirdViewController.m in Sources */,
 				70F164F814A3DE6800532A35 /* FourthViewController.m in Sources */,
 				70F1650B14A40C5700532A35 /* LoginViewController.m in Sources */,
+				704AD6A314C117300088E76B /* VaultUser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -81,27 +81,27 @@
                 <viewController storyboardIdentifier="loginVC" title="Authentication Page" id="bKc-Ec-g1e" customClass="LoginViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uOz-Bf-O3s">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="vault.png" id="4Ps-i3-Sw1">
-                                <rect key="frame" x="201" y="228" width="366" height="144"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <rect key="frame" x="218" y="303" width="332" height="144"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" minimumFontSize="17" id="rWb-4L-tFL">
-                                <rect key="frame" x="235" y="473" width="332" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="218" y="486" width="332" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" id="TeX-CS-kPJ">
-                                <rect key="frame" x="235" y="512" width="332" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="218" y="525" width="332" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gTP-pT-86W">
-                                <rect key="frame" x="235" y="551" width="162" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="388" y="564" width="162" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Clear">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -111,12 +111,12 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="clearFields:" destination="bKc-Ec-g1e" eventType="touchUpInside" id="cI2-uj-GGc"/>
+                                    <action selector="clearFields:" destination="bKc-Ec-g1e" eventType="touchUpInside" id="n4y-jd-2Ld"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="s3A-GQ-yjA">
-                                <rect key="frame" x="405" y="551" width="162" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="218" y="564" width="162" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Login">
                                     <color key="titleColor" red="0.93148118619999998" green="0.44373306239999999" blue="0.12112252900000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -125,11 +125,20 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="login:" destination="bKc-Ec-g1e" eventType="touchUpInside" id="z0j-D4-wRY"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.51246008211678828" green="0.76268818430656937" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
                         <accessibility key="accessibilityConfiguration" label="uu"/>
                     </view>
+                    <connections>
+                        <outlet property="clearBtn" destination="gTP-pT-86W" id="stL-b5-Q7b"/>
+                        <outlet property="emailField" destination="rWb-4L-tFL" id="zbK-Vv-Qnc"/>
+                        <outlet property="loginBtn" destination="s3A-GQ-yjA" id="e7n-y6-Pw7"/>
+                        <outlet property="passwordField" destination="TeX-CS-kPJ" id="LYn-Ea-8Mu"/>
+                    </connections>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="1008" y="718"/>
@@ -260,7 +269,9 @@
             <relationships>
                 <relationship kind="action" name="clearFields:"/>
                 <relationship kind="action" name="login:"/>
+                <relationship kind="outlet" name="clearBtn" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="emailField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="loginBtn" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="passwordField" candidateClass="UITextField"/>
             </relationships>
         </class>
