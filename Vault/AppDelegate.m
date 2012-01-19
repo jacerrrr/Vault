@@ -20,8 +20,8 @@
     [RKClient clientWithBaseURL:@"https://login.veevavault.com/auth/api"];
     NSLog(@"I am your RKClient singleton : %@", [RKClient sharedClient]);
    
-    UIStoryboard *storyboard = self.window.rootViewController.storyboard;
-    self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+    //UIStoryboard *storyboard = self.window.rootViewController.storyboard;
+    //self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
     
     return YES;
 }
