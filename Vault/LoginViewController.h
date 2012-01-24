@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "VaultUser.h"
+#import "AuthUserDetail.h"
 #import "Constants.h"
 
-@interface LoginViewController : UIViewController
+@interface LoginViewController : UIViewController <RKObjectLoaderDelegate>
 
 @property(strong, nonatomic) IBOutlet UITextField *emailField;
 @property(strong, nonatomic) IBOutlet UITextField *passwordField;

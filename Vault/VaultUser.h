@@ -2,15 +2,20 @@
 //  VaultUser.h
 //  Vault
 //
-//  Created by Jace Allison on 1/13/12.
+//  Created by Jace Allison on 1/22/12.
 //  Copyright (c) 2012 Issaquah High School. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <RestKit/RestKit.h>
 
-@interface VaultUser : NSObject <RKRequestDelegate> 
 
-+ (void)loginWithUsername: (NSString *)email andPassword: (NSString *)pass;
+@interface VaultUser : NSObject
+
+@property (nonatomic, retain) NSNumber *sessionId;
+@property (nonatomic, retain) NSString *responseStatus;
+
++ (void)saveSession:(NSNumber *)sessionId;
++ (NSNumber *)loadSession:(NSString *)sessionKey;
 
 @end

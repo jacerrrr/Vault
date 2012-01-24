@@ -9,7 +9,9 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <RestKit/RestKit.h>
+#import <RestKit/RKJSONParserJSONKit.h>
+#import "VaultUser.h"
+#import "LoginViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

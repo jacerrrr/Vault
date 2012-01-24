@@ -30,9 +30,43 @@
 }
 
 - (IBAction)login:(id)sender {
-    [VaultUser loginWithUsername:emailField.text 
-                     andPassword:passwordField.text];
     
+    /* Create mapping for when the JSON isreturned from the POST authentication request */
+    RKObjectMapping *userMapping = [RKObjectMapping mappingForClass:[VaultUser class]];
+    [userMapping mapAttributes:@"sessionId", @"responseStatus", nil];
+    [[RKObjectManager sharedManager].mappingProvider setMapping:userMapping forKeyPath:@""];
+   
+    /* Created an instance of a user to send user credentials to vault */
+    AuthUserDetail *userLogin = [[AuthUserDetail alloc] init];
+    userLogin.username =emailField.text;
+    userLogin.password = passwordField.text;
+    
+    /* Send the POST request to vault */
+    [[RKObjectManager sharedManager] postObject:userLogin mapResponseWith:userMapping delegate:self];
+
+}
+
+- (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
+    
+    if (error) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Could not connect to Veeva Vault" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+}
+
+- (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {
+    VaultUser *user = [objects objectAtIndex:0];
+    
+    if ([user.responseStatus isEqualToString:@"FAILURE"]) {
+        UIAlertView *failedLogin = [[UIAlertView alloc] initWithTitle:@"Invalid Login" message:@"Username or password is incorrect" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [failedLogin show]; 
+    }
+    
+    else {
+        
+        
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -52,13 +86,31 @@
 }
 */
 
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+
+/* Implement viewDidLoad to do additional setup after loading the view, typically from a nib */
 - (void)viewDidLoad
 {
+    /* Set up a unique objectmanager for authentication only when login view loads */
+    RKObjectManager *authManager = [RKObjectManager objectManagerWithBaseURL:
+                                    @"https://login.veevavault.com"];
+    
+    /* Make authManager the global RKObjectManager */
+    [RKObjectManager setSharedManager:authManager];     
+    [RKObjectManager sharedManager].serializationMIMEType = RKMIMETypeFormURLEncoded;
+    
+    /* Serialize the the AuthUserDetail class to send POST data to vault */
+    RKObjectMapping *authSerialMapping = [RKObjectMapping mappingForClass:[NSMutableDictionary class]];
+    [authSerialMapping mapAttributes:@"username", @"password", nil];
+    
+    /* Map the properties of the AuthUserDetail class to POST authentication parameters */
+    [[RKObjectManager sharedManager].mappingProvider setSerializationMapping:authSerialMapping forClass:[AuthUserDetail class]];
+    
+    /* Set up a router to route the POST call to the right path for authentication*/
+    [[RKObjectManager sharedManager].router routeClass:[AuthUserDetail class] toResourcePath:@"/auth/api"];
+    
     [super viewDidLoad];
 }
-*/
+
 
 - (void)viewDidUnload
 {

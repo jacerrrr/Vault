@@ -9,7 +9,7 @@
  */
 
 #import "AppDelegate.h"
-#import "LoginViewController.h"
+
 
 @implementation AppDelegate
 
@@ -17,11 +17,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [RKClient clientWithBaseURL:@"https://login.veevavault.com/auth/api"];
-    NSLog(@"I am your RKClient singleton : %@", [RKClient sharedClient]);
-   
-    //UIStoryboard *storyboard = self.window.rootViewController.storyboard;
-    //self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+    
+    /* Set the parser for the application to work with type text/html */
+    [[RKParserRegistry sharedRegistry] setParserClass:[RKJSONParserJSONKit class] forMIMEType:@"text/html"];
+    
+    if (([VaultUser loadSession:@"sessionId"]) == nil) {
+        
+    }
+    UIStoryboard *storyboard = self.window.rootViewController.storyboard;
+    self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
     
     return YES;
 }
