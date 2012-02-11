@@ -13,6 +13,7 @@
 @synthesize passwordField;
 @synthesize loginBtn;
 @synthesize clearBtn;
+@synthesize authManager;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -30,25 +31,23 @@
 }
 
 - (IBAction)login:(id)sender {
-    
-    /* Create mapping for when the JSON isreturned from the POST authentication request */
-    RKObjectMapping *userMapping = [RKObjectMapping mappingForClass:[VaultUser class]];
-    [userMapping mapAttributes:@"sessionId", @"responseStatus", nil];
-    [[RKObjectManager sharedManager].mappingProvider setMapping:userMapping forKeyPath:@""];
-   
+        
     /* Created an instance of a user to send user credentials to vault */
     AuthUserDetail *userLogin = [[AuthUserDetail alloc] init];
     userLogin.username =emailField.text;
     userLogin.password = passwordField.text;
     
+    RKObjectMapping *responseMapping = [authManager.mappingProvider objectMappingForClass:[VaultUser class]];
+    
     /* Send the POST request to vault */
-    [[RKObjectManager sharedManager] postObject:userLogin mapResponseWith:userMapping delegate:self];
+    [authManager postObject:userLogin mapResponseWith:responseMapping delegate:self];
 
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
     
     if (error) {
+        NSLog(@"Error is: %@", error);
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Could not connect to Veeva Vault" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
     }
@@ -56,16 +55,17 @@
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {
     VaultUser *user = [objects objectAtIndex:0];
-    
-    if ([user.responseStatus isEqualToString:@"FAILURE"]) {
-        UIAlertView *failedLogin = [[UIAlertView alloc] initWithTitle:@"Invalid Login" message:@"Username or password is incorrect" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [failedLogin show]; 
+
+    NSLog(@"Here is type %@", user.errors.type);    
+    /* Present an alert if login failed */
+    if ([user.responseStatus isEqualToString:FAILURE]) {
+   
     }
     
-    else {
+    else {      /* Login was sucessful */
         
-        
-        
+        /* Save the sessionId for later use */
+       // [VaultUser saveSession:user.sessionid];
     }
 }
 
@@ -91,22 +91,34 @@
 - (void)viewDidLoad
 {
     /* Set up a unique objectmanager for authentication only when login view loads */
-    RKObjectManager *authManager = [RKObjectManager objectManagerWithBaseURL:
+    authManager = [RKObjectManager objectManagerWithBaseURL:
                                     @"https://login.veevavault.com"];
     
-    /* Make authManager the global RKObjectManager */
-    [RKObjectManager setSharedManager:authManager];     
-    [RKObjectManager sharedManager].serializationMIMEType = RKMIMETypeFormURLEncoded;
+    authManager.serializationMIMEType = RKMIMETypeFormURLEncoded;
     
     /* Serialize the the AuthUserDetail class to send POST data to vault */
     RKObjectMapping *authSerialMapping = [RKObjectMapping mappingForClass:[NSMutableDictionary class]];
     [authSerialMapping mapAttributes:@"username", @"password", nil];
     
     /* Map the properties of the AuthUserDetail class to POST authentication parameters */
-    [[RKObjectManager sharedManager].mappingProvider setSerializationMapping:authSerialMapping forClass:[AuthUserDetail class]];
+    [authManager.mappingProvider setSerializationMapping:authSerialMapping forClass:[AuthUserDetail class]];
     
     /* Set up a router to route the POST call to the right path for authentication*/
-    [[RKObjectManager sharedManager].router routeClass:[AuthUserDetail class] toResourcePath:@"/auth/api"];
+    [authManager.router routeClass:[AuthUserDetail class] toResourcePath:@"/auth/api"];
+    
+    RKObjectMapping *errorMapping = [RKObjectMapping mappingForClass:[VaultErrors class]];
+    errorMapping.setNilForMissingRelationships = YES;
+    [errorMapping mapAttributes:@"type", @"message", nil];
+    
+    RKObjectMapping *userMapping = [RKObjectMapping mappingForClass:[VaultUser class]];
+    userMapping.setNilForMissingRelationships = YES;
+    [userMapping mapAttributes:@"sessionid", @"responseStatus", nil];
+    
+    [userMapping mapKeyPath:@"errors" toRelationship:@"errors" withMapping:errorMapping];
+    
+    [authManager.mappingProvider setMapping:userMapping forKeyPath:@""];
+    [authManager.mappingProvider setErrorMapping:errorMapping];
+    [authManager.mappingProvider setObjectMapping:userMapping forResourcePathPattern:@"/auth/api"];
     
     [super viewDidLoad];
 }

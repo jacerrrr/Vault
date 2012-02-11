@@ -17,13 +17,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    /* Set up a general object manager for Vault and make it shraed */
+    RKObjectManager *genManager = [RKObjectManager objectManagerWithBaseURL:
+                                    @"https://vv1.veevavault.com/api"];
+   
+    /* Ensure that this manager available to everyone */
+    [RKObjectManager setSharedManager:genManager];
     
     /* Set the parser for the application to work with type text/html */
     [[RKParserRegistry sharedRegistry] setParserClass:[RKJSONParserJSONKit class] forMIMEType:@"text/html"];
     
-    if (([VaultUser loadSession:@"sessionId"]) == nil) {
-        
-    }
     UIStoryboard *storyboard = self.window.rootViewController.storyboard;
     self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
     

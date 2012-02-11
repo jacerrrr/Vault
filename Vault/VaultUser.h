@@ -7,15 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <RestKit/RestKit.h>
-
+#import "VaultErrors.h"
 
 @interface VaultUser : NSObject
 
-@property (nonatomic, retain) NSNumber *sessionId;
-@property (nonatomic, retain) NSString *responseStatus;
+@property (nonatomic, retain) NSString *sessionid;          /* Session ID number */
+@property (nonatomic, retain) NSString *responseStatus;     /* Status of REST reponse */
+@property (nonatomic, retain) VaultErrors *errors;              /* Errors returned from REST response */
 
-+ (void)saveSession:(NSNumber *)sessionId;
-+ (NSNumber *)loadSession:(NSString *)sessionKey;
++ (void)saveSession:(NSString *)sessionId;
++ (NSString *)loadSession:(NSString *)sessionKey;
 
 @end

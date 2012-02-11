@@ -10,10 +10,11 @@
 
 @implementation VaultUser
 
-@synthesize sessionId;
+@synthesize sessionid;
 @synthesize responseStatus;
+@synthesize errors;
 
-+ (void)saveSession:(NSNumber *)sessionId {
++ (void)saveSession:(NSString *)sessionId {
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
     
     if (standardDefaults) {
@@ -22,9 +23,9 @@
     }
 }
 
-+ (NSNumber *)loadSession:(NSString *)sessionKey {
++ (NSString *)loadSession:(NSString *)sessionKey {
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
-    NSNumber *sessionId = nil;
+    NSString *sessionId = nil;
     
     if (standardDefaults)
         sessionId = [standardDefaults objectForKey:sessionKey];
