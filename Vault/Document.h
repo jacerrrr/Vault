@@ -10,4 +10,10 @@
 
 @interface Document : NSObject
 
+@property (nonatomic, retain) NSString *documentId;
+@property (nonatomic, retain) NSString *type;
+@property (nonatomic, retain) NSString *name;
+@property (nonatomic, retain) NSString *contentFile;
+@property (nonatomic, retain) NSString *dateLastModified;
+
 @end

@@ -12,7 +12,6 @@
 
 @synthesize sessionid;
 @synthesize responseStatus;
-@synthesize errors;
 
 + (void)saveSession:(NSString *)sessionId {
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
@@ -23,12 +22,12 @@
     }
 }
 
-+ (NSString *)loadSession:(NSString *)sessionKey {
++ (NSString *)loadSession {
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
     NSString *sessionId = nil;
     
     if (standardDefaults)
-        sessionId = [standardDefaults objectForKey:sessionKey];
+        sessionId = [standardDefaults objectForKey:@"sessionId"];
     return sessionId;
 }
 

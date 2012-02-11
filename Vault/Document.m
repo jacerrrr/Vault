@@ -10,4 +10,10 @@
 
 @implementation Document
 
+@synthesize documentId;
+@synthesize type;
+@synthesize name;
+@synthesize contentFile;
+@synthesize dateLastModified;
+
 @end

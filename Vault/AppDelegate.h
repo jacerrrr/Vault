@@ -11,9 +11,11 @@
 #import <UIKit/UIKit.h>
 #import <RestKit/RKJSONParserJSONKit.h>
 #import "VaultUser.h"
+#import "SessionTest.h"
 #import "LoginViewController.h"
+#import "Document.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,UIAlertViewDelegate, RKObjectLoaderDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

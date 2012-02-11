@@ -10,4 +10,6 @@
 
 @implementation SessionTest
 
+@synthesize responseStatus;
+
 @end
