@@ -44,6 +44,8 @@ BOOL needToSync = FALSE;
     
     /* Send the POST request to vault */
     [authManager postObject:userLogin delegate:self];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 }
 
@@ -169,6 +171,7 @@ BOOL needToSync = FALSE;
         
         [connectAlert show];                                /* Show alert */
     }
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {
@@ -194,6 +197,9 @@ BOOL needToSync = FALSE;
         [self dismissModalViewControllerAnimated:YES];
         
     }
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
 }
 
 @end

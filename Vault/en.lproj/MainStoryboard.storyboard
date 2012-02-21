@@ -19,24 +19,25 @@
                                 <items>
                                     <barButtonItem style="plain" id="vOM-ji-GQt">
                                         <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="AyN-c8-Yvw">
-                                            <rect key="frame" x="7" y="7" width="460" height="30"/>
+                                            <rect key="frame" x="7" y="7" width="529" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <segments>
+                                                <segment title="All Documents"/>
                                                 <segment title="My Documents"/>
-                                                <segment title="Work in Progress"/>
+                                                <segment title="Work In Progress"/>
                                                 <segment title="Favorites"/>
                                                 <segment title="Recent"/>
                                             </segments>
+                                            <connections>
+                                                <action selector="filterPressed:" destination="2" eventType="valueChanged" id="lNl-IK-gbr"/>
+                                            </connections>
                                         </segmentedControl>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" id="rFd-lj-IIc">
-                                        <searchBar key="customView" contentMode="redraw" placeholder="Search your documents" id="eqJ-Wt-pQW">
-                                            <rect key="frame" x="477" y="0.0" width="288" height="44"/>
+                                    <barButtonItem style="plain" id="KS7-um-oW0">
+                                        <searchBar key="customView" contentMode="redraw" id="4AI-53-ABc">
+                                            <rect key="frame" x="546" y="0.0" width="221" height="44"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <textInputTraits key="textInputTraits"/>
-                                            <connections>
-                                                <outlet property="delegate" destination="2" id="grZ-sI-58u"/>
-                                            </connections>
                                         </searchBar>
                                     </barButtonItem>
                                 </items>
@@ -73,13 +74,13 @@
                     <tabBarItem key="tabBarItem" title="Documents" image="folder.png" id="7"/>
                     <connections>
                         <outlet property="documents" destination="bNo-5q-ku0" id="IN6-LF-tIK"/>
+                        <outlet property="filters" destination="AyN-c8-Yvw" id="4DB-wo-fsZ"/>
                         <outlet property="searchDisplayController" destination="Cal-4H-11t" id="jv1-YE-2Ed"/>
                     </connections>
                 </viewController>
                 <searchDisplayController id="Cal-4H-11t">
                     <connections>
                         <outlet property="delegate" destination="2" id="bBz-Yp-w7R"/>
-                        <outlet property="searchBar" destination="eqJ-Wt-pQW" id="dMg-QF-W9u"/>
                         <outlet property="searchContentsController" destination="2" id="SHh-xt-Bvm"/>
                         <outlet property="searchResultsDataSource" destination="2" id="Pim-Ta-7It"/>
                         <outlet property="searchResultsDelegate" destination="2" id="BCz-EU-QOV"/>
@@ -270,6 +271,36 @@
         <image name="mytasks.png" width="26" height="21"/>
         <image name="vault.png" width="432" height="187"/>
     </resources>
+    <classes>
+        <class className="FirstViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FirstViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="filterPressed:"/>
+                <relationship kind="outlet" name="documents" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="filters" candidateClass="UISegmentedControl"/>
+            </relationships>
+        </class>
+        <class className="FourthViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FourthViewController.h"/>
+        </class>
+        <class className="LoginViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="clearFields:"/>
+                <relationship kind="action" name="login:"/>
+                <relationship kind="outlet" name="clearBtn" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="emailField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="loginBtn" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="passwordField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="SecondViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SecondViewController.h"/>
+        </class>
+        <class className="ThirdViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ThirdViewController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>

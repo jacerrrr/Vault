@@ -16,4 +16,18 @@
 @property (nonatomic, retain) NSString *contentFile;
 @property (nonatomic, retain) NSString *dateLastModified;
 
++ (NSString *)savePDF:(NSData *)newPdfContent withFileName:(NSString *)fileName;
+
++ (void)loadPDF:(NSString *)pdfFilePath;
+
++ (void)saveDocInfo:(NSMutableDictionary *)infoToSave forKey:(NSString *)key;
+
++ (NSMutableDictionary *)loadDocInfoForKey:(NSString *)key;
+
++ (void)saveFilters:(NSMutableArray *)array forKey:(NSString *)filterName;
+
++ (NSMutableArray *)loadFiltersForKey:(NSString *)key;
+
++ (NSString *)timeSinceModified:(NSString *)dateStr;
+
 @end

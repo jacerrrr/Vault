@@ -35,13 +35,30 @@
 
 /* Set of defined constants */
 
+/* Keys used for NSUserDefaults */
+static NSString* const DOC_TYPES = @"doc_types";
+static NSString* const DOC_NAMES = @"doc_names";
+static NSString* const CONTENT_F = @"content_files";
+static NSString* const DOC_PATHS = @"doc_paths";
+static NSString* const DATE_MOD = @"date_mod";
+
 /* NSString constants for determining request success or failure */
-static NSString * const FAILURE = @"FAILURE";
-static NSString * const SUCCESS = @"SUCCESS";
+static NSString* const FAILURE = @"FAILURE";
+static NSString* const SUCCESS = @"SUCCESS"; 
+
+/* NSString constants for images */
+static NSString* const PPT = @"ppt.png";
+static NSString* const PDF = @"pdf.png";
+static NSString* const DOC = @"doc.png";
+static NSString* const XLS = @"xls.png";
+static NSString* const UNKOWN = @"unknown.png";
 
 /* NSString constants for paths to send request to server */
-static NSString *const DOCUMENT_INFO = @"/objects/documents"; 
-
+static NSString* const DOCUMENT_INFO = @"/objects/documents"; 
+static NSString* const RENDITIONS = @"/renditions/viewable_rendition__v";
+static NSString* const FAVORITES = @"/objects/documents?named_filter=Favorites";
+static NSString* const RECENTS = @"/objects/documents?named_filter=Recent Documents";
+static NSString* const MY_DOCUMENTS= @"/objects/documents?named_filter=My Documents";
 
 
 

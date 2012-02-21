@@ -17,7 +17,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     NSURL *baseUrl = [NSURL URLWithString:@"https://vv1.veevavault.com/api/v1.0"];
-    NSString *session = [VaultUser loadSession];
    
     /* Set up a general object manager for Vault and make it shraed */
     RKObjectManager *genManager = [RKObjectManager objectManagerWithBaseURL:baseUrl];
@@ -43,16 +42,6 @@
     
     /* Set the parser for the application to work with type text/html */
     [[RKParserRegistry sharedRegistry] setParserClass:[RKJSONParserJSONKit class] forMIMEType:@"text/html"];
-    
-    /* If this is the first time the user has ever opened the application */
-    if (session == nil) {
-        
-        /* Transition to the login screen */
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryBoard" bundle:nil];
-        UIViewController *loginScreen = [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
-        loginScreen.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [self.window.rootViewController presentModalViewController:loginScreen animated:YES];
-    }
     
     return YES;
 }
@@ -96,18 +85,22 @@
     
     NSString *session = [VaultUser loadSession];                /* Load last session */
     
-    if (session != nil) {
-        
-        /* Test to see if the session is still valid */
+    if (session != nil) {                                       /* Test to see if the session is still valid */
         [[RKObjectManager sharedManager].client setValue:session forHTTPHeaderField:@"Authorization"];
         [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/metadata/objects" 
                                                         usingBlock:^(RKObjectLoader *loader) {
                                                             loader.method = RKRequestMethodGET;
                                                             loader.delegate = self;
                                                         }];
-        
     }
-}
+    else {      /* If the session is nil, then just present the login view controller */
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+        UIViewController *loginScreen = [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+        loginScreen.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self.window.rootViewController presentModalViewController:loginScreen animated:YES];
+    }
+        
+} 
 
 /*
  * Called when the application is about to terminate.  Save data if appropriate.
@@ -144,7 +137,7 @@
         UIViewController *loginScreen = [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
         loginScreen.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self.window.rootViewController presentModalViewController:loginScreen animated:YES];
-        
+
         
     }
 }
