@@ -9,15 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "Document.h"
 #import "Constants.h"
-#import "InvisibleView.h"
 
 @interface DocViewController : UIViewController
 
 @property (nonatomic, retain) IBOutlet UIWebView *pdfView;
 @property (nonatomic, retain) IBOutlet UIToolbar *doneToolbar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *doneButton;
-@property (nonatomic, retain) IBOutlet InvisibleView *invisibleView;
+@property (nonatomic, retain) IBOutlet UIView *invisibleView;
 
 + (void) setFileNameToView:(NSString *)filePath;
+- (IBAction)finishViewing:(id)sender;
 
 @end

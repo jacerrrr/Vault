@@ -328,9 +328,9 @@ extern BOOL needToSync;
             /* Filter is set to Recents */
             else if ([filterIdentifier isEqualToString:RECENTS] 
                      && (indexPath.row - 1 >= 0 
-                     && indexPath.row < [recentDocsIds count])) 
+                         && indexPath.row - 1 < [recentDocsIds count])) 
                 docId = [recentDocsIds objectAtIndex:indexPath.row - 1];
-             
+                    
             /* Filter is set to all documents */
             else if ([filterIdentifier isEqualToString:DOCUMENT_INFO] 
                      && indexPath.row - 1 >= 0 
@@ -534,7 +534,7 @@ extern BOOL needToSync;
         
         for (int i = 0; i < [objects count]; i++) {
             document = [objects objectAtIndex:i];
-            
+            NSLog(@"Document name is %@", document.name);
             if ([documentNames objectForKey:document.documentId] == nil) {
             
                 if ([recentDocsIds count] > i)
@@ -827,7 +827,7 @@ extern BOOL needToSync;
     }
 }
 
-- (IBAction)sortbyType:(id)sender{
+- (IBAction)sortbyType:(id)sender {
     [sortedFlags setObject:@"1" forKey:@"documentTypes"];
     [sortedFlags setObject:@"0" forKey:@"datesModified"];
     [sortedFlags setObject:@"0" forKey:@"documentNames"];

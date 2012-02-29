@@ -46,7 +46,6 @@ static NSString *pdfNameToView = nil;
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-    doneToolbar.hidden = YES;
     
     NSString *pdfPath = [Document loadPDF:pdfNameToView];
     NSURL *pdfUrl = [NSURL fileURLWithPath:pdfPath];
@@ -63,8 +62,7 @@ static NSString *pdfNameToView = nil;
     // e.g. self.myOutlet = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
 	return YES;
 }
@@ -72,6 +70,10 @@ static NSString *pdfNameToView = nil;
 + (void)setFileNameToView:(NSString *)filePath {
     pdfNameToView = filePath;
     
+}
+
+-(IBAction)finishViewing:(id)sender {
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 @end
