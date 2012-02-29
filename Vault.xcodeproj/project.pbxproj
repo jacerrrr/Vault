@@ -16,16 +16,17 @@
 		704AD61F14BF8B1D0088E76B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 704AD61914BF8B1D0088E76B /* Security.framework */; };
 		704AD62014BF8B1D0088E76B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 704AD61A14BF8B1D0088E76B /* SystemConfiguration.framework */; };
 		705554BE14E5E94000EFB0E3 /* TableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 705554BD14E5E94000EFB0E3 /* TableView.m */; };
+		7065000914FEDA6F00A3A5FB /* InvisibleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7065000814FEDA6F00A3A5FB /* InvisibleView.m */; };
 		708D003414D1F80500C91AC6 /* libRestKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 708D001114D1F2CD00C91AC6 /* libRestKit.a */; };
-		7094CF0014E9E402002C842E /* doc.png in Resources */ = {isa = PBXBuildFile; fileRef = 7094CEFF14E9E402002C842E /* doc.png */; };
-		7094CF0214E9E409002C842E /* ppt.png in Resources */ = {isa = PBXBuildFile; fileRef = 7094CF0114E9E409002C842E /* ppt.png */; };
-		7094CF0414E9E40F002C842E /* xls.png in Resources */ = {isa = PBXBuildFile; fileRef = 7094CF0314E9E40F002C842E /* xls.png */; };
-		7094CF0614E9E416002C842E /* pdf.png in Resources */ = {isa = PBXBuildFile; fileRef = 7094CF0514E9E416002C842E /* pdf.png */; };
-		7094CF2114EA34E3002C842E /* PDFViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7094CF2014EA34E3002C842E /* PDFViewController.m */; };
-		7094CF8314ECB0DE002C842E /* unknown.png in Resources */ = {isa = PBXBuildFile; fileRef = 7094CF8214ECB0DE002C842E /* unknown.png */; };
 		70AC188614E1AF7700CF499F /* SessionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AC188514E1AF7700CF499F /* SessionTest.m */; };
 		70AC18AD14E3322D00CF499F /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AC18AC14E3322D00CF499F /* Document.m */; };
+		70B7439214FDEDFB00C8DA9B /* DocViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70B7439114FDEDFB00C8DA9B /* DocViewController.m */; };
 		70E1B42A14BCB6FE00183C3A /* vault.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E1B42914BCB6FE00183C3A /* vault.png */; };
+		70E4A20D14F4F0A400A37C9A /* doc.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E4A20914F4F0A400A37C9A /* doc.png */; };
+		70E4A20E14F4F0A400A37C9A /* pdf.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E4A20A14F4F0A400A37C9A /* pdf.png */; };
+		70E4A20F14F4F0A400A37C9A /* ppt.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E4A20B14F4F0A400A37C9A /* ppt.png */; };
+		70E4A21014F4F0A400A37C9A /* xls.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E4A20C14F4F0A400A37C9A /* xls.png */; };
+		70E4A21814F4F2B700A37C9A /* unknown.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E4A21714F4F2B700A37C9A /* unknown.png */; };
 		70F164B414A3D8D400532A35 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F164B314A3D8D400532A35 /* UIKit.framework */; };
 		70F164B614A3D8D400532A35 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F164B514A3D8D400532A35 /* Foundation.framework */; };
 		70F164B814A3D8D400532A35 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F164B714A3D8D400532A35 /* CoreGraphics.framework */; };
@@ -107,19 +108,21 @@
 		704AD67914C0B3980088E76B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		705554BC14E5E93800EFB0E3 /* TableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableView.h; sourceTree = "<group>"; };
 		705554BD14E5E94000EFB0E3 /* TableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableView.m; sourceTree = "<group>"; };
+		7065000714FEDA6F00A3A5FB /* InvisibleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvisibleView.h; sourceTree = "<group>"; };
+		7065000814FEDA6F00A3A5FB /* InvisibleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InvisibleView.m; sourceTree = "<group>"; };
 		708D000614D1F2CD00C91AC6 /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = RestKit/RestKit.xcodeproj; sourceTree = "<group>"; };
-		7094CEFF14E9E402002C842E /* doc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = doc.png; sourceTree = "<group>"; };
-		7094CF0114E9E409002C842E /* ppt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ppt.png; sourceTree = "<group>"; };
-		7094CF0314E9E40F002C842E /* xls.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xls.png; sourceTree = "<group>"; };
-		7094CF0514E9E416002C842E /* pdf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pdf.png; sourceTree = "<group>"; };
-		7094CF1F14EA34E3002C842E /* PDFViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFViewController.h; sourceTree = "<group>"; };
-		7094CF2014EA34E3002C842E /* PDFViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFViewController.m; sourceTree = "<group>"; };
-		7094CF8214ECB0DE002C842E /* unknown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unknown.png; sourceTree = "<group>"; };
 		70AC188414E1AF7700CF499F /* SessionTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionTest.h; sourceTree = "<group>"; };
 		70AC188514E1AF7700CF499F /* SessionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionTest.m; sourceTree = "<group>"; };
 		70AC18AB14E3322D00CF499F /* Document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Document.h; sourceTree = "<group>"; };
 		70AC18AC14E3322D00CF499F /* Document.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Document.m; sourceTree = "<group>"; };
+		70B7439014FDEDFA00C8DA9B /* DocViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocViewController.h; sourceTree = "<group>"; };
+		70B7439114FDEDFB00C8DA9B /* DocViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocViewController.m; sourceTree = "<group>"; };
 		70E1B42914BCB6FE00183C3A /* vault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vault.png; sourceTree = "<group>"; };
+		70E4A20914F4F0A400A37C9A /* doc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = doc.png; sourceTree = "<group>"; };
+		70E4A20A14F4F0A400A37C9A /* pdf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pdf.png; sourceTree = "<group>"; };
+		70E4A20B14F4F0A400A37C9A /* ppt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ppt.png; sourceTree = "<group>"; };
+		70E4A20C14F4F0A400A37C9A /* xls.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xls.png; sourceTree = "<group>"; };
+		70E4A21714F4F2B700A37C9A /* unknown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unknown.png; sourceTree = "<group>"; };
 		70F164AF14A3D8D400532A35 /* Vault.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vault.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70F164B314A3D8D400532A35 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		70F164B514A3D8D400532A35 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -258,9 +261,11 @@
 				70F1650A14A40C5700532A35 /* LoginViewController.m */,
 				70F164C814A3D8D400532A35 /* FirstViewController.h */,
 				70F164C914A3D8D400532A35 /* FirstViewController.m */,
-				7094CF1F14EA34E3002C842E /* PDFViewController.h */,
-				7094CF2014EA34E3002C842E /* PDFViewController.m */,
+				7065000714FEDA6F00A3A5FB /* InvisibleView.h */,
+				7065000814FEDA6F00A3A5FB /* InvisibleView.m */,
 				70F164CF14A3D8D400532A35 /* SecondViewController.h */,
+				70B7439014FDEDFA00C8DA9B /* DocViewController.h */,
+				70B7439114FDEDFB00C8DA9B /* DocViewController.m */,
 				70F164D014A3D8D400532A35 /* SecondViewController.m */,
 				70F164F314A3DDD500532A35 /* ThirdViewController.h */,
 				70F164F414A3DDD500532A35 /* ThirdViewController.m */,
@@ -307,11 +312,11 @@
 		70F164FD14A3E5F700532A35 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				7094CF8214ECB0DE002C842E /* unknown.png */,
-				7094CF0514E9E416002C842E /* pdf.png */,
-				7094CF0314E9E40F002C842E /* xls.png */,
-				7094CF0114E9E409002C842E /* ppt.png */,
-				7094CEFF14E9E402002C842E /* doc.png */,
+				70E4A20914F4F0A400A37C9A /* doc.png */,
+				70E4A20A14F4F0A400A37C9A /* pdf.png */,
+				70E4A20B14F4F0A400A37C9A /* ppt.png */,
+				70E4A21714F4F2B700A37C9A /* unknown.png */,
+				70E4A20C14F4F0A400A37C9A /* xls.png */,
 				70F1653014A43E7B00532A35 /* collaborators.png */,
 				70E1B42914BCB6FE00183C3A /* vault.png */,
 				70F1653414A4409200532A35 /* mytasks.png */,
@@ -435,11 +440,11 @@
 				70F1653114A43E7B00532A35 /* collaborators.png in Resources */,
 				70F1653514A4409200532A35 /* mytasks.png in Resources */,
 				70E1B42A14BCB6FE00183C3A /* vault.png in Resources */,
-				7094CF0014E9E402002C842E /* doc.png in Resources */,
-				7094CF0214E9E409002C842E /* ppt.png in Resources */,
-				7094CF0414E9E40F002C842E /* xls.png in Resources */,
-				7094CF0614E9E416002C842E /* pdf.png in Resources */,
-				7094CF8314ECB0DE002C842E /* unknown.png in Resources */,
+				70E4A20D14F4F0A400A37C9A /* doc.png in Resources */,
+				70E4A20E14F4F0A400A37C9A /* pdf.png in Resources */,
+				70E4A20F14F4F0A400A37C9A /* ppt.png in Resources */,
+				70E4A21014F4F0A400A37C9A /* xls.png in Resources */,
+				70E4A21814F4F2B700A37C9A /* unknown.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,7 +491,8 @@
 				70AC188614E1AF7700CF499F /* SessionTest.m in Sources */,
 				70AC18AD14E3322D00CF499F /* Document.m in Sources */,
 				705554BE14E5E94000EFB0E3 /* TableView.m in Sources */,
-				7094CF2114EA34E3002C842E /* PDFViewController.m in Sources */,
+				70B7439214FDEDFB00C8DA9B /* DocViewController.m in Sources */,
+				7065000914FEDA6F00A3A5FB /* InvisibleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

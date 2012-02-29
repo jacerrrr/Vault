@@ -28,8 +28,7 @@
             
             // Add labels for the cells
             
-            docTypeImage = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, DOCTYPEIMAGE_WIDTH, CELLHEIGHT)];
-            docTypeImage.textAlignment = UITextAlignmentCenter;
+            docTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(15, 7, 32, 32)];
             docTypeImage.backgroundColor = [UIColor clearColor];
             [self addSubview:docTypeImage];
             
@@ -51,8 +50,7 @@
         }
         else if([reuseIdentifier isEqualToString:@"LandscapeCell"]){
             
-            docTypeImage = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, DOCTYPEIMAGE_WIDTHLANDSCAPE, CELLHEIGHT)];
-            docTypeImage.textAlignment = UITextAlignmentCenter;
+            docTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(36, 7, 32, 32)];
             docTypeImage.backgroundColor = [UIColor clearColor];
             [self addSubview:docTypeImage];
             

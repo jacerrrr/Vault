@@ -16,7 +16,7 @@
 @synthesize window = _window;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    NSURL *baseUrl = [NSURL URLWithString:@"https://vv1.veevavault.com/api/v1.0"];
+    NSURL *baseUrl = [NSURL URLWithString:BASE_URL];
    
     /* Set up a general object manager for Vault and make it shraed */
     RKObjectManager *genManager = [RKObjectManager objectManagerWithBaseURL:baseUrl];
@@ -35,7 +35,7 @@
     [documentMapping mapKeyPath:@"id" toAttribute:@"documentId"];
     [documentMapping mapKeyPath:@"type__v" toAttribute:@"type"];
     [documentMapping mapKeyPath:@"name__v" toAttribute:@"name"];
-    [documentMapping mapKeyPath:@"contentFile" toAttribute:@"contentFile"];
+    [documentMapping mapKeyPath:@"format__v" toAttribute:@"format"];
     [documentMapping mapKeyPath:@"version_modified_date__v" toAttribute:@"dateLastModified"];
     
     [[RKObjectManager sharedManager].mappingProvider setMapping:documentMapping forKeyPath:@"documents.document"];
@@ -112,27 +112,36 @@
 }
 
 /* Function called when one cannot connect to Vault */
+
 -(void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
     
 }
 
 /* Called when the objects are mapped to a REST response */
+
 - (void) objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {
     
     SessionTest *test = [objects objectAtIndex:0];                  /* Load the test object */
+    
     if ([test.responseStatus isEqualToString:FAILURE]) {            /* If the test failed */
         
         /* Prompt the user to login */
         UIAlertView *loginAlert = [[UIAlertView alloc] initWithTitle:@"Login to Vault?" message:@"Your login session has expired, if you would like to login, press the login button" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Login", nil];
         
-        [loginAlert show];
+        [loginAlert show];                                          /* Show alert prompt */
     }
 }
+
+/* This function determines the action that should be taken when a user clicks a button
+ * on a alert view.  In this case, the alert view is prompting the user to login.
+ */
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   
     /* If the user presses the login button, present the login page */
     if (buttonIndex == CANCEL + 1) {
+        
+        /* Load the login page */
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
         UIViewController *loginScreen = [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
         loginScreen.modalTransitionStyle = UIModalTransitionStyleCoverVertical;

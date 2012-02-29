@@ -8,9 +8,11 @@
 
 #import "LoginViewController.h"
 
+/* Global variable that determines if the user needs to resync documents with Vault */
 BOOL needToSync = FALSE;
 
 @implementation LoginViewController
+
 @synthesize emailField;
 @synthesize passwordField;
 @synthesize loginBtn;
@@ -35,6 +37,7 @@ BOOL needToSync = FALSE;
 }
 
 /* Function that sends a login request to Veeva Vault */
+
 - (IBAction)login:(id)sender {
         
     /* Created an instance of a user to send user credentials to vault */
@@ -45,34 +48,26 @@ BOOL needToSync = FALSE;
     /* Send the POST request to vault */
     [authManager postObject:userLogin delegate:self];
     
+    /* Show activity indicator in the devices top menu bar */
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 }
 
 /* Release any cached data, images, etc that aren't in use. */
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     /* Releases the view if it doesn't have a superview. */
     [super didReceiveMemoryWarning];
-    
-   
 }
 
 #pragma mark - View lifecycle
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView
-{
-}
-*/
-
-
 /* Implement viewDidLoad to do additional setup after loading the view, typically from a nib */
-- (void)viewDidLoad
-{
-    NSURL *authUrl = [NSURL URLWithString:@"https://login.veevavault.com"];
+
+- (void)viewDidLoad {
+    
+    /* Url for the login page */
+    NSURL *authUrl = [NSURL URLWithString:LOGIN_URL];
     
     /* Set up a unique objectmanager for authentication only when login view loads */
     authManager = [RKObjectManager objectManagerWithBaseURL: authUrl];
@@ -86,7 +81,7 @@ BOOL needToSync = FALSE;
     /* Map the properties of the AuthUserDetail class to POST authentication parameters */
     [authManager.mappingProvider setSerializationMapping:authSerialMapping forClass:[AuthUserDetail class]];
     
-    /* Set up a router to route the POST call to the right path for authentication*/
+    /* Set up a router to route the POST call to the right path for authentication */
     [authManager.router routeClass:[AuthUserDetail class] toResourcePath:@"/auth/api"];
     
     /* Set the mapping attributes to obtain relevent information from Vault */
@@ -94,47 +89,21 @@ BOOL needToSync = FALSE;
     userMapping.setNilForMissingRelationships = YES;
     [userMapping mapAttributes:@"sessionid", @"responseStatus", nil];
     
+    /* Set object mappings */
     [authManager.mappingProvider setObjectMapping:userMapping forResourcePathPattern:@"/auth/api"];
     
     [super viewDidLoad];
 }
 
-
-- (void)viewDidUnload
-{
+/* Release any retained subviews of the main view. Also set any initialized attributes to nil */
+- (void)viewDidUnload {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
+/* Function that determines which orientations will be supported.  Return YES for all orientations */
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    
-    /* How to align the login page when in Landscape Orientation */
-    if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight
-            || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
-          
-        emailField.frame = CGRectMake(330, 386, 380, TEXT_FIELD_HEIGHT);
-        passwordField.frame = CGRectMake(330, 425, 380, TEXT_FIELD_HEIGHT);
-        loginBtn.frame = CGRectMake(330, 464, 185, 37);
-        clearBtn.frame = CGRectMake(524, 464, 185, 37);
-    }
-    
-    /* Align for Portrait Orientation */
-    else {
-        emailField.frame = CGRectMake(218, 486, 332, TEXT_FIELD_HEIGHT);
-        passwordField.frame = CGRectMake(218, 525, 332, TEXT_FIELD_HEIGHT);
-        loginBtn.frame = CGRectMake(218, 564, 162, 37);
-        clearBtn.frame = CGRectMake(388, 564, 162, 37);
-            
-            
-        }
-    
 }
 
 /* Function called when a button is clicked on an alert view in FirstViewController */
@@ -143,16 +112,16 @@ BOOL needToSync = FALSE;
     
     /* Cancel the login process due to connection failure and return to the main screen */
     if (alertView.tag == CONNECT_ALERT_TAG) {
-        if (buttonIndex == CANCEL) {
-            [self dismissModalViewControllerAnimated:YES];
+        if (buttonIndex == CANCEL) {        /* Cancel button pressed */
+            [self dismissModalViewControllerAnimated:YES];      /* Go back to home screen */
         }
         
     }
     
     /* Cancel the login process and return to the main screen */
-    else if (alertView.tag == LOGIN_ALERT_TAG) {
-        if (buttonIndex == CANCEL) {
-            [self dismissModalViewControllerAnimated:YES];
+    else if (alertView.tag == LOGIN_ALERT_TAG) {                /* Login failed alert */
+        if (buttonIndex == CANCEL) {                            /* Cancel button pressed*/
+            [self dismissModalViewControllerAnimated:YES];      /* Go back to main screen */
         }
     }
     
@@ -167,10 +136,12 @@ BOOL needToSync = FALSE;
         
         /* Create alert */
         UIAlertView *connectAlert = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Could not connect to Vault. You may not be connected to the Internet" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
-        [connectAlert setTag:CONNECT_ALERT_TAG];
+        [connectAlert setTag:CONNECT_ALERT_TAG];                /* Set alert identifier to use */
         
-        [connectAlert show];                                /* Show alert */
+        [connectAlert show];                                    /* Show alert */
     }
+    
+    /* Make the network activity inidicator in the top menu bar disappear */
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
@@ -181,25 +152,26 @@ BOOL needToSync = FALSE;
     /* Present an alert if login failed */
     if ([user.responseStatus isEqualToString:FAILURE]) {
         
+        /* Create the alert */
         UIAlertView *loginAlert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"Invalid username or password" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
-        [loginAlert setTag:LOGIN_ALERT_TAG];
+        [loginAlert setTag:LOGIN_ALERT_TAG];                /* Set alert identifier to use */
         
-        [loginAlert show];
+        [loginAlert show];                                  /* Show alert */
         
     }
     
-    else {      /* Login was sucessful */
+    /* Login was sucessful */
+    else {
         [VaultUser saveSession:user.sessionid];             /* Save sessionId */
       
         needToSync = TRUE;                                  /* Set BOOL to show user has just logged in */
-    
+        
+        /* All loading is finished, so hide the network activity indicator */
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
         /* Transistion to main UITabbarControler */
         [self dismissModalViewControllerAnimated:YES];
-        
     }
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    
 }
 
 @end

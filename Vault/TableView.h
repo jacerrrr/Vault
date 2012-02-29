@@ -11,13 +11,13 @@
 
 @interface TableView : UITableViewCell {
 	UIColor *lineColor;
-	UILabel *docTypeImage;
+	UIImageView *docTypeImage;
 	UILabel *docName;
 	UILabel *docType;
     UILabel *docLastModified;
 }
 @property (nonatomic, retain) UIColor* lineColor;
-@property (readonly) UILabel* docTypeImage;
+@property (readonly) UIImageView* docTypeImage;
 @property (readonly) UILabel* docName;
 @property (readonly) UILabel* docType;
 @property (readonly) UILabel* docLastModified;

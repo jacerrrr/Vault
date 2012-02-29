@@ -13,7 +13,7 @@
 @synthesize documentId;
 @synthesize type;
 @synthesize name;
-@synthesize contentFile;
+@synthesize format;
 @synthesize dateLastModified;
 
 /* Function that takes binary PDF data and a file name as parameters, and determines
@@ -47,11 +47,15 @@
     
 }
 
-+ (void)loadPDF:(NSString *)pdfName {
++ (NSString *)loadPDF:(NSString *)pdfName {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *pdfFilePath = [documentsDirectory stringByAppendingPathComponent:pdfName];
-    NSURL *pdfURL = [NSURL fileURLWithPath:pdfFilePath isDirectory:NO];
+    
+    pdfFilePath = [pdfFilePath stringByDeletingPathExtension];
+    pdfFilePath = [pdfFilePath stringByAppendingPathExtension:@"pdf"];
+    
+    return pdfFilePath;
 }
 
 + (void)saveDocInfo:(NSMutableDictionary *)infoToSave forKey:(NSString *)key {
@@ -86,72 +90,32 @@
     return [standardDefaults objectForKey:key];
 }
 
-+ (NSString *)timeSinceModified:(NSString *)dateStr {
-    NSString *month = nil;
-    NSString *day = nil;
-    NSString *year = @"20";
-    NSString *hour = nil;
-    NSString *min = nil;
-    
-    NSDateComponents *dateComps = [[NSDateComponents alloc] init];
+/* Convert NSString to NSDate */
++ (NSDate *)convertStringToDate:(NSString *)dateString{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterNoStyle];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+    NSDate *dateFromString = [[NSDate alloc] init];
+    dateFromString = [dateFormatter dateFromString:dateString];
+    return dateFromString;
+}
+
++ (NSString *)timeSinceModified:(NSDate *)docDate {
     NSDate *todaysDate = [NSDate date];
-    NSDate *lastModified = nil;
-    NSCalendar *calender = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    int elapsed;
     
-    NSTimeInterval lastDiff;
-    NSTimeInterval todaysDiff = [todaysDate timeIntervalSinceNow];
-    double dateDiff = 0;
-    double elapsed = 0;
+    if(docDate == nil)
+        return @"";
     
-    int lastLoc = 0;
-    for (int i = 0; i <= [dateStr length]; i++) {
-        if ([dateStr characterAtIndex:i] == '/') {
-            if (month == nil) 
-               month = [dateStr substringWithRange:NSMakeRange(lastLoc, i - lastLoc)];
-            else if (day == nil) 
-                day = [dateStr substringWithRange:NSMakeRange(3, i - lastLoc)];
-            
-            lastLoc = i + 1;
-        }
-        
-        else if ([dateStr characterAtIndex:i] == ' ') {
-            year = [year stringByAppendingString:[dateStr substringWithRange:NSMakeRange(lastLoc, i - lastLoc)]];
-            lastLoc = i + 1;
-        }
-        
-        else if ([dateStr characterAtIndex:i] == ':') {
-            if (hour == nil) 
-                hour = [dateStr substringWithRange:NSMakeRange(lastLoc, i - lastLoc)];
-            else {
-                min = [dateStr substringWithRange:NSMakeRange(lastLoc, i - lastLoc)];
-                break;
-            }
-            lastLoc = i + 1;
-            
-        }
-        
-      
-    }
+    NSTimeInterval timeSinceDocDate = [docDate timeIntervalSinceNow];
+    NSTimeInterval timeSinceNow = [todaysDate timeIntervalSinceNow];
+    NSTimeInterval timeDifference;
     
+    timeDifference = timeSinceDocDate - timeSinceNow;
+    timeDifference = (-1 * timeDifference);                     /* Make time difference positive */
     
-    NSLog(@"day is %@", day);
-    NSLog(@"year is %@", year);
-    NSLog(@"hour is %@", hour);
-    NSLog(@"minute is %@", min);
+    elapsed = (int)timeDifference / 60;                         /* Minutes */
     
-    [dateComps setMonth:[month intValue]];
-    [dateComps setDay:[day intValue]];
-    [dateComps setYear:[year intValue]];
-    [dateComps setHour:[hour intValue]];
-    [dateComps setMinute:[min intValue]];
-     
-    lastModified = [calender dateFromComponents:dateComps];
-    lastDiff = [lastModified timeIntervalSinceNow];
-    dateDiff = todaysDiff - lastDiff;
-    
-    elapsed = dateDiff / 60;                                    /* Minutes */
-    
-    NSLog(@"elapsed is %f", elapsed);
     if (elapsed < 60) {
         if (elapsed == 1)
             return [NSString stringWithFormat:@"A minute ago", elapsed];
@@ -160,7 +124,7 @@
     }
     
     elapsed = elapsed / 60;                                     /* Hours */
-    NSLog(@"elapsed is %f", elapsed);
+   
     if (elapsed < 24) {
         if (elapsed == 1)
             return [NSString stringWithFormat:@"An hour ago", elapsed];
@@ -187,7 +151,6 @@
     }
     
     elapsed = elapsed / 4;                                      /* Months */
-    NSLog(@"elapsed is months %f", elapsed);
     if (elapsed < 12) {
         if (elapsed == 1)
             return [NSString stringWithFormat:@"A month ago", elapsed];
