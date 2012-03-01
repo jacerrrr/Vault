@@ -14,6 +14,7 @@
 #import "Document.h"
 #import "TableView.h"
 #import "DocViewController.h"
+#import "DocumentsView.h"
 
 @interface FirstViewController : UIViewController <RKObjectLoaderDelegate, NSURLConnectionDataDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 {
@@ -22,6 +23,8 @@
 
 /* UISegmentedControl for doc filters */
 @property (nonatomic, retain) IBOutlet UISegmentedControl *filters; /* Text field where user inputs username */
+@property (nonatomic, retain) IBOutlet DocumentsView *mainView;
+
 
 /* Buttons in the view */
 @property (nonatomic, retain) IBOutlet UIButton *nameButton;        /* Name button for sorting by name */    
@@ -53,6 +56,9 @@
 @property (nonatomic) int numOfDocuments;                           /* The number of documents being retrieved */
 @property (nonatomic) int currentDoc;                               /* The current document just retrieved */
 @property (nonatomic) int objResponseCount;                         /* Variable to store the maximum number of object mapping responses */
+@property (nonatomic) int namePressCount;
+@property (nonatomic) int typePressCount;
+@property (nonatomic) int datePressCount;
 
 /* Sort Arrays */
 @property (nonatomic, retain) NSArray *sortedByName;                /* NSArray containing the documents sorted by name */

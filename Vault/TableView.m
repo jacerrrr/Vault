@@ -92,7 +92,7 @@
         
         // CGContextSetLineWidth: The default line width is 1 unit. When stroked, the line straddles the path, with half of the total width on either side.
         // Therefore, a 1 pixel vertical line will not draw crisply unless it is offest by 0.5. This problem does not seem to affect horizontal lines.
-        CGContextSetLineWidth(context, 1.0);
+        CGContextSetLineWidth(context, 2.0);
         
         // Add the vertical lines
         CGContextMoveToPoint(context, DOCTYPEIMAGE_WIDTH+0.5, 0);
@@ -112,7 +112,7 @@
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextSetStrokeColorWithColor(context, lineColor.CGColor);       
         
-        CGContextSetLineWidth(context, 1.0);
+        CGContextSetLineWidth(context, 2.0);
         
         CGContextMoveToPoint(context, DOCTYPEIMAGE_WIDTHLANDSCAPE+0.5, 0);
         CGContextAddLineToPoint(context, DOCTYPEIMAGE_WIDTHLANDSCAPE+0.5, rect.size.height);

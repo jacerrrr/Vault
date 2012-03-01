@@ -63,6 +63,8 @@ static NSString* const PDF_IMG = @"pdf.png";
 static NSString* const DOC_IMG = @"doc.png";
 static NSString* const XLS_IMG = @"xls.png";
 static NSString* const UNKOWN_IMG = @"unknown.png";
+static NSString* const SORT_UP = @"sortUp.png";
+static NSString* const SORT_DOWN = @"sortDown.png";
 
 /* Base Url for all requests */
 static NSString* const BASE_URL = @"https://vv1.veevavault.com/api/v1.0";

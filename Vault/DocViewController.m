@@ -72,8 +72,12 @@ static NSString *pdfNameToView = nil;
     
 }
 
--(IBAction)finishViewing:(id)sender {
+- (IBAction)finishViewing:(id)sender {
     [self dismissModalViewControllerAnimated:YES];
+}
+
+- (IBAction)screenTouched:(id)sender {
+    
 }
 
 @end

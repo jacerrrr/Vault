@@ -17,6 +17,7 @@ extern BOOL needToSync;
 @synthesize filters;            /* UISegmentedControl buttons */
 
 @synthesize documents;          /* The custom table view cells being used */
+@synthesize mainView;
 
 @synthesize nameButton;         /* Name button at top left-mid */
 @synthesize typeButton;         /* Type button at top middle */
@@ -31,6 +32,10 @@ extern BOOL needToSync;
 @synthesize numOfDocuments;     /* Integer counter for number of documents use has */
 @synthesize currentDoc;         /* The current document counter for filter arrays */
 @synthesize objResponseCount;   /* The count for the number of object response there are */
+
+@synthesize namePressCount;
+@synthesize typePressCount;
+@synthesize datePressCount;
 
 @synthesize recentDocsIds;      /* Array containing id's for all recent documents */
 @synthesize favoriteDocsIds;    /* Array containing id's for all favorite documents */
@@ -69,7 +74,6 @@ extern BOOL needToSync;
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
     
     /* Set the style for our table view */
     self.documents.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -100,7 +104,6 @@ extern BOOL needToSync;
     allDocIds = [[NSMutableArray alloc] initWithArray:[Document loadFiltersForKey:ALL_DOC_IDS]];
     searchResults = [[NSMutableArray alloc] init];
     
-    
     /* Initialized sorting flags */
     sortedNameFlag = 0;
     sortedDateFlag = 0;
@@ -112,6 +115,9 @@ extern BOOL needToSync;
     /* Initialize class counters */
     currentDoc = 0;
     objResponseCount = 0;
+    namePressCount = 0;
+    typePressCount = 0;
+    datePressCount = 0;
     
     /* Initilized dictionary to determine when to sort something */
     sortedFlags = [[NSMutableDictionary alloc] 
@@ -124,6 +130,8 @@ extern BOOL needToSync;
         filterIdentifier = MY_DOCUMENTS;
 
     searchFilterIdentifier = false;
+    
+    [super viewDidLoad];
 }
 
 /* Release any retained subviews of the main view. e.g. self.myOutlet = nil; */
@@ -222,6 +230,8 @@ extern BOOL needToSync;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    
+    [mainView setNeedsDisplay];
     
     /* Going to Landscape Orientation */
     if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight
@@ -429,17 +439,26 @@ extern BOOL needToSync;
     return cell;
 }
 
+/* Function called when a cell is clicked on by the user */
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *docNameText = nil;
-    TableView *cell = ((TableView *)[tableView cellForRowAtIndexPath:indexPath]);
     
-    docNameText = cell.docName.text;
-    [DocViewController setFileNameToView:docNameText];
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-    UIViewController *pdfViewer = [storyboard instantiateViewControllerWithIdentifier:@"DocVC"];
-    pdfViewer.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentModalViewController:pdfViewer animated:YES];
+    if (([filterIdentifier isEqualToString:MY_DOCUMENTS] && indexPath.row <= [myDocumentDocsIds count])
+        || ([filterIdentifier isEqualToString:FAVORITES] && indexPath.row <= [favoriteDocsIds count])
+        || ([filterIdentifier isEqualToString:RECENTS] && indexPath.row <= [recentDocsIds count])
+        || ([filterIdentifier isEqualToString:DOCUMENT_INFO] && indexPath.row <= [allDocIds count])) {
+        
+        NSString *docNameText = nil;
+        TableView *cell = ((TableView *)[tableView cellForRowAtIndexPath:indexPath]);
+        
+        docNameText = cell.docName.text;
+        [DocViewController setFileNameToView:docNameText];
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+        UIViewController *pdfViewer = [storyboard instantiateViewControllerWithIdentifier:@"DocVC"];
+        pdfViewer.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentModalViewController:pdfViewer animated:YES];
+    }
     
 }
 
@@ -534,7 +553,7 @@ extern BOOL needToSync;
         
         for (int i = 0; i < [objects count]; i++) {
             document = [objects objectAtIndex:i];
-            NSLog(@"Document name is %@", document.name);
+          
             if ([documentNames objectForKey:document.documentId] == nil) {
             
                 if ([recentDocsIds count] > i)
@@ -590,15 +609,12 @@ extern BOOL needToSync;
 /* Function that resets the data before PDF data is recieved request. */
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    
     [pdfData setLength:0];
-    
 }
 
 /* Retrieves all binary data from the pdf retrieved from Vault server. */
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-
     [pdfData appendData:data];                                                          /* Append all data for each request */
 }
 
@@ -777,25 +793,37 @@ extern BOOL needToSync;
 
 - (IBAction)filterPressed:(id)sender {
     
-    if (filters.selectedSegmentIndex == MY_DOCS_FILTER) {
+    if (filters.selectedSegmentIndex == MY_DOCS_FILTER) 
         filterIdentifier = MY_DOCUMENTS;
-        [self.documents reloadData];
-    }
-    else if (filters.selectedSegmentIndex == FAV_FILTER) {
+      
+    else if (filters.selectedSegmentIndex == FAV_FILTER) 
         filterIdentifier = FAVORITES;
-        [self.documents reloadData];
-    }
-    else if (filters.selectedSegmentIndex == RECENT_FILTER) {
+    
+    else if (filters.selectedSegmentIndex == RECENT_FILTER) 
         filterIdentifier = RECENTS;
-        [self.documents reloadData];
-    }
-    else if (filters.selectedSegmentIndex == ALL_DOCS_FILTER) {
+    
+    else if (filters.selectedSegmentIndex == ALL_DOCS_FILTER) 
         filterIdentifier = DOCUMENT_INFO;
-        [self.documents reloadData];
-    }
+        
+    [self.documents reloadData];
 }
 
 - (IBAction)sortByName:(id)sender{
+    
+    dateButton.imageView.image = nil;
+    typeButton.imageView.image = nil;
+    
+    if (namePressCount % 2 == 0) {
+        [nameButton setImageEdgeInsets:UIEdgeInsetsMake(0, 120, 2, 0)];
+        [nameButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
+    }
+    else {
+        [nameButton setImageEdgeInsets:UIEdgeInsetsMake(5, 120, 0, 0)];
+        [nameButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
+    }
+    
+    namePressCount++;
+        
     [sortedFlags setObject:@"0" forKey:@"documentTypes"];
     [sortedFlags setObject:@"0" forKey:@"datesModified"];
     [sortedFlags setObject:@"1" forKey:@"documentNames"];
@@ -813,6 +841,21 @@ extern BOOL needToSync;
 }
 
 - (IBAction)sortByDateModified:(id)sender{
+    
+    nameButton.imageView.image = nil;
+    typeButton.imageView.image = nil;
+    
+    if (datePressCount % 2 == 0) {
+        [dateButton setImageEdgeInsets:UIEdgeInsetsMake(0, 105, 2, 0)];
+        [dateButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
+    }
+    else {
+        [dateButton setImageEdgeInsets:UIEdgeInsetsMake(5, 105, 0, 0)];
+        [dateButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
+    }
+    
+    datePressCount++;
+    
     [sortedFlags setObject:@"0" forKey:@"documentTypes"];
     [sortedFlags setObject:@"1" forKey:@"datesModified"];
     [sortedFlags setObject:@"0" forKey:@"documentNames"];
@@ -828,6 +871,21 @@ extern BOOL needToSync;
 }
 
 - (IBAction)sortbyType:(id)sender {
+    
+    nameButton.imageView.image = nil;
+    typeButton.imageView.image = nil;
+    
+    if (typePressCount % 2 == 0) {
+        [typeButton setImageEdgeInsets:UIEdgeInsetsMake(0, 105, 1, 0)];
+        [typeButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
+    }
+    else {
+        [typeButton setImageEdgeInsets:UIEdgeInsetsMake(5, 105, 0, 0)];
+        [typeButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
+    }
+    
+    typePressCount++;
+    
     [sortedFlags setObject:@"1" forKey:@"documentTypes"];
     [sortedFlags setObject:@"0" forKey:@"datesModified"];
     [sortedFlags setObject:@"0" forKey:@"documentNames"];

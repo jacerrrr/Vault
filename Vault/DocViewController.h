@@ -19,5 +19,6 @@
 
 + (void) setFileNameToView:(NSString *)filePath;
 - (IBAction)finishViewing:(id)sender;
+- (IBAction)screenTouched:(id)sender;
 
 @end
