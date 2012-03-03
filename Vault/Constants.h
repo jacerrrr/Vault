@@ -30,6 +30,8 @@
 #define PORTRAIT_COUNT 24               /* Default value for displayed cells in Portrait Orientation */
 #define LANDSCAPE_COUNT 17              /* Default value for displayed cells in Landscape Orientation */ 
 
+#define LINE_WIDTH      2               /* Width of lines drawn in views */
+
 /* Size of Cells in Portrait */
 #define DOCTYPEIMAGE_WIDTH 60           /* Width of document image column in First View Controllers table view */
 #define DOCNAME_WIDTH 300               /* Width of document name column in First View Controllers table view */

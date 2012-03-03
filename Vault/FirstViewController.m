@@ -238,10 +238,9 @@ extern BOOL needToSync;
         || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
         
         /* Reset locations of all sorting buttons */
-        nameButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTHLANDSCAPE, 44, DOCNAME_WIDTHLANDSCAPE, 36);
-        typeButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTHLANDSCAPE + DOCNAME_WIDTHLANDSCAPE, 44, DOCTYPE_WIDTHLANDSCAPE, 36);
-        dateButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTHLANDSCAPE + DOCNAME_WIDTHLANDSCAPE
-                                      + DOCTYPE_WIDTHLANDSCAPE, 44, DOCLASTMODIFIED_WIDTHLANDSCAPE, 36);
+        nameButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTHLANDSCAPE + 2, 44, DOCNAME_WIDTHLANDSCAPE - 3, 36);
+        typeButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTHLANDSCAPE + DOCNAME_WIDTHLANDSCAPE + 2, 44, DOCTYPE_WIDTHLANDSCAPE - 3, 36);
+        dateButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTHLANDSCAPE + DOCNAME_WIDTHLANDSCAPE + DOCTYPE_WIDTHLANDSCAPE + 2, 44, DOCLASTMODIFIED_WIDTHLANDSCAPE - 3, 36);
         
         [self.documents reloadData];
         
@@ -250,9 +249,9 @@ extern BOOL needToSync;
     else {  /* Going back to Portrait Orientation */
         
         /* Reset locations of all sorting buttons */
-        nameButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTH, 44, DOCNAME_WIDTH, 36);
-        typeButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTH + DOCNAME_WIDTH, 44, DOCTYPE_WIDTH, 36);
-        dateButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTH + DOCNAME_WIDTH + DOCTYPE_WIDTH, 44, DOCLASTMODIFIED_WIDTH, 36);
+        nameButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTH + 2, 44, DOCNAME_WIDTH - 3, 36);
+        typeButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTH + DOCNAME_WIDTH + 2, 44, DOCTYPE_WIDTH - 3, 36);
+        dateButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTH + DOCNAME_WIDTH + DOCTYPE_WIDTH + 2, 44, DOCLASTMODIFIED_WIDTH - 3, 36);
         
         [self.documents reloadData];
         
@@ -814,11 +813,13 @@ extern BOOL needToSync;
     typeButton.imageView.image = nil;
     
     if (namePressCount % 2 == 0) {
-        [nameButton setImageEdgeInsets:UIEdgeInsetsMake(0, 120, 2, 0)];
+        [nameButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+        [nameButton setImageEdgeInsets:UIEdgeInsetsMake(0, 275, 0, 0)];
         [nameButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
     }
     else {
-        [nameButton setImageEdgeInsets:UIEdgeInsetsMake(5, 120, 0, 0)];
+        [nameButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+        [nameButton setImageEdgeInsets:UIEdgeInsetsMake(5, 275, 0, 0)];
         [nameButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
     }
     
@@ -846,11 +847,13 @@ extern BOOL needToSync;
     typeButton.imageView.image = nil;
     
     if (datePressCount % 2 == 0) {
-        [dateButton setImageEdgeInsets:UIEdgeInsetsMake(0, 105, 2, 0)];
+        [dateButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+        [dateButton setImageEdgeInsets:UIEdgeInsetsMake(0, 210, 2, 0)];
         [dateButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
     }
     else {
-        [dateButton setImageEdgeInsets:UIEdgeInsetsMake(5, 105, 0, 0)];
+        [dateButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+        [dateButton setImageEdgeInsets:UIEdgeInsetsMake(5, 210, 0, 0)];
         [dateButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
     }
     
@@ -876,11 +879,13 @@ extern BOOL needToSync;
     typeButton.imageView.image = nil;
     
     if (typePressCount % 2 == 0) {
-        [typeButton setImageEdgeInsets:UIEdgeInsetsMake(0, 105, 1, 0)];
+        [typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+        [typeButton setImageEdgeInsets:UIEdgeInsetsMake(0, 150, 1, 0)];
         [typeButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
     }
     else {
-        [typeButton setImageEdgeInsets:UIEdgeInsetsMake(5, 105, 0, 0)];
+        [typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+        [typeButton setImageEdgeInsets:UIEdgeInsetsMake(5, 150, 0, 0)];
         [typeButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
     }
     
