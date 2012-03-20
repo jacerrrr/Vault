@@ -23,6 +23,9 @@
 		70AC188614E1AF7700CF499F /* SessionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AC188514E1AF7700CF499F /* SessionTest.m */; };
 		70AC18AD14E3322D00CF499F /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 70AC18AC14E3322D00CF499F /* Document.m */; };
 		70B7439214FDEDFB00C8DA9B /* DocViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70B7439114FDEDFB00C8DA9B /* DocViewController.m */; };
+		70BE2B6D15097C4500CCAEC1 /* LogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BE2B6C15097C4500CCAEC1 /* LogoutViewController.m */; };
+		70BE2B6F15097C6D00CCAEC1 /* key.png in Resources */ = {isa = PBXBuildFile; fileRef = 70BE2B6E15097C6D00CCAEC1 /* key.png */; };
+		70BE2B75150988D700CCAEC1 /* DocWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BE2B74150988D700CCAEC1 /* DocWebView.m */; };
 		70E1B42A14BCB6FE00183C3A /* vault.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E1B42914BCB6FE00183C3A /* vault.png */; };
 		70E4A20D14F4F0A400A37C9A /* doc.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E4A20914F4F0A400A37C9A /* doc.png */; };
 		70E4A20E14F4F0A400A37C9A /* pdf.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E4A20A14F4F0A400A37C9A /* pdf.png */; };
@@ -121,6 +124,11 @@
 		70AC18AC14E3322D00CF499F /* Document.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Document.m; sourceTree = "<group>"; };
 		70B7439014FDEDFA00C8DA9B /* DocViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocViewController.h; sourceTree = "<group>"; };
 		70B7439114FDEDFB00C8DA9B /* DocViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocViewController.m; sourceTree = "<group>"; };
+		70BE2B6B15097C4500CCAEC1 /* LogoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogoutViewController.h; sourceTree = "<group>"; };
+		70BE2B6C15097C4500CCAEC1 /* LogoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoutViewController.m; sourceTree = "<group>"; };
+		70BE2B6E15097C6D00CCAEC1 /* key.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = key.png; sourceTree = "<group>"; };
+		70BE2B73150988D700CCAEC1 /* DocWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocWebView.h; sourceTree = "<group>"; };
+		70BE2B74150988D700CCAEC1 /* DocWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocWebView.m; sourceTree = "<group>"; };
 		70E1B42914BCB6FE00183C3A /* vault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vault.png; sourceTree = "<group>"; };
 		70E4A20914F4F0A400A37C9A /* doc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = doc.png; sourceTree = "<group>"; };
 		70E4A20A14F4F0A400A37C9A /* pdf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pdf.png; sourceTree = "<group>"; };
@@ -208,6 +216,8 @@
 		706500711500156000A3A5FB /* Custom Subclasses */ = {
 			isa = PBXGroup;
 			children = (
+				70BE2B73150988D700CCAEC1 /* DocWebView.h */,
+				70BE2B74150988D700CCAEC1 /* DocWebView.m */,
 				705554BC14E5E93800EFB0E3 /* TableView.h */,
 				705554BD14E5E94000EFB0E3 /* TableView.m */,
 				7065006E1500155700A3A5FB /* DocumentsView.h */,
@@ -282,6 +292,8 @@
 				70F164F414A3DDD500532A35 /* ThirdViewController.m */,
 				70F164F614A3DE6800532A35 /* FourthViewController.h */,
 				70F164F714A3DE6800532A35 /* FourthViewController.m */,
+				70BE2B6B15097C4500CCAEC1 /* LogoutViewController.h */,
+				70BE2B6C15097C4500CCAEC1 /* LogoutViewController.m */,
 				706500711500156000A3A5FB /* Custom Subclasses */,
 				7010CCA614CF3D16009FFABD /* RemoteObjects */,
 				70F164BA14A3D8D400532A35 /* Supporting Files */,
@@ -324,6 +336,7 @@
 		70F164FD14A3E5F700532A35 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				70BE2B6E15097C6D00CCAEC1 /* key.png */,
 				70E4A20914F4F0A400A37C9A /* doc.png */,
 				7065003014FEF9F700A3A5FB /* sortUp.png */,
 				70E4A20A14F4F0A400A37C9A /* pdf.png */,
@@ -461,6 +474,7 @@
 				70E4A21814F4F2B700A37C9A /* unknown.png in Resources */,
 				7065002F14FEF9EC00A3A5FB /* sortDown.png in Resources */,
 				7065003114FEF9F700A3A5FB /* sortUp.png in Resources */,
+				70BE2B6F15097C6D00CCAEC1 /* key.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -509,6 +523,8 @@
 				705554BE14E5E94000EFB0E3 /* TableView.m in Sources */,
 				70B7439214FDEDFB00C8DA9B /* DocViewController.m in Sources */,
 				706500701500155700A3A5FB /* DocumentsView.m in Sources */,
+				70BE2B6D15097C4500CCAEC1 /* LogoutViewController.m in Sources */,
+				70BE2B75150988D700CCAEC1 /* DocWebView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

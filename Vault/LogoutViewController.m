@@ -1,20 +1,14 @@
 //
-//  DocViewController.m
+//  LogoutViewController.m
 //  Vault
 //
-//  Created by Jace Allison on 2/28/12.
+//  Created by Jace Allison on 3/8/12.
 //  Copyright (c) 2012 Issaquah High School. All rights reserved.
 //
 
-#import "DocViewController.h"
+#import "LogoutViewController.h"
 
-static NSString *pdfNameToView = nil;
-
-@implementation DocViewController
-
-@synthesize pdfView;
-@synthesize doneToolbar;
-@synthesize doneButton;
+@implementation LogoutViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,44 +36,25 @@ static NSString *pdfNameToView = nil;
 }
 */
 
-
+/*
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    
-    NSString *pdfPath = [Document loadPDF:pdfNameToView];
-    NSURL *pdfUrl = [NSURL fileURLWithPath:pdfPath];
-    NSURLRequest *fileRequest = [NSURLRequest requestWithURL:pdfUrl];
-    [pdfView loadRequest:fileRequest];
-    
 }
+*/
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
     // Return YES for supported orientations
 	return YES;
-}
-
--(void)userDidTapWebView:(NSArray *)tapPoint {
-    
-}
-
-+ (void)setFileNameToView:(NSString *)filePath {
-    pdfNameToView = filePath;
-    
-}
-
-- (IBAction)finishViewing:(id)sender {
-    [self dismissModalViewControllerAnimated:YES];
-}
-
-- (IBAction)screenTouched:(id)sender {
-    
 }
 
 @end
