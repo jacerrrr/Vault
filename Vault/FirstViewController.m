@@ -51,6 +51,7 @@ extern BOOL needToSync;
 @synthesize sortedByName;       /* Array containing document id's sorted by name */
 @synthesize sortedByType;       /* Array containing document id's sorted by type */
 @synthesize sortedByDate;       /* Array containing document id's sorted by date */
+@synthesize sortedKeys;
 @synthesize sortedFlags;
 @synthesize sortedDateFlag, sortedNameFlag, sortedTypeFlag;
 
@@ -104,10 +105,14 @@ extern BOOL needToSync;
     allDocIds = [[NSMutableArray alloc] initWithArray:[Document loadFiltersForKey:ALL_DOC_IDS]];
     searchResults = [[NSMutableArray alloc] init];
     
-    /* Initialized sorting flags */
+    /* Initialized sorting flags and arrays */
     sortedNameFlag = 0;
     sortedDateFlag = 0;
     sortedTypeFlag = 0;
+    sortedByName = [[NSMutableArray alloc] init];
+    sortedByType = [[NSMutableArray alloc] init];
+    sortedByDate = [[NSMutableArray alloc] init];
+    sortedKeys = [[NSMutableArray alloc] init];
     
     /* Initialized number of documents */
     numOfDocuments = [allDocIds count];
@@ -369,34 +374,30 @@ extern BOOL needToSync;
             cell.lineColor = [UIColor blackColor];
         }
         
-        /* Determine if the user wants the documents sorted. Check to make sure there is a file
-         * and determine what type of sorting the user wants.
-         */
         if (fileType != nil) {                  /* Ensure there is a filepath */
-            
-            /* Sort by document names if user desires */
-            if ([[sortedFlags objectForKey:@"documentNames"] isEqual:@"1"]) {
-                id sorteddDocId = [sortedByName objectAtIndex:indexPath.row];
-                docId = sorteddDocId;
-                fileType = [fileFormats objectForKey:docId]; 
+            if ([searchResults count] == 0){
+                /* Sort by document names if user desires */
+                if ([[sortedFlags objectForKey:@"documentNames"] isEqual:@"1"]) {
+                    id sorteddDocId = [sortedKeys objectAtIndex:indexPath.row-1 ];
+                    docId = sorteddDocId;
+                    fileType = [fileFormats objectForKey:docId];
+                }
+                
+                /* Sort by document types if user desires */
+                else if ([[sortedFlags objectForKey:@"documentTypes"] isEqual:@"1"]) {
+                    id sorteddDocId = [sortedKeys objectAtIndex:indexPath.row-1];
+                    docId = sorteddDocId;
+                    fileType = [fileFormats objectForKey:docId];
+                }
+                
+                /* Sort by dates if user desires */
+                else if ([[sortedFlags objectForKey:@"datesModified"] isEqual:@"1"]) {
+                    id sorteddDocId = [sortedKeys objectAtIndex:indexPath.row-1];
+                    docId = sorteddDocId;
+                    fileType = [fileFormats objectForKey:docId];
+                }
+                fileType = [fileType lastPathComponent];
             }
-            
-            /* Sort by document types if user desires */
-            else if ([[sortedFlags objectForKey:@"documentTypes"] isEqual:@"1"]) {
-                //int sorteddDocId = [sortedByName indexOfObject:docId];
-                //docId = [NSString stringWithFormat:@"%d", sorteddDocId];
-                id sorteddDocId = [sortedByName objectAtIndex:indexPath.row];
-                docId = sorteddDocId;
-                fileType = [fileFormats objectForKey:docId]; 
-            }
-            
-            /* Sort by dates if user desires */
-            else if ([[sortedFlags objectForKey:@"datesModified"] isEqual:@"1"]) {
-                id sorteddDocId = [sortedByName objectAtIndex:indexPath.row];
-                docId = sorteddDocId;
-                fileType = [fileFormats objectForKey:docId]; 
-            }
-            
             /* Set icon to a pdf icon if doucment is pdf document */
             if ([fileType isEqualToString:PDF_FORMAT]) 
                 cell.docTypeImage.image = [UIImage imageNamed:PDF_IMG];
@@ -643,6 +644,21 @@ extern BOOL needToSync;
     }
 }
 
+-(void)searchDocuments:(NSMutableArray *)filterType withSearchText:(NSString *)searchText{
+    
+    NSString *document_name = nil;  /* NSString containing the name of the current document from documentNames */
+    NSRange textRange;              /* NSRange to test if searchText is a substring of a document_name */
+    
+    for (NSString *key in filterType) {
+        document_name = [documentNames objectForKey:key];
+        textRange = [[document_name lowercaseString] rangeOfString:[searchText lowercaseString]];
+        
+        if (textRange.location != NSNotFound) {
+            [self.searchResults addObject:key];
+        }
+    }
+}
+
 /* This will be called every time the text in the search bar is manipulated */
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
@@ -654,17 +670,23 @@ extern BOOL needToSync;
     
     searchFilterIdentifier = true;
     
-    NSLog(@"Search text is %@", searchText);
-    /* NSString containing the name of the current document from documentNames */
-    NSString *document_name = nil;
+    NSString *document_name = nil;  /* NSString containing the name of the current document from documentNames */
+    NSRange textRange;              /* NSRange to test if searchText is a substring of a document_name */
+    int isSorted = 0;               /* Flag for checking if the documents have been sorted by name, type, or date */
+    NSString *value;                /* The value (0 or 1) of the different keys in sortedFlags */
     
-    /* NSRange to test if searchText is a substring of a document_name */
-    NSRange textRange;
-    /*
-     * If filterIdentifier is set to My Documents, iterate through myDocumentDocsIds to find substrings
-     */
-    if ([filterIdentifier isEqualToString:MY_DOCUMENTS]) {
-        for (NSString *key in myDocumentDocsIds) {
+    /* Determine if the documents are sorted */
+    for (NSString *key in sortedFlags){
+        value = [sortedFlags objectForKey:key];
+        
+        /* If value is 1, the documents are sorted. They will always only be sorted by one type */
+        if ([value isEqualToString:@"1"]) 
+            isSorted = [value intValue];
+    }
+    
+    if (isSorted){
+        /* Search through the correct dictionary based on the sorted order */
+        for (NSString *key in sortedKeys) {
             
             /* Store current document name */
             document_name = [documentNames objectForKey:key];
@@ -675,98 +697,45 @@ extern BOOL needToSync;
             
             /* If not NSNotFound then we know that searchText is a substring of document_name */
             if (textRange.location != NSNotFound) {
-                
-                /* We found a match, now we need to add it to searchResults NSMutableArray */
-                NSLog(@"My Document filter\n%@ is a substring of %@\n with key = %@\n", searchText, document_name, key);
-                
                 [self.searchResults addObject:key];
             }
             
         }
-        
+    }
+    /*
+     * If filterIdentifier is set to My Documents, iterate through myDocumentDocsIds to find substrings
+     */
+    else if ([filterIdentifier isEqualToString:MY_DOCUMENTS]) {
+        [self searchDocuments:myDocumentDocsIds withSearchText:searchText];
     }
     
     /*
      * If filter is set to Favorites, iterate through favoriteDocsIds to find substrings
      */
     else if ([filterIdentifier isEqualToString:FAVORITES]) {
-        for (NSString *key in favoriteDocsIds) {
-            
-            /* Store current document name */
-            document_name = [documentNames objectForKey:key];
-            
-            /* Use rangeOfString to search for searchText in document_name
-             Both strings are converted to lowercase first to inforce case insensitivity */
-            textRange = [[document_name lowercaseString] rangeOfString:[searchText lowercaseString]];
-            
-            /* If not NSNotFound then we know that searchText is a substring of document_name */
-            if (textRange.location != NSNotFound) {
-                
-                /* We found a match, now we need to add it to searchResults NSMutableArray */
-                NSLog(@"Favorite filter\n%@ is a substring of %@\n with key = %@\n", searchText, document_name, key);
-                
-                [self.searchResults addObject:key];
-            }
-            
-        }
-        
+        [self searchDocuments:favoriteDocsIds withSearchText:searchText];
     }
     
     /* Filter is set to Recents */
     else if ([filterIdentifier isEqualToString:RECENTS]) {
-        for (NSString *key in recentDocsIds) {
-            
-            /* Store current document name */
-            document_name = [documentNames objectForKey:key];
-            
-            /* Use rangeOfString to search for searchText in document_name
-             Both strings are converted to lowercase first to inforce case insensitivity */
-            textRange = [[document_name lowercaseString] rangeOfString:[searchText lowercaseString]];
-            
-            /* If not NSNotFound then we know that searchText is a substring of document_name */
-            if (textRange.location != NSNotFound) {
-                
-                /* We found a match, now we need to add it to searchResults NSMutableArray */
-                NSLog(@"Recent filter\n%@ is a substring of %@\n with key = %@\n", searchText, document_name, key);
-                
-                [self.searchResults addObject:key];
-            }
-            
-        }
-        
+        [self searchDocuments:recentDocsIds withSearchText:searchText];
     }
-    else {
+    else{
         /* For each loop that iterates through each index of documentNames and checks for the substring searchText */
         for (NSString *key in documentNames) {
-            
-            /* Store current document name */
             document_name = [documentNames objectForKey:key];
-            
-            /* Use rangeOfString to search for searchText in document_name
-             Both strings are converted to lowercase first to inforce case insensitivity */
             textRange = [[document_name lowercaseString] rangeOfString:[searchText lowercaseString]];
             
-            /* If not NSNotFound then we know that searchText is a substring of document_name */
             if (textRange.location != NSNotFound) {
-                
-                /* We found a match, now we need to add it to searchResults NSMutableArray */
-                NSLog(@"All documents filter\n%@ is a substring of %@\n with key = %@\n", searchText, document_name, key);
-                
                 [self.searchResults addObject:key];
             }
             
         }
-    }
-    //NSInteger num = [searchResults count];
-    if ([searchResults count] == 0) {
-        NSLog(@"searchResults is empty\n");
-    } else {
-        NSLog(@"search count = %@\n", searchResults);
     }
     if ([searchText isEqualToString:@""]) {
         searchFilterIdentifier = false;
     }
-    [documents reloadData];
+    [self.documents reloadData];
 }
 
 
@@ -790,6 +759,15 @@ extern BOOL needToSync;
     
 }
 
+-(void) resetSorting {
+    [sortedFlags setObject:@"0" forKey:@"documentTypes"];
+    [sortedFlags setObject:@"0" forKey:@"datesModified"];
+    [sortedFlags setObject:@"0" forKey:@"documentNames"];
+    sortedDateFlag = 0;
+    sortedNameFlag = 0;
+    sortedTypeFlag = 0;
+}
+
 - (IBAction)filterPressed:(id)sender {
     
     if (filters.selectedSegmentIndex == MY_DOCS_FILTER) 
@@ -804,7 +782,22 @@ extern BOOL needToSync;
     else if (filters.selectedSegmentIndex == ALL_DOCS_FILTER) 
         filterIdentifier = DOCUMENT_INFO;
         
+    [self resetSorting];
     [self.documents reloadData];
+}
+
+-(NSMutableArray *)removeDuplicates:(NSMutableArray *)sortedArray{
+    NSMutableSet* valuesAdded = [NSMutableSet set];
+    NSMutableArray* filteredArray = [[NSMutableArray alloc] init];
+    NSString* object;
+    
+    for (object in sortedArray){
+        if (![valuesAdded member:object]){
+            [valuesAdded addObject:object];
+            [filteredArray addObject:object];
+        }
+    }
+    return filteredArray;
 }
 
 - (IBAction)sortByName:(id)sender{
@@ -828,18 +821,83 @@ extern BOOL needToSync;
     [sortedFlags setObject:@"0" forKey:@"documentTypes"];
     [sortedFlags setObject:@"0" forKey:@"datesModified"];
     [sortedFlags setObject:@"1" forKey:@"documentNames"];
+    /* Local variable to hold the sorted keys before they are added to sortedKeys */
+    NSMutableArray *localSortedKeys = [[NSMutableArray alloc] init];
+    NSString *object;
+    NSString *objectToKey;
+    NSString *key;
+    NSArray *keyArray;
+    /* We have clear the objects in sortedByName before we add more or else we would double up on files */
+    [sortedByName removeAllObjects];
+    
     if (sortedNameFlag == 0) {
-    sortedByName = [documentNames keysSortedByValueUsingSelector:@selector(caseInsensitiveCompare:)];
-    [self.documents reloadData];
+        /* Filter is set to My documents */
+        if ([filterIdentifier isEqualToString:MY_DOCUMENTS]){
+            for (key in myDocumentDocsIds) {
+                /* Get the document name as a NSString for every key stored in the filter dictionary */
+                [sortedByName addObject:[documentNames objectForKey:key]];
+            }
+            /* Sort those names into alphabetical order */
+            [sortedByName sortUsingSelector:@selector(caseInsensitiveCompare:)];
+            
+            for (object in sortedByName){
+                /* Convert the strings back to their keys */
+                keyArray = [documentNames allKeysForObject:object];
+                objectToKey = [keyArray objectAtIndex:0];
+                [localSortedKeys addObject:objectToKey];
+            }
+        }
+        /* Filter is set to Favorites */
+        else if ([filterIdentifier isEqualToString:FAVORITES]){
+            for (key in favoriteDocsIds) {
+                [sortedByName addObject:[documentNames objectForKey:key]];
+            }
+            [sortedByName sortUsingSelector:@selector(caseInsensitiveCompare:)];
+            
+            for (object in sortedByName){
+                keyArray = [documentNames allKeysForObject:object];
+                objectToKey = [keyArray objectAtIndex:0];
+                [localSortedKeys addObject:objectToKey];
+            }
+        }        
+        /* Filter is set to Recents */
+        else if ([filterIdentifier isEqualToString:RECENTS]){
+            for (key in recentDocsIds) {
+                [sortedByName addObject:[documentNames objectForKey:key]];
+            }
+            [sortedByName sortUsingSelector:@selector(caseInsensitiveCompare:)];
+            
+            for (object in sortedByName){
+                keyArray = [documentNames allKeysForObject:object];
+                objectToKey = [keyArray objectAtIndex:0];
+                [localSortedKeys addObject:objectToKey];
+            }
+        }
+        /* Filter is set to all documents */
+        else if ([filterIdentifier isEqualToString:DOCUMENT_INFO]){
+            for (key in allDocIds) {
+                [sortedByName addObject:[documentNames objectForKey:key]];
+            }
+            [sortedByName sortUsingSelector:@selector(caseInsensitiveCompare:)];
+            
+            for (object in sortedByName){
+                keyArray = [documentNames allKeysForObject:object];
+                objectToKey = [keyArray objectAtIndex:0];
+                [localSortedKeys addObject:objectToKey];
+            }
+        }
+        sortedKeys = localSortedKeys;
+        [self.documents reloadData];
         sortedNameFlag = 1;
     }
+    
     else if (sortedNameFlag == 1){
-        sortedByName = [[sortedByName reverseObjectEnumerator] allObjects];
+        sortedKeys = [[sortedKeys reverseObjectEnumerator] allObjects];
         [self.documents reloadData];
         sortedNameFlag = 0;
     }
-    
 }
+
 
 - (IBAction)sortByDateModified:(id)sender{
     
@@ -862,12 +920,78 @@ extern BOOL needToSync;
     [sortedFlags setObject:@"0" forKey:@"documentTypes"];
     [sortedFlags setObject:@"1" forKey:@"datesModified"];
     [sortedFlags setObject:@"0" forKey:@"documentNames"];
-    if(sortedDateFlag == 0){
-        sortedByDate = [datesModified keysSortedByValueUsingSelector:@selector(compare:)];
+    /* Local variable to hold the sorted keys before they are added to sortedKeys */
+    NSMutableArray *localSortedKeys = [[NSMutableArray alloc] init];
+    NSString *object;
+    NSString *objectToKey;
+    NSString *key;
+    NSArray *keyArray;
+    /* We have clear the objects in sortedByName before we add more or else we would double up on files */
+    [sortedByDate removeAllObjects];
+    
+    if (sortedDateFlag == 0) {
+        /* Filter is set to My documents */
+        if ([filterIdentifier isEqualToString:MY_DOCUMENTS]){
+            for (key in myDocumentDocsIds) {
+                /* Get the document name as a NSString for every key stored in the filter dictionary */
+                [sortedByDate addObject:[datesModified objectForKey:key]];
+            }
+            /* Sort those names into alphabetical order */
+            [sortedByDate sortUsingSelector:@selector(compare:)];
+            
+            for (object in sortedByDate){
+                /* Convert the strings back to their keys */
+                keyArray = [datesModified allKeysForObject:object];
+                objectToKey = [keyArray objectAtIndex:0];
+                [localSortedKeys addObject:objectToKey];
+            }
+        }
+        /* Filter is set to Favorites */
+        else if ([filterIdentifier isEqualToString:FAVORITES]){
+            for (key in favoriteDocsIds) {
+                [sortedByDate addObject:[datesModified objectForKey:key]];
+            }
+            [sortedByDate sortUsingSelector:@selector(compare:)];
+            
+            for (object in sortedByDate){
+                keyArray = [datesModified allKeysForObject:object];
+                objectToKey = [keyArray objectAtIndex:0];
+                [localSortedKeys addObject:objectToKey];
+            }
+        }        
+        /* Filter is set to Recents */
+        else if ([filterIdentifier isEqualToString:RECENTS]){
+            for (key in recentDocsIds) {
+                [sortedByDate addObject:[datesModified objectForKey:key]];
+            }
+            [sortedByDate sortUsingSelector:@selector(compare:)];
+            
+            for (object in sortedByDate){
+                keyArray = [datesModified allKeysForObject:object];
+                objectToKey = [keyArray objectAtIndex:0];
+                [localSortedKeys addObject:objectToKey];
+            }
+        }
+        /* Filter is set to all documents */
+        else if ([filterIdentifier isEqualToString:DOCUMENT_INFO]){
+            for (key in allDocIds) {
+                [sortedByDate addObject:[datesModified objectForKey:key]];
+            }
+            [sortedByDate sortUsingSelector:@selector(compare:)];
+            
+            for (object in sortedByDate){
+                keyArray = [datesModified allKeysForObject:object];
+                objectToKey = [keyArray objectAtIndex:0];
+                [localSortedKeys addObject:objectToKey];
+            }
+        }
+        sortedKeys = localSortedKeys;
         [self.documents reloadData];
-        sortedDateFlag = 1;
-    } else if (sortedDateFlag == 1){
-        sortedByDate = [[sortedByDate reverseObjectEnumerator] allObjects];
+        sortedDateFlag= 1;
+    }
+    
+    else if (sortedDateFlag == 1){
+        sortedKeys = [[sortedKeys reverseObjectEnumerator] allObjects];
         [self.documents reloadData];
         sortedDateFlag = 0;
     }
@@ -894,13 +1018,89 @@ extern BOOL needToSync;
     [sortedFlags setObject:@"1" forKey:@"documentTypes"];
     [sortedFlags setObject:@"0" forKey:@"datesModified"];
     [sortedFlags setObject:@"0" forKey:@"documentNames"];
+    /* Local variable to hold the sorted keys before they are added to sortedKeys */
+    NSMutableArray *localSortedKeys = [[NSMutableArray alloc] init];
+    NSString *object;
+    NSString *objectToKey;
+    NSString *key;
+    NSArray *keyArray;
+    /* We have clear the objects in sortedByName before we add more or else we would double up on files */
+    [sortedByType removeAllObjects];
+    
     if (sortedTypeFlag == 0) {
-        sortedByType = [documentTypes keysSortedByValueUsingSelector:@selector(caseInsensitiveCompare:)];
+        /* Filter is set to My documents */
+        if ([filterIdentifier isEqualToString:MY_DOCUMENTS]){
+            for (key in myDocumentDocsIds) {
+                /* Get the document name as a NSString for every key stored in the filter dictionary */
+                [sortedByType addObject:[documentTypes objectForKey:key]];
+            }
+            /* Sort those names into alphabetical order */
+            [sortedByType sortUsingSelector:@selector(caseInsensitiveCompare:)];
+            
+            sortedByType = [self removeDuplicates:sortedByType];
+            for (object in sortedByType){
+                keyArray = [documentTypes allKeysForObject:object];
+                for (int i=0; i<[keyArray count]; i++){
+                    objectToKey = [keyArray objectAtIndex:i];
+                    [localSortedKeys addObject:objectToKey];
+                }
+            }
+        }
+        /* Filter is set to Favorites */
+        else if ([filterIdentifier isEqualToString:FAVORITES]){
+            for (key in favoriteDocsIds) {
+                [sortedByType addObject:[documentTypes objectForKey:key]];
+            }
+            [sortedByType sortUsingSelector:@selector(caseInsensitiveCompare:)];
+            
+            sortedByType = [self removeDuplicates:sortedByType];
+            for (object in sortedByType){
+                keyArray = [documentTypes allKeysForObject:object];
+                for (int i=0; i<[keyArray count]; i++){
+                    objectToKey = [keyArray objectAtIndex:i];
+                    [localSortedKeys addObject:objectToKey];
+                }
+            }
+        }        
+        /* Filter is set to Recents */
+        else if ([filterIdentifier isEqualToString:RECENTS]){
+            for (key in recentDocsIds) {
+                [sortedByType addObject:[documentTypes objectForKey:key]];
+            }
+            [sortedByType sortUsingSelector:@selector(caseInsensitiveCompare:)];
+            
+            sortedByType = [self removeDuplicates:sortedByType];
+            for (object in sortedByType){
+                keyArray = [documentTypes allKeysForObject:object];
+                for (int i=0; i<[keyArray count]; i++){
+                    objectToKey = [keyArray objectAtIndex:i];
+                    [localSortedKeys addObject:objectToKey];
+                }
+            }
+        }
+        /* Filter is set to all documents */
+        else if ([filterIdentifier isEqualToString:DOCUMENT_INFO]){
+            for (key in allDocIds) {
+                [sortedByType addObject:[documentTypes objectForKey:key]];
+            }
+            [sortedByType sortUsingSelector:@selector(caseInsensitiveCompare:)];
+            
+            sortedByType = [self removeDuplicates:sortedByType];
+            for (object in sortedByType){
+                keyArray = [documentTypes allKeysForObject:object];
+                for (int i=0; i<[keyArray count]; i++){
+                    objectToKey = [keyArray objectAtIndex:i];
+                    [localSortedKeys addObject:objectToKey];
+                }
+            }
+        }
+        sortedKeys = localSortedKeys;
         [self.documents reloadData];
         sortedTypeFlag = 1;
     }
+    
     else if (sortedTypeFlag == 1){
-        sortedByType = [[sortedByType reverseObjectEnumerator] allObjects];
+        sortedKeys = [[sortedKeys reverseObjectEnumerator] allObjects];
         [self.documents reloadData];
         sortedTypeFlag = 0;
     }

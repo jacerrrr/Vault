@@ -61,9 +61,10 @@
 @property (nonatomic) int datePressCount;
 
 /* Sort Arrays */
-@property (nonatomic, retain) NSArray *sortedByName;                /* NSArray containing the documents sorted by name */
-@property (nonatomic, retain) NSArray *sortedByType;                /* NSArray containing the documents sorted by type */
-@property (nonatomic, retain) NSArray *sortedByDate;                /* NSArray containing the documents sorted by name */
+@property (nonatomic, retain) NSMutableArray *sortedByName;                /* NSArray containing the documents sorted by name */
+@property (nonatomic, retain) NSMutableArray *sortedByType;                /* NSArray containing the documents sorted by type */
+@property (nonatomic, retain) NSMutableArray *sortedByDate;                /* NSArray containing the documents sorted by name */
+@property (nonatomic, retain) NSArray *sortedKeys;
 
 @property (nonatomic, retain) NSMutableDictionary *sortedFlags;     /* Mutable Dictionary containing user sort preferences */
 
