@@ -153,6 +153,10 @@
                                             <action selector="finishViewing:" destination="CJE-00-3CV" id="Ck2-vJ-L4V"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="72o-P9-LPq"/>
+                                    <barButtonItem title="Properties" id="9zT-D4-QJN">
+                                        <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    </barButtonItem>
                                 </items>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                             </toolbar>

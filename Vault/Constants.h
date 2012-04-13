@@ -47,6 +47,9 @@
 
 /* Set of defined constants */
 
+/* Keychain used for username and password */
+static NSString* const USER_CRED = @"userCredentials";
+
 /* Keys used for NSUserDefaults */
 static NSString* const DOC_TYPES = @"doc_types";
 static NSString* const DOC_NAMES = @"doc_names";

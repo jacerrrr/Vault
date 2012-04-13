@@ -17,6 +17,7 @@ BOOL needToSync = FALSE;
 @synthesize passwordField;
 @synthesize loginBtn;
 @synthesize clearBtn;
+@synthesize keychain;
 @synthesize authManager;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -45,9 +46,14 @@ BOOL needToSync = FALSE;
     userLogin.username =emailField.text;
     userLogin.password = passwordField.text;
     
+    [keychain setObject:@"Myappstring" forKey: (__bridge id)kSecAttrService];
+    
+    [keychain setObject:userLogin.username forKey:(__bridge id)kSecAttrAccount];
+    [keychain setObject:userLogin.password forKey:(__bridge id)kSecValueData];
+
     /* Send the POST request to vault */
     [authManager postObject:userLogin delegate:self];
-    
+
     /* Show activity indicator in the devices top menu bar */
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -68,6 +74,8 @@ BOOL needToSync = FALSE;
     
     /* Url for the login page */
     NSURL *authUrl = [NSURL URLWithString:LOGIN_URL];
+    
+    keychain = [[KeychainItemWrapper alloc] initWithIdentifier:USER_CRED accessGroup:nil];
     
     /* Set up a unique objectmanager for authentication only when login view loads */
     authManager = [RKObjectManager objectManagerWithBaseURL: authUrl];

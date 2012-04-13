@@ -16,6 +16,7 @@
 		704AD61F14BF8B1D0088E76B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 704AD61914BF8B1D0088E76B /* Security.framework */; };
 		704AD62014BF8B1D0088E76B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 704AD61A14BF8B1D0088E76B /* SystemConfiguration.framework */; };
 		705554BE14E5E94000EFB0E3 /* TableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 705554BD14E5E94000EFB0E3 /* TableView.m */; };
+		7056830C1530F17A00C6FB80 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7056830B1530F17A00C6FB80 /* KeychainItemWrapper.m */; };
 		7065002F14FEF9EC00A3A5FB /* sortDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 7065002E14FEF9EC00A3A5FB /* sortDown.png */; };
 		7065003114FEF9F700A3A5FB /* sortUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 7065003014FEF9F700A3A5FB /* sortUp.png */; };
 		706500701500155700A3A5FB /* DocumentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7065006F1500155700A3A5FB /* DocumentsView.m */; };
@@ -113,6 +114,8 @@
 		704AD67914C0B3980088E76B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		705554BC14E5E93800EFB0E3 /* TableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableView.h; sourceTree = "<group>"; };
 		705554BD14E5E94000EFB0E3 /* TableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableView.m; sourceTree = "<group>"; };
+		7056830A1530F17A00C6FB80 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
+		7056830B1530F17A00C6FB80 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
 		7065002E14FEF9EC00A3A5FB /* sortDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sortDown.png; sourceTree = "<group>"; };
 		7065003014FEF9F700A3A5FB /* sortUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sortUp.png; sourceTree = "<group>"; };
 		7065006E1500155700A3A5FB /* DocumentsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentsView.h; sourceTree = "<group>"; };
@@ -304,12 +307,14 @@
 		70F164BA14A3D8D400532A35 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				70F164FD14A3E5F700532A35 /* Images */,
+				7056830A1530F17A00C6FB80 /* KeychainItemWrapper.h */,
+				7056830B1530F17A00C6FB80 /* KeychainItemWrapper.m */,
 				704AD67914C0B3980088E76B /* Constants.h */,
 				70F164BB14A3D8D400532A35 /* Vault-Info.plist */,
 				70F164BC14A3D8D400532A35 /* InfoPlist.strings */,
 				70F164BF14A3D8D400532A35 /* main.m */,
 				70F164C114A3D8D400532A35 /* Vault-Prefix.pch */,
+				70F164FD14A3E5F700532A35 /* Images */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -525,6 +530,7 @@
 				706500701500155700A3A5FB /* DocumentsView.m in Sources */,
 				70BE2B6D15097C4500CCAEC1 /* LogoutViewController.m in Sources */,
 				70BE2B75150988D700CCAEC1 /* DocWebView.m in Sources */,
+				7056830C1530F17A00C6FB80 /* KeychainItemWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

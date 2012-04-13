@@ -181,15 +181,24 @@ extern BOOL needToSync;
 
 - (void)viewWillAppear:(BOOL)animated {
     
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    
     /* Sync documents if user just logged into Vault */
     if (needToSync == TRUE) {
         needToSync = FALSE;                                                         /* Reset sync global */
+        
+        /* Show activity indicator in ipad menu bar */
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        
         NSString *session = [VaultUser loadSession];                                /* Load new session */
-    
+        
         /* Set the HTTP header to users session id for the "Authorization" paramter */
         [[RKObjectManager sharedManager].client setValue:session 
-                                  forHTTPHeaderField:@"Authorization"];
-      
+                                      forHTTPHeaderField:@"Authorization"];
+        
         /* GET request to grab recent documents */
         [[RKObjectManager sharedManager] loadObjectsAtResourcePath:RECENTS          
                                                         usingBlock:^(RKObjectLoader *loader) {
@@ -198,25 +207,19 @@ extern BOOL needToSync;
                                                         }];
         /* GET request to user documents */
         [[RKObjectManager sharedManager] loadObjectsAtResourcePath:MY_DOCUMENTS     
-                                                    usingBlock:^(RKObjectLoader *loader) {
-                                                        loader.method = RKRequestMethodGET;
-                                                        loader.delegate = self;
-                                                    }];
+                                                        usingBlock:^(RKObjectLoader *loader) {
+                                                            loader.method = RKRequestMethodGET;
+                                                            loader.delegate = self;
+                                                        }];
         /* GET request to grab favorite documents */
         [[RKObjectManager sharedManager] loadObjectsAtResourcePath:FAVORITES        
-                                                    usingBlock:^(RKObjectLoader *loader) {
-                                                        loader.method = RKRequestMethodGET;
-                                                        loader.delegate = self;
-                                                    }]; 
-        
-        /* Show activity indicator in ipad menu bar */
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+                                                        usingBlock:^(RKObjectLoader *loader) {
+                                                            loader.method = RKRequestMethodGET;
+                                                            loader.delegate = self;
+                                                        }]; 
     }
-    
-    [super viewWillAppear:animated];
-}
 
-- (void)viewDidAppear:(BOOL)animated {
+    
     [super viewDidAppear:animated];
 }
 
