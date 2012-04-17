@@ -10,23 +10,12 @@
 
 #import "AppDelegate.h"
 
-extern BOOL needToSync;
-
 @implementation AppDelegate
 
 @synthesize window = _window;
-@synthesize keychain;
-@synthesize invalidSession;
-@synthesize authManager;
-@synthesize loginCycle;
 
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     NSURL *baseUrl = [NSURL URLWithString:BASE_URL];
-    NSURL *authUrl = [NSURL URLWithString:LOGIN_URL];
-    
-    invalidSession = NO;
-    keychain = [[KeychainItemWrapper alloc] initWithIdentifier:USER_CRED accessGroup:nil];
-    loginCycle = 0;
     
     /* Set up a general object manager for Vault and make it shraed */
     RKObjectManager *genManager = [RKObjectManager objectManagerWithBaseURL:baseUrl];
@@ -45,30 +34,23 @@ extern BOOL needToSync;
     [documentMapping mapKeyPath:@"name__v" toAttribute:@"name"];
     [documentMapping mapKeyPath:@"format__v" toAttribute:@"format"];
     [documentMapping mapKeyPath:@"version_modified_date__v" toAttribute:@"dateLastModified"];
+    [documentMapping mapKeyPath:@"title__v" toAttribute:@"title"];
+    [documentMapping mapKeyPath:@"document_number__v" toAttribute:@"docNumber"];
+    [documentMapping mapKeyPath:@"size__v" toAttribute:@"size"];
+    [documentMapping mapKeyPath:@"major_version_number__v" toAttribute:@"majorVNum"];
+    [documentMapping mapKeyPath:@"minor_version_number__v" toAttribute:@"minorVNum"];
+    [documentMapping mapKeyPath:@"lifecycle__v" toAttribute:@"lifecycle"];
+    [documentMapping mapKeyPath:@"status__v" toAttribute:@"status"];
+    [documentMapping mapKeyPath:@"version_created_by__v" toAttribute:@"owner"];
+    [documentMapping mapKeyPath:@"last_modified_by__v" toAttribute:@"lastModifier"];
+    
     
     [[RKObjectManager sharedManager].mappingProvider setMapping:documentMapping forKeyPath:@"documents.document"];
-    
-    /* Set up a authorization object manager to refresh user sessions */
-    authManager = [RKObjectManager objectManagerWithBaseURL:authUrl];
-    authManager.serializationMIMEType = RKMIMETypeFormURLEncoded;
-    
-    /* Serialize the the AuthUserDetail class to send POST data to vault */
-    RKObjectMapping *authSerialMapping = [RKObjectMapping mappingForClass:[NSMutableDictionary class]];
-    [authSerialMapping mapAttributes:@"username", @"password", nil];
     
     /* Set the mapping attributes to obtain relevent information from Vault */
     RKObjectMapping *userMapping = [RKObjectMapping mappingForClass:[VaultUser class]];
     userMapping.setNilForMissingRelationships = YES;
     [userMapping mapAttributes:@"sessionid", @"responseStatus", nil];
-    
-    /* Set object mappings */
-    [authManager.mappingProvider setObjectMapping:userMapping forResourcePathPattern:@"/auth/api"];
-    
-    /* Map the properties of the AuthUserDetail class to POST authentication parameters */
-    [authManager.mappingProvider setSerializationMapping:authSerialMapping forClass:[AuthUserDetail class]];
-    
-    /* Set up a router to route the POST call to the right path for authentication */
-    [authManager.router routeClass:[AuthUserDetail class] toResourcePath:@"/auth/api"];
     
     /* Set the parser for the application to work with type text/html */
     [[RKParserRegistry sharedRegistry] setParserClass:[RKJSONParserJSONKit class] forMIMEType:@"text/html"];
@@ -121,16 +103,6 @@ extern BOOL needToSync;
         loginScreen.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self.window.rootViewController presentModalViewController:loginScreen animated:YES];
     }
-    
-    else {                                       /* Test to see if the session is still valid */
-        [[RKObjectManager sharedManager].client setValue:session forHTTPHeaderField:@"Authorization"];
-        [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/metadata/objects" 
-                                                        usingBlock:^(RKObjectLoader *loader) {
-                                                            loader.method = RKRequestMethodGET;
-                                                            loader.delegate = self;
-                                                        }];
-    }
-        
 } 
 
 /*
@@ -141,80 +113,5 @@ extern BOOL needToSync;
 - (void)applicationWillTerminate:(UIApplication *)application {
     
 }
-
-- (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
-    NSLog(@"String is %@", [response bodyAsString]);
-}
-
-/* Function called when one cannot connect to Vault */
-
--(void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
-    
-}
-
-/* Called when the objects are mapped to a REST response */
-
-- (void) objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {
-    
-    SessionTest *test = [objects objectAtIndex:0];                  /* Load the test object */
-    
-    if ([test.responseStatus isEqualToString:FAILURE]){ /* If the test failed */
-        
-        invalidSession = YES;
-        loginCycle++;
-        [self loginWithKeychain];
-    }
-    
-    else if ([test.responseStatus isEqualToString:FAILURE] 
-             && invalidSession == YES 
-             && loginCycle == 1) {
-        
-        loginCycle++;
-        
-        /* Create the alert */
-        UIAlertView *loginAlert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"You username and/or password has changed! Please enter you new credentials" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        
-        [loginAlert show]; 
-    }
-    
-    else if (invalidSession == YES && (loginCycle == 1 || loginCycle == 2)) {
-        loginCycle = 0;
-        invalidSession = NO;
-        VaultUser *user = [objects objectAtIndex:0];
-       
-        if (![user.sessionid isEqualToString:[VaultUser loadSession]])
-            [VaultUser saveSession:user.sessionid];
-        
-        needToSync = TRUE;
-    }
-}
-
-/* This function determines the action that should be taken when a user clicks a button
- * on a alert view.  In this case, the alert view is prompting the user to login.
- */
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-        
-    /* Load the login page */
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-    UIViewController *loginScreen = [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
-    loginScreen.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self.window.rootViewController presentModalViewController:loginScreen animated:YES];
-}
-
-- (void)loginWithKeychain {
-    
-    /* Created an instance of a user to send user credentials to vault */
-    AuthUserDetail *userLogin = [[AuthUserDetail alloc] init];
-    userLogin.username = [keychain objectForKey:(__bridge id)kSecAttrAccount];
-    userLogin.password = [keychain objectForKey:(__bridge id)kSecValueData];
-    
-    /* Send the POST request to vault */
-    [authManager postObject:userLogin delegate:self];
-    
-    /* Show activity indicator in the devices top menu bar */
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-}
-
 
 @end

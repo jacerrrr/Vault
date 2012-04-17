@@ -15,6 +15,17 @@
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *format;
 @property (nonatomic, retain) NSString *dateLastModified;
+@property (nonatomic, retain) NSString *title;
+@property (nonatomic, retain) NSString *docNumber;
+@property (nonatomic, retain) NSString *size;
+@property (nonatomic, retain) NSString *majorVNum;
+@property (nonatomic, retain) NSString *minorVNum;
+@property (nonatomic, retain) NSString *lifecycle;
+@property (nonatomic, retain) NSString *status;
+@property (nonatomic, retain) NSString *owner;
+@property (nonatomic, retain) NSString *lastModifier;
+
+
 
 + (NSString *)savePDF:(NSData *)newPdfContent withFileName:(NSString *)fileName;
 

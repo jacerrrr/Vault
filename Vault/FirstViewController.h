@@ -13,8 +13,11 @@
 #import "VaultUser.h"
 #import "Document.h"
 #import "TableView.h"
+#import "SessionTest.h"
 #import "DocViewController.h"
 #import "DocumentsView.h"
+#import "KeychainItemWrapper.h"
+#import "AuthUserDetail.h"
 
 @interface FirstViewController : UIViewController <RKObjectLoaderDelegate, NSURLConnectionDataDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 {
@@ -24,7 +27,6 @@
 /* UISegmentedControl for doc filters */
 @property (nonatomic, retain) IBOutlet UISegmentedControl *filters; /* Text field where user inputs username */
 @property (nonatomic, retain) IBOutlet DocumentsView *mainView;
-
 
 /* Buttons in the view */
 @property (nonatomic, retain) IBOutlet UIButton *nameButton;        /* Name button for sorting by name */    
@@ -36,6 +38,7 @@
 /* Document property dictionaries */
 @property (nonatomic, retain) NSMutableDictionary *documentTypes;   /* Mutable Dictionary containing document types */
 @property (nonatomic, retain) NSMutableDictionary *documentNames;   /* Mutable Dictionary containing document names */
+@property (nonatomic, retain) NSMutableDictionary *rawDates;
 @property (nonatomic, retain) NSMutableDictionary *datesModified;   /* Mutable Dictionary containing dates modified */
 @property (nonatomic, retain) NSMutableDictionary *fileFormats;     /* Mutable Dictionary containing document format */
 @property (nonatomic, retain) NSMutableDictionary *documentPaths;   /* Mutable Dictionary containing document paths */
@@ -48,6 +51,7 @@
 @property (nonatomic, retain) NSMutableArray *allDocIds;            /* All document id's that the user has pulled down */
 
 @property (nonatomic, retain) NSMutableData *pdfData;               /* Pdf data to be retrieved from Vault server */
+@property (nonatomic, retain) NSMutableArray *changedDocs;
 
 @property (nonatomic,retain) NSString *filterIdentifier;            /* String that determines which document filter is currently selected */
 @property (nonatomic) BOOL searchFilterIdentifier;
@@ -73,10 +77,17 @@
 @property (nonatomic) int sortedTypeFlag;
 @property (nonatomic) int sortedDateFlag;
 
+@property (nonatomic, retain) KeychainItemWrapper *keychain;
+@property (nonatomic) BOOL invalidSession;
+@property (nonatomic, retain) RKObjectManager *authManager;
+@property (nonatomic) int loginCycle;
+
 - (void)sendPdfRequest;
 - (IBAction)filterPressed:(id)sender;
 - (IBAction)sortByName:(id)sender;
 - (IBAction)sortbyType:(id)sender;
 - (IBAction)sortByDateModified:(id)sender;
+- (void)loginWithKeychain;
+- (void)refreshDocuments;
 
 @end

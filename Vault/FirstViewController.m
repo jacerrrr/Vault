@@ -10,7 +10,7 @@
 
 #import "FirstViewController.h"
 
-extern BOOL needToSync;
+extern BOOL initLogin;
 
 @implementation FirstViewController
 
@@ -25,6 +25,7 @@ extern BOOL needToSync;
 
 @synthesize documentTypes;      /* Dictionary with all the document types for id */
 @synthesize documentNames;      /* Dictionary with all the document names for id */
+@synthesize rawDates;
 @synthesize datesModified;      /* Dates with all the last modified times for id */
 @synthesize fileFormats;        /* Dictionary with all the file formats for id */
 @synthesize documentPaths;      /* Dictionary will all the document paths for each file */
@@ -47,6 +48,7 @@ extern BOOL needToSync;
 @synthesize searchFilterIdentifier;
 
 @synthesize pdfData;            /* Data that is brought down and reset each time to store pdf's locally */
+@synthesize changedDocs;
 
 @synthesize sortedByName;       /* Array containing document id's sorted by name */
 @synthesize sortedByType;       /* Array containing document id's sorted by type */
@@ -54,6 +56,11 @@ extern BOOL needToSync;
 @synthesize sortedKeys;
 @synthesize sortedFlags;
 @synthesize sortedDateFlag, sortedNameFlag, sortedTypeFlag;
+
+@synthesize keychain;
+@synthesize invalidSession;
+@synthesize authManager;
+@synthesize loginCycle;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -81,11 +88,42 @@ extern BOOL needToSync;
     
     /* Initialize all properties */
     
+    /* Set up the keychain login manager */
+    NSURL *loginUrl = [[NSURL alloc] initWithString:LOGIN_URL];
+    authManager = [RKObjectManager objectManagerWithBaseURL:loginUrl];
+    invalidSession = NO;
+    keychain = [[KeychainItemWrapper alloc] initWithIdentifier:USER_CRED accessGroup:nil];
+    loginCycle = 0;
+    
+    /* Set up a authorization object manager to refresh user sessions */
+    authManager.serializationMIMEType = RKMIMETypeFormURLEncoded;
+    
+    /* Serialize the the AuthUserDetail class to send POST data to vault */
+    RKObjectMapping *authSerialMapping = [RKObjectMapping mappingForClass:[NSMutableDictionary class]];
+    [authSerialMapping mapAttributes:@"username", @"password", nil];
+    
+    /* Set the mapping attributes to obtain relevent information from Vault */
+    RKObjectMapping *userMapping = [RKObjectMapping mappingForClass:[VaultUser class]];
+    userMapping.setNilForMissingRelationships = YES;
+    [userMapping mapAttributes:@"sessionid", @"responseStatus", nil];
+    
+    /* Set object mappings */
+    [authManager.mappingProvider setObjectMapping:userMapping forResourcePathPattern:@"/auth/api"];
+    
+    /* Map the properties of the AuthUserDetail class to POST authentication parameters */
+    [authManager.mappingProvider setSerializationMapping:authSerialMapping forClass:[AuthUserDetail class]];
+    
+    /* Set up a router to route the POST call to the right path for authentication */
+    [authManager.router routeClass:[AuthUserDetail class] toResourcePath:@"/auth/api"];
+
+    
     /*Initialize dictionaries containing all document information */
     documentTypes = [[NSMutableDictionary alloc] 
                 initWithDictionary:[Document loadDocInfoForKey:DOC_TYPES]];
     documentNames = [[NSMutableDictionary alloc] 
                 initWithDictionary:[Document loadDocInfoForKey:DOC_NAMES]];
+    rawDates = [[NSMutableDictionary alloc] 
+                initWithDictionary:[Document loadDocInfoForKey:RAW_DATES]];
     datesModified = [[NSMutableDictionary alloc] 
                 initWithDictionary:[Document loadDocInfoForKey:DATE_MOD]];
     fileFormats = [[NSMutableDictionary alloc] 
@@ -94,6 +132,7 @@ extern BOOL needToSync;
     
     /* Allocate data to be used for pdf binary */
     pdfData = [[NSMutableData alloc] init];
+    changedDocs = [[NSMutableArray alloc] init];
     
     /* Allocate each mutable array to be used for filtering */
     recentDocsIds = [[NSMutableArray alloc] 
@@ -104,6 +143,7 @@ extern BOOL needToSync;
                 initWithArray:[Document loadFiltersForKey:MY_DOCUMENTS]];
     allDocIds = [[NSMutableArray alloc] initWithArray:[Document loadFiltersForKey:ALL_DOC_IDS]];
     searchResults = [[NSMutableArray alloc] init];
+    
     
     /* Initialized sorting flags and arrays */
     sortedNameFlag = 0;
@@ -180,45 +220,30 @@ extern BOOL needToSync;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    NSString *session = [VaultUser loadSession];
+    /* Sync documents if user just logged into Vault */
+    if (initLogin == TRUE) {
+        initLogin = FALSE;  /* Reset sync global */
+        
+        [self refreshDocuments];
+    }
+    
+    else if (session != nil) {
+        
+        /* Test to see if the session is still valid */
+        [[RKObjectManager sharedManager].client setValue:session forHTTPHeaderField:@"Authorization"];
+        [[RKObjectManager sharedManager] loadObjectsAtResourcePath:@"/metadata/objects" 
+                                                        usingBlock:^(RKObjectLoader *loader) {
+                                                            loader.method = RKRequestMethodGET;
+                                                            loader.delegate = self;
+                                                        }];
+           [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    }
     
     [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    
-    /* Sync documents if user just logged into Vault */
-    if (needToSync == TRUE) {
-        needToSync = FALSE;                                                         /* Reset sync global */
-        
-        /* Show activity indicator in ipad menu bar */
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-        
-        NSString *session = [VaultUser loadSession];                                /* Load new session */
-        
-        /* Set the HTTP header to users session id for the "Authorization" paramter */
-        [[RKObjectManager sharedManager].client setValue:session 
-                                      forHTTPHeaderField:@"Authorization"];
-        
-        /* GET request to grab recent documents */
-        [[RKObjectManager sharedManager] loadObjectsAtResourcePath:RECENTS          
-                                                        usingBlock:^(RKObjectLoader *loader) {
-                                                            loader.method = RKRequestMethodGET;
-                                                            loader.delegate = self;
-                                                        }];
-        /* GET request to user documents */
-        [[RKObjectManager sharedManager] loadObjectsAtResourcePath:MY_DOCUMENTS     
-                                                        usingBlock:^(RKObjectLoader *loader) {
-                                                            loader.method = RKRequestMethodGET;
-                                                            loader.delegate = self;
-                                                        }];
-        /* GET request to grab favorite documents */
-        [[RKObjectManager sharedManager] loadObjectsAtResourcePath:FAVORITES        
-                                                        usingBlock:^(RKObjectLoader *loader) {
-                                                            loader.method = RKRequestMethodGET;
-                                                            loader.delegate = self;
-                                                        }]; 
-    }
-
     
     [super viewDidAppear:animated];
 }
@@ -375,6 +400,7 @@ extern BOOL needToSync;
         if (cell == nil) {
             cell = [[TableView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             cell.lineColor = [UIColor blackColor];
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
         
         if (fileType != nil) {                  /* Ensure there is a filepath */
@@ -474,14 +500,57 @@ extern BOOL needToSync;
     
 }
 
-/* Called when objects are loaded from the server resposne */
+-(void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response {
+    NSLog(@"Response is %@ ", [response bodyAsString]);
+}
+
+/* Called when objects are loaded from the server response */
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {
-    Document *document;
+    Document *document = nil;
     objResponseCount++;
     
+    if ([objectLoader.resourcePath isEqualToString:AUTH_TEST] || objectLoader.isPOST) {
+        objResponseCount = 0;
+        SessionTest *test = [objects objectAtIndex:0];                  /* Load the test object */
+        
+        if ([test.responseStatus isEqualToString:FAILURE] && loginCycle == 0){ /* If the test failed */
+            
+            invalidSession = YES;
+            loginCycle++;
+            [self loginWithKeychain];
+        }
+        
+        else if ([test.responseStatus isEqualToString:FAILURE] 
+                 && invalidSession == YES 
+                 && loginCycle == 1) {
+            
+            loginCycle++;
+            
+            /* Create the alert */
+            UIAlertView *loginAlert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"You username and/or password has changed! Please enter you new credentials" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            
+            [loginAlert show]; 
+        }
+        
+        else if (invalidSession == YES && (loginCycle == 1 || loginCycle == 2)) {
+            loginCycle = 0;
+            invalidSession = NO;
+            VaultUser *user = [objects objectAtIndex:0];
+            
+            if (![user.sessionid isEqualToString:[VaultUser loadSession]])
+                [VaultUser saveSession:user.sessionid];
+            
+            [self refreshDocuments];
+        }
+        
+        else {
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        }
+    }
+    
     /* The returned mapped objects are user documents */
-    if ([objectLoader.resourcePath isEqualToString:MY_DOCUMENTS]) {
+    else if ([objectLoader.resourcePath isEqualToString:MY_DOCUMENTS]) {
        
         for (int i = 0; i < [objects count]; i++) {
             document = [objects objectAtIndex:i];
@@ -493,13 +562,14 @@ extern BOOL needToSync;
                 else
                     [myDocumentDocsIds insertObject:document.documentId atIndex:i];
                 
-                
-                    [documentTypes setObject:document.type forKey:document.documentId];         /* Store document type */
-                    [documentNames setObject:document.name forKey:document.documentId];         /* Store document name */
-                    [fileFormats setObject:document.format forKey:document.documentId];         /* Store the content file name */
-                    [datesModified setObject: [Document                                         /* Store date last modified on document */
-                                    convertStringToDate:document.dateLastModified]             
-                                    forKey:document.documentId];   
+                [changedDocs addObject:document.documentId];
+                [documentTypes setObject:document.type forKey:document.documentId];         /* Store document type */
+                [documentNames setObject:document.name forKey:document.documentId];         /* Store document name */
+                [fileFormats setObject:document.format forKey:document.documentId];         /* Store the content file name */
+                [rawDates setObject:document.dateLastModified forKey:document.documentId];
+                [datesModified setObject: [Document                                         /* Store date last modified on document */
+                                convertStringToDate:document.dateLastModified]             
+                                forKey:document.documentId];   
             }
             
             else {
@@ -508,6 +578,25 @@ extern BOOL needToSync;
                     [myDocumentDocsIds replaceObjectAtIndex:i withObject:document.documentId];  
                 else
                     [myDocumentDocsIds insertObject:document.documentId atIndex:i];
+                
+                if (![document.type isEqualToString:[documentTypes objectForKey:document.documentId]]) 
+                    [documentTypes setObject:document.type forKey:document.documentId];
+                
+                if(![document.name isEqualToString:[documentNames objectForKey:document.documentId]])
+                    [documentNames setObject:document.name forKey:document.documentId];
+               
+                if(![document.format isEqualToString:[fileFormats objectForKey:document.documentId]])
+                    [fileFormats setObject:document.format forKey:document.format];
+                
+                if(![document.dateLastModified isEqualToString:[rawDates objectForKey:document.documentId]]) {
+                    [rawDates setObject:document.dateLastModified forKey:document.documentId];
+                    [changedDocs addObject:document.documentId];
+                    [datesModified setObject: [Document                                         /* Store date last modified on document */
+                                    convertStringToDate:document.dateLastModified]             
+                                    forKey:document.documentId];  
+                }
+                
+                    
                 
             }
         }
@@ -528,21 +617,41 @@ extern BOOL needToSync;
                 else
                     [favoriteDocsIds insertObject:document.documentId atIndex:i];
                 
-                
-                [documentTypes setObject:document.type forKey:document.documentId];         /* Store document type */
-                [documentNames setObject:document.name forKey:document.documentId];         /* Store document name */
-                [fileFormats setObject:document.format forKey:document.documentId];         /* Store the content file name */
-                [datesModified setObject: [Document                                         /* Store date last modified on document */
-                                    convertStringToDate:document.dateLastModified]             
-                                    forKey:document.documentId];   
+            [changedDocs addObject:document.documentId];
+            [documentTypes setObject:document.type forKey:document.documentId];         /* Store document type */
+            [documentNames setObject:document.name forKey:document.documentId];         /* Store document name */
+            [fileFormats setObject:document.format forKey:document.documentId];         /* Store the content file name */
+            [rawDates setObject:document.dateLastModified forKey:document.documentId];
+            [datesModified setObject: [Document                                         /* Store date last modified on document */
+                                convertStringToDate:document.dateLastModified]             
+                                forKey:document.documentId];   
             }
             
             else {
+                
                 if ([favoriteDocsIds count] > i)
                     [favoriteDocsIds replaceObjectAtIndex:i withObject:document.documentId];
                 
                 else
                     [favoriteDocsIds insertObject:document.documentId atIndex:i];
+                
+                if (![document.type isEqualToString:[documentTypes objectForKey:document.documentId]]) 
+                    [documentTypes setObject:document.type forKey:document.documentId];
+                
+                if(![document.name isEqualToString:[documentNames objectForKey:document.documentId]])
+                    [documentNames setObject:document.name forKey:document.documentId];
+                
+                if(![document.format isEqualToString:[fileFormats objectForKey:document.documentId]])
+                    [fileFormats setObject:document.format forKey:document.format];
+                
+                if(![document.dateLastModified isEqualToString:[rawDates objectForKey:document.documentId]]) {
+                    [rawDates setObject:document.dateLastModified forKey:document.documentId];
+                    [changedDocs addObject:document.documentId];
+                    [datesModified setObject: [Document                                         /* Store date last modified on document */
+                                               convertStringToDate:document.dateLastModified]             
+                                      forKey:document.documentId];  
+                }
+
             }
                 
         }
@@ -564,9 +673,11 @@ extern BOOL needToSync;
                 else
                     [recentDocsIds insertObject:document.documentId atIndex:i];
                 
+                [changedDocs addObject:document.documentId];
                 [documentTypes setObject:document.type forKey:document.documentId];         /* Store document type */
                 [documentNames setObject:document.name forKey:document.documentId];         /* Store document name */
                 [fileFormats setObject:document.format forKey:document.documentId];         /* Store the content file name */
+                [rawDates setObject:document.dateLastModified forKey:document.documentId];
                 [datesModified setObject: [Document                                         /* Store date last modified on document */
                             convertStringToDate:document.dateLastModified]             
                             forKey:document.documentId]; 
@@ -579,6 +690,24 @@ extern BOOL needToSync;
                 else
                     [recentDocsIds insertObject:document.documentId atIndex:i];
                 
+                if (![document.type isEqualToString:[documentTypes objectForKey:document.documentId]]) 
+                    [documentTypes setObject:document.type forKey:document.documentId];
+                
+                if(![document.name isEqualToString:[documentNames objectForKey:document.documentId]])
+                    [documentNames setObject:document.name forKey:document.documentId];
+                
+                if(![document.format isEqualToString:[fileFormats objectForKey:document.documentId]])
+                    [fileFormats setObject:document.format forKey:document.format];
+                
+                if(![document.dateLastModified isEqualToString:[rawDates objectForKey:document.documentId]]) {
+                    [rawDates setObject:document.dateLastModified forKey:document.documentId];
+                    [changedDocs addObject:document.documentId];
+                    [datesModified setObject: [Document                                         /* Store date last modified on document */
+                                               convertStringToDate:document.dateLastModified]             
+                                      forKey:document.documentId];  
+                }
+
+                
             }
         }
         
@@ -586,11 +715,10 @@ extern BOOL needToSync;
     }
     
     /* Every object has been retrieved */
-    if (objResponseCount == LAST_DOC_OBJ_REQ) {
+    if (objResponseCount == LAST_DOC_OBJ_REQ && ![objectLoader.resourcePath isEqualToString:AUTH_TEST]) {
         objResponseCount = 0;
         
         [allDocIds removeAllObjects];
-        
         for (NSString *dId in documentNames) 
             [allDocIds addObject:dId];
         
@@ -598,6 +726,7 @@ extern BOOL needToSync;
         [Document saveDocInfo:documentTypes forKey:DOC_TYPES];
         [Document saveDocInfo:documentNames forKey:DOC_NAMES];
         [Document saveDocInfo:fileFormats forKey:FILE_FORMAT];
+        [Document saveDocInfo:rawDates forKey:RAW_DATES];
         [Document saveDocInfo:datesModified forKey:DATE_MOD];
         
         [Document saveFilters:allDocIds forKey:ALL_DOC_IDS];
@@ -630,18 +759,19 @@ extern BOOL needToSync;
     
     /* Convert current document Id to a string to use for retrieving the name of the file */
     NSString *pdfName = [documentNames                                                  /* Retrieve documents file name */
-            objectForKey:[allDocIds objectAtIndex:currentDoc]];   
+            objectForKey:[changedDocs objectAtIndex:currentDoc]];   
     NSString *docPath = [Document savePDF:pdfData withFileName:pdfName];                /* Document path */
     
-    [documentPaths setObject:docPath forKey:[allDocIds objectAtIndex:currentDoc]];                               /* Save the file path */
+    [documentPaths setObject:docPath forKey:[changedDocs objectAtIndex:currentDoc]];                               /* Save the file path */
     
     currentDoc++;                                                                     /* Increment document count */
-    if (currentDoc < numOfDocuments) {
+    if (currentDoc < [changedDocs count]) {
         [self sendPdfRequest];
     }
     
     else {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        [changedDocs removeAllObjects];
         [Document saveDocInfo:documentPaths forKey:DOC_PATHS];                          /* Save paths to NSUserDefaults */
         [self.documents reloadData];
     }
@@ -741,24 +871,25 @@ extern BOOL needToSync;
     [self.documents reloadData];
 }
 
-
 - (void) sendPdfRequest {
     
-    NSString *fileResourcePath = BASE_URL;                /* Resource path for rest call to document */
-    
-    NSMutableURLRequest *pdfRequest = [[NSMutableURLRequest alloc] init];
-    NSURLConnection *pdfConnect = [NSURLConnection alloc];
-    
-    /* Set up the resource path to grab the pdf from */
-    fileResourcePath = [fileResourcePath stringByAppendingString:DOCUMENT_INFO];
-    fileResourcePath = [fileResourcePath stringByAppendingString:[allDocIds objectAtIndex:currentDoc]];
-    fileResourcePath = [fileResourcePath stringByAppendingString:RENDITIONS];
+    if ([changedDocs count] != 0) {
+        NSString *fileResourcePath = BASE_URL;                /* Resource path for rest call to document */
+        
+        NSMutableURLRequest *pdfRequest = [[NSMutableURLRequest alloc] init];
+        NSURLConnection *pdfConnect = [NSURLConnection alloc];
+        
+        /* Set up the resource path to grab the pdf from */
+        fileResourcePath = [fileResourcePath stringByAppendingString:DOCUMENT_INFO];
+        fileResourcePath = [fileResourcePath stringByAppendingString:[changedDocs objectAtIndex:currentDoc]];
+        fileResourcePath = [fileResourcePath stringByAppendingString:RENDITIONS];
 
-    /* Set up a request to be sent for the binary PDF file */
-    pdfRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:fileResourcePath]];
-    [pdfRequest setValue:[VaultUser loadSession] forHTTPHeaderField:@"Authorization"];
-    [pdfRequest setHTTPMethod:@"GET"];
-    pdfConnect = [NSURLConnection connectionWithRequest:pdfRequest delegate:self];  /* Send request */
+        /* Set up a request to be sent for the binary PDF file */
+        pdfRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:fileResourcePath]];
+        [pdfRequest setValue:[VaultUser loadSession] forHTTPHeaderField:@"Authorization"];
+        [pdfRequest setHTTPMethod:@"GET"];
+        pdfConnect = [NSURLConnection connectionWithRequest:pdfRequest delegate:self];  /* Send request */
+    }
     
 }
 
@@ -1107,6 +1238,49 @@ extern BOOL needToSync;
         [self.documents reloadData];
         sortedTypeFlag = 0;
     }
+}
+
+- (void)loginWithKeychain {
+    /* Created an instance of a user to send user credentials to vault */
+    AuthUserDetail *userLogin = [[AuthUserDetail alloc] init];
+  
+    userLogin.username = [keychain objectForKey:(__bridge id)kSecAttrAccount];
+    userLogin.password = [keychain objectForKey:(__bridge id)kSecValueData];
+    NSLog(@"uname is %@", userLogin.username);
+    /* Send the POST request to vault */
+    [authManager postObject:userLogin delegate:self];
+    
+}
+
+- (void)refreshDocuments {
+    /* Show activity indicator in ipad menu bar */
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    NSString *session = [VaultUser loadSession];                                /* Load new session */
+    
+    /* Set the HTTP header to users session id for the "Authorization" paramter */
+    [[RKObjectManager sharedManager].client setValue:session 
+                                  forHTTPHeaderField:@"Authorization"];
+    
+    /* GET request to grab recent documents */
+    [[RKObjectManager sharedManager] loadObjectsAtResourcePath:RECENTS          
+                                                    usingBlock:^(RKObjectLoader *loader) {
+                                                        loader.method = RKRequestMethodGET;
+                                                        loader.delegate = self;
+                                                    }];
+    /* GET request to user documents */
+    [[RKObjectManager sharedManager] loadObjectsAtResourcePath:MY_DOCUMENTS     
+                                                    usingBlock:^(RKObjectLoader *loader) {
+                                                        loader.method = RKRequestMethodGET;
+                                                        loader.delegate = self;
+                                                    }];
+    /* GET request to grab favorite documents */
+    [[RKObjectManager sharedManager] loadObjectsAtResourcePath:FAVORITES        
+                                                    usingBlock:^(RKObjectLoader *loader) {
+                                                        loader.method = RKRequestMethodGET;
+                                                        loader.delegate = self;
+                                                    }]; 
+
 }
 
 @end

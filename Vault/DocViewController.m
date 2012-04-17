@@ -13,8 +13,9 @@ static NSString *pdfNameToView = nil;
 @implementation DocViewController
 
 @synthesize pdfView;
-@synthesize doneToolbar;
+@synthesize docToolbar;
 @synthesize doneButton;
+@synthesize titleLabel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,6 +52,7 @@ static NSString *pdfNameToView = nil;
     NSURL *pdfUrl = [NSURL fileURLWithPath:pdfPath];
     NSURLRequest *fileRequest = [NSURLRequest requestWithURL:pdfUrl];
     [pdfView loadRequest:fileRequest];
+    titleLabel.text = pdfNameToView;
     
 }
 

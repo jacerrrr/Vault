@@ -9,7 +9,7 @@
 #import "LoginViewController.h"
 
 /* Global variable that determines if the user needs to resync documents with Vault */
-BOOL needToSync = FALSE;
+BOOL initLogin = FALSE;
 
 @implementation LoginViewController
 
@@ -172,7 +172,7 @@ BOOL needToSync = FALSE;
     else {
         [VaultUser saveSession:user.sessionid];             /* Save sessionId */
       
-        needToSync = TRUE;                                  /* Set BOOL to show user has just logged in */
+        initLogin = TRUE;                                  /* Set BOOL to show user has just logged in */
         
         /* All loading is finished, so hide the network activity indicator */
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;

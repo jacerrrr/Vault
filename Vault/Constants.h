@@ -56,6 +56,7 @@ static NSString* const DOC_NAMES = @"doc_names";
 static NSString* const FILE_FORMAT = @"file_formats";
 static NSString* const DOC_PATHS = @"doc_paths";
 static NSString* const DATE_MOD = @"date_mod";
+static NSString* const RAW_DATES = @"raw_dates";
 static NSString* const ALL_DOC_IDS = @"all document ids";
 
 /* NSString constants for determining request success or failure */
@@ -78,6 +79,7 @@ static NSString* const BASE_URL = @"https://vv1.veevavault.com/api/v1.0";
 static NSString* const LOGIN_URL = @"https://login.veevavault.com";
 
 /* NSString constants for paths to send request to server */
+static NSString * const AUTH_TEST = @"/metadata/objects";
 static NSString* const DOCUMENT_INFO = @"/objects/documents/"; 
 static NSString* const RENDITIONS = @"/renditions/viewable_rendition__v";
 static NSString* const FAVORITES = @"/objects/documents?named_filter=Favorites";

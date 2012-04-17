@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "Constants.h"
 
-@interface DocumentsView : UIView
+@interface DocumentsView : UIView <UISearchBarDelegate>
 
 @end

@@ -18,17 +18,17 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Vault/AppDelegate.m"
-         timestampString = "356047339.076313"
+         filePath = "Vault/FirstViewController.m"
+         timestampString = "356233497.2651"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "188"
-         endingLineNumber = "188"
-         landmarkName = "-objectLoader:didLoadObjects:"
+         startingLineNumber = "759"
+         endingLineNumber = "759"
+         landmarkName = "-connectionDidFinishLoading:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -36,26 +36,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Vault/AppDelegate.m"
-         timestampString = "355962181.158555"
+         filePath = "Vault/FirstViewController.m"
+         timestampString = "356233497.2651"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "114"
-         endingLineNumber = "114"
-         landmarkName = "-applicationDidBecomeActive:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Vault/AppDelegate.m"
-         timestampString = "355962514.920511"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "157"
-         endingLineNumber = "157"
+         startingLineNumber = "720"
+         endingLineNumber = "720"
          landmarkName = "-objectLoader:didLoadObjects:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -65,12 +51,54 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Vault/FirstViewController.m"
-         timestampString = "356049251.007925"
+         timestampString = "356225020.741095"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "187"
-         endingLineNumber = "187"
-         landmarkName = "-viewDidAppear:"
+         startingLineNumber = "84"
+         endingLineNumber = "84"
+         landmarkName = "-viewDidLoad"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Vault/FirstViewController.m"
+         timestampString = "356233497.2651"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "509"
+         endingLineNumber = "509"
+         landmarkName = "-objectLoader:didLoadObjects:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Vault/FirstViewController.m"
+         timestampString = "356225423.453238"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "222"
+         endingLineNumber = "222"
+         landmarkName = "-viewWillAppear:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Vault/FirstViewController.m"
+         timestampString = "356233497.2651"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1245"
+         endingLineNumber = "1245"
+         landmarkName = "-loginWithKeychain"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

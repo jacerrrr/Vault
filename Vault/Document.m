@@ -15,6 +15,15 @@
 @synthesize name;
 @synthesize format;
 @synthesize dateLastModified;
+@synthesize title;
+@synthesize docNumber;
+@synthesize size;
+@synthesize majorVNum;
+@synthesize minorVNum;
+@synthesize lifecycle;
+@synthesize status;
+@synthesize owner;
+@synthesize lastModifier;
 
 /* Function that takes binary PDF data and a file name as parameters, and determines
  * if the PDF data from the parameter is the same as the PDF data already stored.

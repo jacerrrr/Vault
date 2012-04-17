@@ -94,7 +94,7 @@
                                 <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Date">
+                                <state key="normal" title="Last Modified">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -143,7 +143,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </webView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Fv8-hB-JO9">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="blackTranslucent" id="Fv8-hB-JO9">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
@@ -158,15 +158,22 @@
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                     </barButtonItem>
                                 </items>
-                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                             </toolbar>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" id="ECX-PD-mIn">
+                                <rect key="frame" x="75" y="9" width="588" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="docToolbar" destination="Fv8-hB-JO9" id="7hF-BR-ub4"/>
                         <outlet property="doneButton" destination="9Ae-PG-4LO" id="PXs-GA-aeK"/>
-                        <outlet property="doneToolbar" destination="Fv8-hB-JO9" id="RBz-sr-ARL"/>
                         <outlet property="pdfView" destination="AVl-ca-lde" id="1Xb-hs-Igm"/>
+                        <outlet property="titleLabel" destination="ECX-PD-mIn" id="47g-Xg-UMM"/>
                     </connections>
                 </viewController>
             </objects>
@@ -390,9 +397,10 @@
             <relationships>
                 <relationship kind="action" name="finishViewing:"/>
                 <relationship kind="action" name="screenTouched:"/>
+                <relationship kind="outlet" name="docToolbar" candidateClass="UIToolbar"/>
                 <relationship kind="outlet" name="doneButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="doneToolbar" candidateClass="UIToolbar"/>
                 <relationship kind="outlet" name="pdfView" candidateClass="DocWebView"/>
+                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
             </relationships>
         </class>
         <class className="DocWebView" superclassName="UIWebView">

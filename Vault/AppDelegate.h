@@ -15,14 +15,8 @@
 #import "LoginViewController.h"
 #import "Document.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate, RKObjectLoaderDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (nonatomic, retain) KeychainItemWrapper *keychain;
-@property (nonatomic) BOOL invalidSession;
-@property (nonatomic, retain) RKObjectManager *authManager;
-@property (nonatomic) int loginCycle;
-
-- (void)loginWithKeychain;
 
 @end

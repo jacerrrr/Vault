@@ -27,6 +27,9 @@
 		70BE2B6D15097C4500CCAEC1 /* LogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BE2B6C15097C4500CCAEC1 /* LogoutViewController.m */; };
 		70BE2B6F15097C6D00CCAEC1 /* key.png in Resources */ = {isa = PBXBuildFile; fileRef = 70BE2B6E15097C6D00CCAEC1 /* key.png */; };
 		70BE2B75150988D700CCAEC1 /* DocWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BE2B74150988D700CCAEC1 /* DocWebView.m */; };
+		70BEACEF153C0C3000EED0C6 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70BEACEE153C0C3000EED0C6 /* ImageIO.framework */; };
+		70BEACF1153C0C4500EED0C6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70BEACF0153C0C4500EED0C6 /* QuartzCore.framework */; };
+		70BEACF3153C0C5800EED0C6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70BEACF2153C0C5800EED0C6 /* MessageUI.framework */; };
 		70E1B42A14BCB6FE00183C3A /* vault.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E1B42914BCB6FE00183C3A /* vault.png */; };
 		70E4A20D14F4F0A400A37C9A /* doc.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E4A20914F4F0A400A37C9A /* doc.png */; };
 		70E4A20E14F4F0A400A37C9A /* pdf.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E4A20A14F4F0A400A37C9A /* pdf.png */; };
@@ -132,6 +135,9 @@
 		70BE2B6E15097C6D00CCAEC1 /* key.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = key.png; sourceTree = "<group>"; };
 		70BE2B73150988D700CCAEC1 /* DocWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocWebView.h; sourceTree = "<group>"; };
 		70BE2B74150988D700CCAEC1 /* DocWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocWebView.m; sourceTree = "<group>"; };
+		70BEACEE153C0C3000EED0C6 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		70BEACF0153C0C4500EED0C6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		70BEACF2153C0C5800EED0C6 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		70E1B42914BCB6FE00183C3A /* vault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vault.png; sourceTree = "<group>"; };
 		70E4A20914F4F0A400A37C9A /* doc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = doc.png; sourceTree = "<group>"; };
 		70E4A20A14F4F0A400A37C9A /* pdf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pdf.png; sourceTree = "<group>"; };
@@ -175,6 +181,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70BEACF3153C0C5800EED0C6 /* MessageUI.framework in Frameworks */,
+				70BEACF1153C0C4500EED0C6 /* QuartzCore.framework in Frameworks */,
+				70BEACEF153C0C3000EED0C6 /* ImageIO.framework in Frameworks */,
 				708D003414D1F80500C91AC6 /* libRestKit.a in Frameworks */,
 				704AD61B14BF8B1D0088E76B /* CFNetwork.framework in Frameworks */,
 				704AD61C14BF8B1D0088E76B /* CoreData.framework in Frameworks */,
@@ -240,17 +249,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		70BEAD19153E085100EED0C6 /* PDFViewer */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = PDFViewer;
+			sourceTree = "<group>";
+		};
 		70F164A414A3D8D400532A35 = {
 			isa = PBXGroup;
 			children = (
 				708D000614D1F2CD00C91AC6 /* RestKit.xcodeproj */,
-				704AD61514BF8B1D0088E76B /* CFNetwork.framework */,
-				704AD61614BF8B1D0088E76B /* CoreData.framework */,
-				704AD61714BF8B1D0088E76B /* libxml2.dylib */,
-				704AD61814BF8B1D0088E76B /* MobileCoreServices.framework */,
-				704AD61914BF8B1D0088E76B /* Security.framework */,
-				704AD61A14BF8B1D0088E76B /* SystemConfiguration.framework */,
 				70F164B914A3D8D400532A35 /* Vault */,
+				70F164FD14A3E5F700532A35 /* Graphics */,
 				70F164E214A3D8D400532A35 /* VaultTests */,
 				70F164B214A3D8D400532A35 /* Frameworks */,
 				70F164B014A3D8D400532A35 /* Products */,
@@ -269,10 +280,19 @@
 		70F164B214A3D8D400532A35 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				70BEACF2153C0C5800EED0C6 /* MessageUI.framework */,
+				70BEACF0153C0C4500EED0C6 /* QuartzCore.framework */,
+				70BEACEE153C0C3000EED0C6 /* ImageIO.framework */,
+				704AD61714BF8B1D0088E76B /* libxml2.dylib */,
 				70F164B314A3D8D400532A35 /* UIKit.framework */,
-				70F164B514A3D8D400532A35 /* Foundation.framework */,
+				704AD61514BF8B1D0088E76B /* CFNetwork.framework */,
+				704AD61614BF8B1D0088E76B /* CoreData.framework */,
 				70F164B714A3D8D400532A35 /* CoreGraphics.framework */,
 				70F164DC14A3D8D400532A35 /* SenTestingKit.framework */,
+				70F164B514A3D8D400532A35 /* Foundation.framework */,
+				704AD61814BF8B1D0088E76B /* MobileCoreServices.framework */,
+				704AD61914BF8B1D0088E76B /* Security.framework */,
+				704AD61A14BF8B1D0088E76B /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -314,7 +334,6 @@
 				70F164BC14A3D8D400532A35 /* InfoPlist.strings */,
 				70F164BF14A3D8D400532A35 /* main.m */,
 				70F164C114A3D8D400532A35 /* Vault-Prefix.pch */,
-				70F164FD14A3E5F700532A35 /* Images */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -338,9 +357,10 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		70F164FD14A3E5F700532A35 /* Images */ = {
+		70F164FD14A3E5F700532A35 /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				70BEAD19153E085100EED0C6 /* PDFViewer */,
 				70BE2B6E15097C6D00CCAEC1 /* key.png */,
 				70E4A20914F4F0A400A37C9A /* doc.png */,
 				7065003014FEF9F700A3A5FB /* sortUp.png */,
@@ -354,7 +374,8 @@
 				70F1653414A4409200532A35 /* mytasks.png */,
 				70F1652914A43CDF00532A35 /* folder.png */,
 			);
-			name = Images;
+			name = Graphics;
+			path = Vault;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
