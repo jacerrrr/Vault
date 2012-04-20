@@ -237,7 +237,6 @@ extern BOOL initLogin;
                                                             loader.method = RKRequestMethodGET;
                                                             loader.delegate = self;
                                                         }];
-           [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     }
     
     [super viewWillAppear:animated];
@@ -477,16 +476,26 @@ extern BOOL initLogin;
         || ([filterIdentifier isEqualToString:RECENTS] && indexPath.row <= [recentDocsIds count])
         || ([filterIdentifier isEqualToString:DOCUMENT_INFO] && indexPath.row <= [allDocIds count])) {
         
-        NSString *docNameText = nil;
         TableView *cell = ((TableView *)[tableView cellForRowAtIndexPath:indexPath]);
+        NSString *docNameText = cell.docName.text;
+        NSString *pdfFilePath = [Document loadPDF:docNameText];
         
-        docNameText = cell.docName.text;
-        [DocViewController setFileNameToView:docNameText];
+      
+        ReaderDocument *doc = [ReaderDocument withDocumentFilePath:pdfFilePath password:nil];
         
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-        UIViewController *pdfViewer = [storyboard instantiateViewControllerWithIdentifier:@"DocVC"];
-        pdfViewer.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self presentModalViewController:pdfViewer animated:YES];
+        if (doc != nil) {
+           
+            ReaderViewController *readerViewController = [[ReaderViewController alloc] initWithReaderDocument:doc];
+            
+            readerViewController.delegate = self; // Set the ReaderViewController delegate to self
+            
+            readerViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            readerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            
+            [self presentModalViewController:readerViewController animated:YES];
+        }
+        
+        
     }
     
 }
@@ -532,7 +541,7 @@ extern BOOL initLogin;
             
             [loginAlert show]; 
         }
-        
+    
         else if (invalidSession == YES && (loginCycle == 1 || loginCycle == 2)) {
             loginCycle = 0;
             invalidSession = NO;
@@ -890,6 +899,9 @@ extern BOOL initLogin;
         [pdfRequest setHTTPMethod:@"GET"];
         pdfConnect = [NSURLConnection connectionWithRequest:pdfRequest delegate:self];  /* Send request */
     }
+    
+    else 
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
 }
 
@@ -1282,5 +1294,19 @@ extern BOOL initLogin;
                                                     }]; 
 
 }
+
+
+#pragma mark ReaderViewControllerDelegate methods
+
+- (void)dismissReaderViewController:(ReaderViewController *)viewController
+{
+#ifdef DEBUGX
+	NSLog(@"%s", __FUNCTION__);
+#endif
+    
+	[self dismissModalViewControllerAnimated:YES];
+
+}
+
 
 @end

@@ -13,13 +13,14 @@
 #import "VaultUser.h"
 #import "Document.h"
 #import "TableView.h"
+#import "ReaderViewController.h"
 #import "SessionTest.h"
-#import "DocViewController.h"
 #import "DocumentsView.h"
 #import "KeychainItemWrapper.h"
 #import "AuthUserDetail.h"
 
-@interface FirstViewController : UIViewController <RKObjectLoaderDelegate, NSURLConnectionDataDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
+@interface FirstViewController : UIViewController <RKObjectLoaderDelegate, NSURLConnectionDataDelegate, UITableViewDelegate, 
+                                                   UITableViewDataSource, UISearchBarDelegate, ReaderViewControllerDelegate>
 {
     IBOutlet UITableView* documents;
 }
