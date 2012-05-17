@@ -175,4 +175,15 @@
         return [NSString stringWithFormat:@"%d years ago", elapsed];
 }
 
+-(id) copyWithZone: (NSZone *) zone
+{
+    Document *documentCopy = [[Document allocWithZone: zone] init];
+    documentCopy.documentId = self.documentId;
+    documentCopy.name = self.name;
+    documentCopy.type = self.type;
+    documentCopy.format = self.format;
+    
+    return documentCopy;
+}
+
 @end

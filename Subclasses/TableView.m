@@ -17,6 +17,7 @@
 @synthesize docName;
 @synthesize docType;
 @synthesize docLastModified;
+@synthesize downloadButton;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -69,7 +70,66 @@
             docLastModified.backgroundColor = [UIColor clearColor];
             [self addSubview:docLastModified];
         }
+    else if([reuseIdentifier isEqualToString:@"DownloadCell"]){
+        
+        docTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(15, 7, 32, 32)];
+        docTypeImage.backgroundColor = [UIColor clearColor];
+        [self addSubview:docTypeImage];
+        
+        docName = [[UILabel alloc] initWithFrame:CGRectMake(DOCTYPEIMAGE_WIDTH, 0, DOCNAME_WIDTH, CELLHEIGHT)];
+        docName.textAlignment = UITextAlignmentCenter;
+        docName.backgroundColor = [UIColor clearColor];
+        [self addSubview:docName];
+        
+        docType = [[UILabel alloc] initWithFrame:CGRectMake(DOCTYPEIMAGE_WIDTH+DOCNAME_WIDTH, 0, DOCTYPE_WIDTH, CELLHEIGHT)];
+        docType.textAlignment = UITextAlignmentCenter;
+        docType.backgroundColor = [UIColor clearColor];
+        [self addSubview:docType];
+        
+        downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        downloadButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTH+DOCNAME_WIDTH+DOCTYPE_WIDTH+30, 7, 130, 30);
+        [downloadButton setTitle:@"Download" forState:UIControlStateNormal];
+        
+        [self addSubview:downloadButton];
+        
     }
+    else if([reuseIdentifier isEqualToString:@"DownloadLandscapeCell"]){
+        
+        docTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(36, 7, 32, 32)];
+        docTypeImage.backgroundColor = [UIColor clearColor];
+        [self addSubview:docTypeImage];
+        
+        docName = [[UILabel alloc] initWithFrame:CGRectMake(DOCTYPEIMAGE_WIDTHLANDSCAPE, 0, DOCNAME_WIDTHLANDSCAPE, CELLHEIGHT)];
+        docName.textAlignment = UITextAlignmentCenter;
+        docName.backgroundColor = [UIColor clearColor]; 
+        [self addSubview:docName];
+        
+        docType = [[UILabel alloc] initWithFrame:CGRectMake(DOCTYPEIMAGE_WIDTHLANDSCAPE+DOCNAME_WIDTHLANDSCAPE, 0, DOCTYPE_WIDTHLANDSCAPE, CELLHEIGHT)];
+        docType.textAlignment = UITextAlignmentCenter;
+        docType.backgroundColor = [UIColor clearColor];
+        [self addSubview:docType];
+        
+        downloadButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        downloadButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTHLANDSCAPE+DOCNAME_WIDTHLANDSCAPE+DOCTYPE_WIDTHLANDSCAPE+50, 7, 130, 30);
+        [downloadButton setTitle:@"Download" forState:UIControlStateNormal];
+        [downloadButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        downloadButton.layer.backgroundColor = [[UIColor colorWithRed:102/256.0 green:204/256.0 blue:255/256.0 alpha:1.0] CGColor];
+        downloadButton.titleLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:16];
+        /*
+         downloadButton.titleLabel.layer.shadowColor = [downloadButton.currentTitleColor CGColor];
+         downloadButton.titleLabel.layer.shadowRadius = 4.0f;
+         downloadButton.titleLabel.layer.shadowOpacity = .9;
+         downloadButton.titleLabel.layer.shadowOffset = CGSizeZero;
+         */
+        downloadButton.layer.cornerRadius = 8.0f;
+        downloadButton.layer.borderWidth = 1.0f;
+        downloadButton.layer.masksToBounds = YES;
+        
+        
+        [self addSubview:downloadButton];
+        
+    }
+}
     return self;
 }
 

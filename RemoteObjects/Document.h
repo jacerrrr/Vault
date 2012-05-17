@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Document : NSObject
+@interface Document : NSObject <NSCopying>
 
 @property (nonatomic, retain) NSString *documentId;
 @property (nonatomic, retain) NSString *type;
@@ -42,5 +42,7 @@
 + (NSDate *)convertStringToDate:(NSString *)dateString;
 
 + (NSString *)timeSinceModified:(NSDate *)docDate;
+
+-(id) copyWithZone: (NSZone *) zone;
 
 @end

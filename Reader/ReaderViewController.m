@@ -992,6 +992,11 @@
          initWithRootViewController:propertiesView];
         UIPopoverController *propertiesPop = [[UIPopoverController alloc] initWithContentViewController:navController];
         propertiesPop.delegate = self;
+        /* This is arbitrarily defined to 10,000 to account for files with a lot of supporting documents
+         * or old versions. We couldn't find a way to just make it scale to what we wanted so we just
+         * set it to a large number that we hoped wouldn't be reached.
+         */
+        propertiesPop.popoverContentSize = CGSizeMake(400, 10000);
         propertiesInteraction = propertiesPop;
     }
     

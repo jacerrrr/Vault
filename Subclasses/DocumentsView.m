@@ -10,15 +10,6 @@
 
 @implementation DocumentsView
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-     
-    }
-    return self;
-}
-
 /* Function that draws lines to the main view of FirstViewController */
 
 - (void)drawRect:(CGRect)rect {

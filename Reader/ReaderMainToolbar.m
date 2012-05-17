@@ -130,7 +130,7 @@
         [propButton setImage:[UIImage imageNamed:@"Reader-Gear.png"] forState:UIControlStateNormal];
         [propButton setBackgroundImage:buttonH forState:UIControlStateHighlighted];
         [propButton setBackgroundImage:buttonN forState:UIControlStateNormal];
-        propButton.autoresizingMask = UIViewAutoresizingNone;
+        propButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         
         [self addSubview:propButton];
         titleX += (PROP_BUTTON_WIDTH + BUTTON_SPACE); titleWidth -= (PROP_BUTTON_WIDTH + BUTTON_SPACE);

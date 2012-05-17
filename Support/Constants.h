@@ -12,9 +12,6 @@
 /* Set of all macros used */
 
 #define TEXT_FIELD_HEIGHT   31          /* Standard text field height */
-#define CONNECT_ALERT_TAG   1           /* Tag/identifier for connection alert */
-#define LOGIN_ALERT_TAG     2           /* Tag/identifier for login alert */
-#define CANCEL              0           /* Cancel button index of any alert view */
 
 #define LAST_DOC_OBJ_REQ    3           /* Number of request sent for initial user documents */
 
@@ -58,6 +55,7 @@ static NSString* const DOC_PATHS = @"doc_paths";
 static NSString* const DATE_MOD = @"date_mod";
 static NSString* const RAW_DATES = @"raw_dates";
 static NSString* const ALL_DOC_IDS = @"all document ids";
+static NSString* const DOC_PROP = @"documentProperties";
 
 /* NSString constants for determining request success or failure */
 static NSString* const FAILURE = @"FAILURE";
@@ -85,6 +83,7 @@ static NSString* const RENDITIONS = @"/renditions/viewable_rendition__v";
 static NSString* const FAVORITES = @"/objects/documents?named_filter=Favorites";
 static NSString* const RECENTS = @"/objects/documents?named_filter=Recent Documents";
 static NSString* const MY_DOCUMENTS = @"/objects/documents?named_filter=My Documents";
+static NSString *const USERS = @"/objects/users/";
 static NSString* const LOCAL_SEARCH = @"Local Search";
 
 /* NSString constants for file formats */

@@ -23,6 +23,7 @@
 @property(strong, nonatomic) KeychainItemWrapper *keychain;         
 @property (nonatomic, retain) RKObjectManager * authManager;        /* Object Manager for authentication only */
 
+- (IBAction)hideKeyboard:(id)sender;
 - (IBAction)clearFields:(id)sender;
 - (IBAction)login:(id)sender;
 
