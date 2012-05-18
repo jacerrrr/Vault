@@ -25,13 +25,19 @@ BOOL initLogin = FALSE;
 
 /* Release any cached data, images, etc that aren't in use. */
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning 
+{
     [super didReceiveMemoryWarning];
 }
 
 -(void)dealloc
 {
-    
+    self.emailField = nil;
+    self.passwordField = nil;
+    self.loginBtn = nil;
+    self.clearBtn = nil;
+    self.keychain = nil;
+    self.authManager = nil;
 }
 
 
@@ -70,11 +76,6 @@ BOOL initLogin = FALSE;
     [authManager.mappingProvider setObjectMapping:userMapping forResourcePathPattern:@"/auth/api"];
     
     [super viewDidLoad];
-}
-
-/* Release any retained subviews of the main view. Also set any initialized attributes to nil */
-- (void)viewDidUnload {
-    [super viewDidUnload];
 }
 
 /* Function that determines which orientations will be supported.  Return YES for all orientations */

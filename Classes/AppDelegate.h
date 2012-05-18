@@ -14,6 +14,7 @@
 #import "SessionTest.h"
 #import "LoginViewController.h"
 #import "Document.h"
+#import "DocumentUser.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

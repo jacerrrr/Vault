@@ -10,4 +10,17 @@
 
 @implementation DocumentsData
 
+@synthesize createdUsers;
+@synthesize lastModUsers;
+
+- (id)init {
+    
+    if (self = [super init]) {
+        self.createdUsers = [NSMutableDictionary dictionary];
+        self.lastModUsers = [NSMutableDictionary dictionary];
+    }
+    
+    return self;
+}
+
 @end

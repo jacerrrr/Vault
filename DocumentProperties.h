@@ -7,10 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Constants.h"
+#import "Document.h"
 
 @interface DocumentProperties : NSObject
 
 @property (nonatomic, strong) NSMutableDictionary *genProperties;
+@property (nonatomic, strong) NSMutableDictionary *productInfo;
 @property (nonatomic, strong) NSMutableDictionary *sharedSettings;
 @property (nonatomic, strong) NSMutableDictionary *supportDocs;
 @property (nonatomic, strong) NSMutableDictionary *vHistory;

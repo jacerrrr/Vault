@@ -73,6 +73,7 @@
 }
 
 @property (nonatomic, assign, readwrite) id <ReaderViewControllerDelegate> delegate;
+@property (nonatomic, retain) NSArray *recievedProperties;
 
 - (id)initWithReaderDocument:(ReaderDocument *)object;
 

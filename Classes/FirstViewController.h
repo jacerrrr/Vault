@@ -12,8 +12,10 @@
 #import <RestKit/RestKit.h>
 #import "VaultUser.h"
 #import "DocumentProperties.h"
+#import "DocumentsData.h"
 #import "Document.h"
 #import "TableView.h"
+#import "DocumentUser.h"
 #import "ReaderViewController.h"
 #import "SessionTest.h"
 #import "DocumentsView.h"
@@ -30,6 +32,7 @@
 @property (nonatomic, strong) IBOutlet UISegmentedControl *filters; /* Text field where user inputs username */
 @property (nonatomic, strong) IBOutlet UISearchBar *localSearch;
 @property (nonatomic, strong) IBOutlet DocumentsView *mainView;
+@property (nonatomic, strong) DocumentsData *docData;
 
 /* Buttons in the view */
 @property (nonatomic, strong) IBOutlet UIButton *nameButton;        /* Name button for sorting by name */    

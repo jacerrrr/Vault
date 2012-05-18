@@ -10,4 +10,7 @@
 
 @interface DocumentsData : NSObject
 
+@property (nonatomic, strong) NSMutableDictionary *createdUsers;
+@property (nonatomic, strong) NSMutableDictionary *lastModUsers;
+
 @end

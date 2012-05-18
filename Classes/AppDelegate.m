@@ -44,6 +44,11 @@
     [documentMapping mapKeyPath:@"version_created_by__v" toAttribute:@"owner"];
     [documentMapping mapKeyPath:@"last_modified_by__v" toAttribute:@"lastModifier"];
     
+    RKObjectMapping *docUserMapping = [RKObjectMapping mappingForClass:[DocumentUser class]];
+    [docUserMapping mapKeyPath:@"user_first_name__v" toAttribute:@"firstName"];
+    [docUserMapping mapKeyPath:@"user_last_name__v" toAttribute:@"lastName"];
+    
+    [[RKObjectManager sharedManager].mappingProvider setMapping:docUserMapping forKeyPath:@"users.user"];
     
     [[RKObjectManager sharedManager].mappingProvider setMapping:documentMapping forKeyPath:@"documents.document"];
     

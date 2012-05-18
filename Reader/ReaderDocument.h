@@ -60,6 +60,7 @@
 @property (nonatomic, retain, readonly) NSString *fileName;
 @property (nonatomic, retain, readonly) NSString *password;
 @property (nonatomic, retain, readonly) NSURL *fileURL;
+@property (nonatomic, retain) NSArray *docProperties;
 
 + (ReaderDocument *)withDocumentFilePath:(NSString *)filename password:(NSString *)phrase;
 

@@ -110,18 +110,23 @@
 }
 
 + (NSString *)timeSinceModified:(NSDate *)docDate {
-    NSDate *todaysDate = [NSDate date];
+    NSString *todaysDateString;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+    todaysDateString = [formatter stringFromDate:[NSDate date]];
+    NSDate *todaysDate = [formatter dateFromString:todaysDateString];
+    
     int elapsed;
     
     if(docDate == nil)
         return @"";
     
-    NSTimeInterval timeSinceDocDate = [docDate timeIntervalSinceNow];
-    NSTimeInterval timeSinceNow = [todaysDate timeIntervalSinceNow];
-    NSTimeInterval timeDifference;
+    NSTimeInterval timeDifference = [todaysDate timeIntervalSinceDate:docDate];
     
-    timeDifference = timeSinceDocDate - timeSinceNow;
-    timeDifference = (-1 * timeDifference);                     /* Make time difference positive */
+    timeDifference += 25140;
+    
+    
+   // NSLog(@"Time difference is %@", (int)timeDifference);
     
     elapsed = (int)timeDifference / 60;                         /* Minutes */
     

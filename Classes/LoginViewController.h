@@ -14,7 +14,7 @@
 #import "Constants.h"
 #import "KeychainItemWrapper.h"
 
-@interface LoginViewController : UIViewController <UIAlertViewDelegate, RKObjectLoaderDelegate>
+@interface LoginViewController : UIViewController <RKObjectLoaderDelegate>
 
 @property(strong, nonatomic) IBOutlet UITextField *emailField;      /* Text field where user inputs username */
 @property(strong, nonatomic) IBOutlet UITextField *passwordField;   /* Text field where user inputs password */

@@ -39,6 +39,7 @@
 @synthesize bookmarks = _bookmarks;
 @synthesize lastOpen = _lastOpen;
 @synthesize password = _password;
+@synthesize docProperties;
 @dynamic fileName, fileURL;
 
 #pragma mark ReaderDocument class methods

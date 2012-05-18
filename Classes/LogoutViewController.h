@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LogoutViewController : UIViewController
+@interface LogoutViewController : UIViewController <UIAlertViewDelegate>
+
+- (void)removeUserDefaultsAndFilesForLogout;
 
 @end

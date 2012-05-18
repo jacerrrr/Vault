@@ -42,6 +42,7 @@
 #pragma mark Properties
 
 @synthesize delegate;
+@synthesize recievedProperties;
 
 #pragma mark Support methods
 
@@ -290,6 +291,8 @@
 			[object updateProperties]; document = [object retain]; // Retain the supplied ReaderDocument object for our use
 
 			[ReaderThumbCache touchThumbCacheWithGUID:object.guid]; // Touch the document thumb cache directory
+            
+            self.recievedProperties = object.docProperties;
 
 			reader = self; // Return an initialized ReaderViewController object
 		}
@@ -527,6 +530,8 @@
 	[theScrollView release], theScrollView = nil; [contentViews release], contentViews = nil;
 
 	[lastHideTime release], lastHideTime = nil; [document release], document = nil;
+    
+    [recievedProperties release], recievedProperties = nil;
 
 	[super dealloc];
 }
@@ -986,7 +991,11 @@
     
     if (propertiesInteraction == nil) {
         PropertiesViewController *propertiesView = [[PropertiesViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        propertiesView.properties = self.recievedProperties;
         propertiesView.navigationItem.title = @"Document Properties";
+        
+        UIBarButtonItem *propEdit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:nil action:nil];
+        propertiesView.navigationItem.leftBarButtonItem = propEdit;
         UINavigationController *navController = 
         [[UINavigationController alloc] 
          initWithRootViewController:propertiesView];

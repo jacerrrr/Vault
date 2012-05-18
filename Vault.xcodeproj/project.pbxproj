@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		700DD5B21565C778001A037E /* DocumentUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 700DD5B11565C778001A037E /* DocumentUser.m */; };
 		70240FD015469495001102E4 /* Folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 70240FCF15469495001102E4 /* Folder.png */; };
 		70240FD21546949E001102E4 /* Folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70240FD11546949E001102E4 /* Folder@2x.png */; };
 		70240FD4154694A6001102E4 /* Key@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70240FD3154694A6001102E4 /* Key@2x.png */; };
@@ -149,6 +150,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		700DD5B01565C778001A037E /* DocumentUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentUser.h; sourceTree = SOURCE_ROOT; };
+		700DD5B11565C778001A037E /* DocumentUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentUser.m; sourceTree = SOURCE_ROOT; };
 		70240FCF15469495001102E4 /* Folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Folder.png; path = Graphics/Folder.png; sourceTree = SOURCE_ROOT; };
 		70240FD11546949E001102E4 /* Folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Folder@2x.png"; path = "Graphics/Folder@2x.png"; sourceTree = SOURCE_ROOT; };
 		70240FD3154694A6001102E4 /* Key@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Key@2x.png"; path = "Graphics/Key@2x.png"; sourceTree = SOURCE_ROOT; };
@@ -330,6 +333,8 @@
 				70B5CAC9154744EE00657EC4 /* AuthUserDetail.m */,
 				70B5CACA154744EE00657EC4 /* Document.h */,
 				70B5CACB154744EE00657EC4 /* Document.m */,
+				700DD5B01565C778001A037E /* DocumentUser.h */,
+				700DD5B11565C778001A037E /* DocumentUser.m */,
 				70B5CACC154744EE00657EC4 /* SessionTest.h */,
 				70B5CACD154744EE00657EC4 /* SessionTest.m */,
 				70B5CACE154744EE00657EC4 /* VaultUser.h */,
@@ -820,6 +825,7 @@
 				70286BC315632BA90039C61E /* DocumentProperties.m in Sources */,
 				70286BDF156361520039C61E /* VaultSearch.m in Sources */,
 				7079B26015649D370069EAE2 /* DocumentsData.m in Sources */,
+				700DD5B21565C778001A037E /* DocumentUser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

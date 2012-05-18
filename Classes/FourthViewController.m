@@ -59,14 +59,15 @@
     /* Set object mappings */
     [[RKObjectManager sharedManager].mappingProvider addObjectMapping:vaultSearchMapping];
     
-    documents.layer.cornerRadius = 5;
-    documents.layer.borderWidth = 2;
-    documents.layer.borderColor = [[UIColor blackColor] CGColor];
+    /* Find the 'X' button's text field in the searchBar */
+    for (UIView *view in mySearchBar.subviews){
+        if ([view isKindOfClass: [UITextField class]]) {
+            UITextField *tf = (UITextField *)view;
+            tf.delegate = self;
+            break;
+        }
+    }
     
-    mySearchBar.tintColor = [UIColor colorWithRed:102/256.0 green:204/256.0 blue:255/256.0 alpha:1.0];
-    mySearchBar.layer.borderWidth = 2;
-    mySearchBar.layer.cornerRadius = 10;
-    mySearchBar.layer.borderColor = [[UIColor colorWithRed:102/256.0 green:204/256.0 blue:255/256.0 alpha:1.0] CGColor];    
     /* Set the style for our table view */
     self.documents.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -153,6 +154,7 @@
         cell.docName.text = myDoc.name;
         cell.docType.text = myDoc.type;
         cell.downloadButton.hidden = NO;
+        [cell.downloadButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         fileType = myDoc.format;
         fileType = [fileType lastPathComponent];
         
@@ -200,6 +202,14 @@
         [searchBar resignFirstResponder];
     }
 } 
+
+/* Clear the table of any search results when a user clicks on the 'X' button in the searchBar */
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+    
+    [self updateVaultSearchResults:nil];
+    [self.documents reloadData];
+    return YES;
+}
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {
     
@@ -251,6 +261,22 @@
     }
     
     [self.documents reloadData];
+}
+
+/* When the Download button is pressed we need to determine what row was pressed then download the document */
+-(void)buttonPressed:(id)sender {
+    UITableViewCell *clickedCell = (UITableViewCell *)[sender superview];
+    NSIndexPath *clickedButtonPath = [self.documents indexPathForCell:clickedCell];
+    
+    //Add Code to download file
+    
+    Document *myDoc = [vaultSearchResults objectAtIndex:clickedButtonPath.row];
+    NSString *downloadString = [NSString stringWithFormat:@"%@ has successfully been added to the iPad", myDoc.name];
+    /* Create alert */
+    UIAlertView *connectAlert = [[UIAlertView alloc] initWithTitle:@"Download Complete" message:downloadString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    
+    [connectAlert show];
+    
 }
 
 @end

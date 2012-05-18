@@ -33,14 +33,14 @@
 #define DOCTYPEIMAGE_WIDTH 60           /* Width of document image column in First View Controllers table view */
 #define DOCNAME_WIDTH 300               /* Width of document name column in First View Controllers table view */
 #define DOCTYPE_WIDTH 175               /* Width of document type column in First View Controllers table view */
-#define DOCLASTMODIFIED_WIDTH 245       /* Width of document date column in First View Controllers table view */
+#define DOCLASTMODIFIED_WIDTH 230       /* Width of document date column in First View Controllers table view */
 #define CELLHEIGHT 44                   /* Standard cell height for each cell */
 
 /* Size of Cells in Landspace */
 #define DOCTYPEIMAGE_WIDTHLANDSCAPE 100     /* Width of document image column in First View Controllers table view */
 #define DOCNAME_WIDTHLANDSCAPE 425          /* Width of document name column in First View Controllers table view */
 #define DOCTYPE_WIDTHLANDSCAPE 220          /* Width of document type column in First View Controllers table view */
-#define DOCLASTMODIFIED_WIDTHLANDSCAPE 310  /* Width of document date column in First View Controllers table view */
+#define DOCLASTMODIFIED_WIDTHLANDSCAPE 280  /* Width of document date column in First View Controllers table view */
 
 /* Set of defined constants */
 
@@ -54,8 +54,9 @@ static NSString* const FILE_FORMAT = @"file_formats";
 static NSString* const DOC_PATHS = @"doc_paths";
 static NSString* const DATE_MOD = @"date_mod";
 static NSString* const RAW_DATES = @"raw_dates";
-static NSString* const ALL_DOC_IDS = @"all document ids";
-static NSString* const DOC_PROP = @"documentProperties";
+static NSString* const ALL_DOC_IDS = @"all_document_ids";
+static NSString* const DOC_PROP = @"document_properties";
+static NSString* const GEN_PROPERTIES = @"general_properties";
 
 /* NSString constants for determining request success or failure */
 static NSString* const FAILURE = @"FAILURE";
@@ -83,6 +84,7 @@ static NSString* const RENDITIONS = @"/renditions/viewable_rendition__v";
 static NSString* const FAVORITES = @"/objects/documents?named_filter=Favorites";
 static NSString* const RECENTS = @"/objects/documents?named_filter=Recent Documents";
 static NSString* const MY_DOCUMENTS = @"/objects/documents?named_filter=My Documents";
+static NSString* const WORK_IN_PROGRESS = @"/obejects/documents?named_filter=Work In Progress";
 static NSString *const USERS = @"/objects/users/";
 static NSString* const LOCAL_SEARCH = @"Local Search";
 

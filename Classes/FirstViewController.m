@@ -19,6 +19,7 @@ extern BOOL initLogin;
 @synthesize documents;          /* The custom table view cells being used */
 @synthesize localSearch;
 @synthesize mainView;
+@synthesize docData;
 
 @synthesize nameButton;         /* Name button at top left-mid */
 @synthesize typeButton;         /* Type button at top middle */
@@ -134,6 +135,8 @@ extern BOOL initLogin;
                 initWithDictionary:[Document loadDocInfoForKey:FILE_FORMAT]];
     documentPaths = [[NSMutableDictionary alloc] initWithDictionary:[Document loadDocInfoForKey:DOC_PATHS]];
     
+    docData = [[DocumentsData alloc] init];
+
     /* Allocate data to be used for pdf binary */
     pdfData = [[NSMutableData alloc] init];
     changedDocs = [[NSMutableArray alloc] init];
@@ -148,7 +151,7 @@ extern BOOL initLogin;
     allDocIds = [[NSMutableArray alloc] initWithArray:[Document loadFiltersForKey:ALL_DOC_IDS]];
     searchResults = [[NSMutableArray alloc] init];
     
-    docProperties.genProperties = [[NSMutableDictionary alloc] initWithDictionary:[Document loadDocInfoForKey:DOC_PROP]];
+    docProperties = [[DocumentProperties alloc] init];
     
     /* Initialized sorting flags and arrays */
     sortedNameFlag = 0;
@@ -235,7 +238,7 @@ extern BOOL initLogin;
     /* Sync documents if user just logged into Vault */
     if (initLogin == TRUE) {
         initLogin = FALSE;  /* Reset sync global */
-        
+        [self clearAllDataOnLogin];
         [self refreshDocuments];
     }
     
@@ -251,25 +254,8 @@ extern BOOL initLogin;
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated 
-{    
-    [self.documents reloadData];
-    [super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated 
-{
-    [super viewWillDisappear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated 
-{
-	[super viewDidDisappear:animated];
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
-   
     /* Return YES for supported orientations */
     return YES;                                                                 
 }
@@ -370,6 +356,13 @@ extern BOOL initLogin;
                      && indexPath.row - 1 < [myDocumentDocsIds count])) 
                 docId = [myDocumentDocsIds objectAtIndex:indexPath.row - 1];
             
+            /* Filter is set to Work In Progress */
+             else if ([filterIdentifier isEqualToString:WORK_IN_PROGRESS]
+                      && indexPath.row - 1 >= 0
+                      && indexPath.row - 1 < [allDocIds count]){
+                 docId = @"";
+             }
+            
             /* Filter is set to Favorites */
             else if ([filterIdentifier isEqualToString:FAVORITES] 
                      && (indexPath.row - 1 >= 0 
@@ -466,8 +459,7 @@ extern BOOL initLogin;
         
         cell.docName.text = [documentNames objectForKey:docId];
         cell.docType.text = [documentTypes objectForKey:docId];
-        cell.docLastModified.text = [Document 
-                timeSinceModified:[datesModified objectForKey:docId]];
+        cell.docLastModified.text = [datesModified objectForKey:docId];
     }
             
     return cell;
@@ -483,25 +475,35 @@ extern BOOL initLogin;
         || ([filterIdentifier isEqualToString:DOCUMENT_INFO] && indexPath.row <= [allDocIds count])) {
         
         TableView *cell = ((TableView *)[tableView cellForRowAtIndexPath:indexPath]);
-        NSString *docNameText = cell.docName.text;
-        NSString *pdfFilePath = [Document loadPDF:docNameText];
+        NSArray *selectedDocArr = [documentNames allKeysForObject:cell.docName.text];
         
-      
-        ReaderDocument *doc = [ReaderDocument withDocumentFilePath:pdfFilePath password:nil];
-        
-        if (doc != nil) {
-           
-            ReaderViewController *readerViewController = [[ReaderViewController alloc] initWithReaderDocument:doc];
+        if ([selectedDocArr count] != 0) {
             
-            readerViewController.delegate = self; // Set the ReaderViewController delegate to self
+            NSString *docNameText = cell.docName.text;
+            NSString *pdfFilePath = [Document loadPDF:docNameText];
+            NSMutableArray *allProperties = [[NSMutableArray alloc] init];
+            NSString *selectedDoc = [selectedDocArr objectAtIndex:0];
             
-            readerViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            readerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            NSLog(@"SELECTED DOC IS %@", [docProperties.genProperties objectForKey:selectedDoc]);
+            ReaderDocument *doc = [ReaderDocument withDocumentFilePath:pdfFilePath password:nil];
             
-            [self presentModalViewController:readerViewController animated:YES];
+            [allProperties addObject:[docProperties.genProperties objectForKey:selectedDoc]];
+            
+            NSLog(@"PROPERTIES ARE %@", [[allProperties objectAtIndex:0] objectForKey:@"Name"]);
+            doc.docProperties = allProperties;
+            
+            if (doc != nil) {
+               
+                ReaderViewController *readerViewController = [[ReaderViewController alloc] initWithReaderDocument:doc];
+                
+                readerViewController.delegate = self; // Set the ReaderViewController delegate to self
+                
+                readerViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                readerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+                
+                [self presentModalViewController:readerViewController animated:YES];
+            }
         }
-        
-        
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -525,7 +527,6 @@ extern BOOL initLogin;
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {
     objResponseCount++;
-    NSLog(@"PATH IS %@", objectLoader.resourcePath);
     if ([objectLoader.resourcePath isEqualToString:AUTH_TEST] || objectLoader.isPOST) {
         objResponseCount = 0;
         SessionTest *test = [objects objectAtIndex:0];                  /* Load the test object */
@@ -583,9 +584,49 @@ extern BOOL initLogin;
         [Document saveFilters:recentDocsIds forKey:RECENTS];
     }
     
+    else if ([[objectLoader.resourcePath substringToIndex:[USERS length]] isEqualToString:USERS]) {
+        DocumentUser *docUser = [objects objectAtIndex:0];
+        NSString *whichUser = objectLoader.username;
+        NSString *propertiesDocId = objectLoader.password;
+        NSString *propertyText = nil;
+        objResponseCount = 0;
+        
+        if (docUser.firstName != nil || docUser.lastName != nil) {
+        
+            propertyText = [docUser.firstName stringByAppendingString:@" "];
+            propertyText = [propertyText stringByAppendingString:docUser.lastName];
+            
+            NSLog(@"Property Text is %@", propertyText);
+            NSLog(@"DOC ID IS %@", propertiesDocId);
+            
+            NSMutableDictionary *genPropForDoc = [docProperties.genProperties objectForKey:propertiesDocId];
+            NSLog(@"THESE PROPS ARE %@", genPropForDoc);
+            if ([whichUser isEqualToString:@"OWNER"]) {
+                [genPropForDoc setObject:propertyText forKey:@"Created By"];
+                [docProperties.genProperties setObject:genPropForDoc forKey:propertiesDocId];
+            }
+            else if ([whichUser isEqualToString:@"LASTMOD"]) {
+                [genPropForDoc setObject:propertyText forKey:@"Last Modified By"];
+                [docProperties.genProperties setObject:genPropForDoc forKey:propertiesDocId];
+            }
+            else if ([whichUser isEqualToString:@"LASTMOD LAST"]) {
+                [genPropForDoc setObject:propertyText forKey:@"Last Modified By"];
+                [docProperties.genProperties setObject:genPropForDoc forKey:propertiesDocId];
+                [Document saveDocInfo:docProperties.genProperties forKey:GEN_PROPERTIES];
+            }
+        }
+    }
+    
     /* Every object has been retrieved */
     if (objResponseCount == LAST_DOC_OBJ_REQ && ![objectLoader.resourcePath isEqualToString:AUTH_TEST]) {
         objResponseCount = 0;
+        currentDoc = 0;
+        
+        NSMutableArray *tempAllDocIds = [NSMutableArray array];
+        for (NSString *key in documentNames)
+            [tempAllDocIds addObject:key];
+        
+        allDocIds = tempAllDocIds;
         
         /* Save the newly populated dictionaries NSUserDefaults */
         [Document saveDocInfo:documentTypes forKey:DOC_TYPES];
@@ -593,16 +634,10 @@ extern BOOL initLogin;
         [Document saveDocInfo:fileFormats forKey:FILE_FORMAT];
         [Document saveDocInfo:rawDates forKey:RAW_DATES];
         [Document saveDocInfo:datesModified forKey:DATE_MOD];
-        
         [Document saveFilters:allDocIds forKey:ALL_DOC_IDS];
         
-        [allDocIds removeAllObjects];
-        for (NSString *key in documentNames)
-            [allDocIds addObject:key];
-        
         numOfDocuments = [allDocIds count];
-        
-        currentDoc = 0;
+
         [self sendPdfRequest];    
     }
 }
@@ -674,6 +709,13 @@ extern BOOL initLogin;
             [self.searchResults addObject:key];
         }
     }
+}
+
+/* If a user presses 'Enter' after searching, we want the keyboard to go away */
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    
+    [searchBar resignFirstResponder];
 }
 
 /* This will be called every time the text in the search bar is manipulated */
@@ -772,37 +814,43 @@ extern BOOL initLogin;
         /* If the document has been changed by the user */
         if ((![[rawDates objectForKey:document.documentId] 
                isEqualToString:document.dateLastModified])
-            && (![changedDocs containsObject:document.documentId]))
+            && (![changedDocs containsObject:document.documentId])) {
             [changedDocs addObject:document.documentId];
+                
+            /* Set the document general properties */
+            [tempProp setObject:document.name forKey:@"Name"];                          /* Set document property "Name" */
+            
+            /* If there is a title (not required) */    
+            if (document.title != nil)
+                [tempProp setObject:document.title forKey:@"Title"];                    /* Set document property "Title */
+            else
+                [tempProp setObject:@"" forKey:@"Title"];
+            
+            [tempProp setObject:document.type forKey:@"Type"];                          /* Set document property "Type" */
+            [tempProp setObject:document.docNumber forKey:@"Document Number"];
+            [tempProp setObject:[document.size stringByAppendingString:@" KB"] forKey:@"Size"];
+            [tempProp setObject:document.format forKey:@"Format"];
+            
+            docVersionNumber = [document.majorVNum stringByAppendingString:@"."];
+            docVersionNumber = [docVersionNumber stringByAppendingString:document.minorVNum];
+            
+            [tempProp setObject:docVersionNumber forKey:@"Version"];
+            [tempProp setObject:document.lifecycle forKey:@"Lifecycle"];
+            [tempProp setObject:document.status forKey:@"Status"];
+            
+            
+            [docProperties.genProperties setObject:[NSMutableDictionary dictionaryWithDictionary:tempProp] forKey:document.documentId];
+            [docData.createdUsers setObject:document.owner forKey:document.documentId];
+            [docData.lastModUsers setObject:document.lastModifier forKey:document.documentId];
+             
+            [tempProp removeAllObjects];
+        }
         
         [rawDates setObject:document.dateLastModified forKey:document.documentId];  /* Store raw date last modified */
-        [datesModified setObject: [Document                                         /* Store date last modified on document */
-                                   convertStringToDate:document.dateLastModified]             
-                          forKey:document.documentId];   
+        NSDate *date = [Document convertStringToDate:[rawDates objectForKey:document.documentId]];
+        NSLog(@"RAW DATE IS %@", [rawDates objectForKey:document.documentId]);
+        [datesModified setObject: [Document timeSinceModified:date] forKey:document.documentId];   
         
-        /* Set the document general properties */
-        [tempProp setObject:document.name forKey:@"Name"];                          /* Set document property "Name" */
-        
-        /* If there is a title (not required) */    
-        if (document.title != nil)
-            [tempProp setObject:document.title forKey:@"Title"];                    /* Set document property "Title */
-        else
-            [tempProp setObject:@"" forKey:@"Title"];
-        
-        [tempProp setObject:document.type forKey:@"Type"];                          /* Set document property "Type" */
-        [tempProp setObject:document.docNumber forKey:@"Document Number"];
-        [tempProp setObject:document.format forKey:@"Format"];
-        
-        docVersionNumber = [document.majorVNum stringByAppendingString:@"."];
-        docVersionNumber = [docVersionNumber stringByAppendingString:document.minorVNum];
-        
-        [tempProp setObject:docVersionNumber forKey:@"Version"];
-        [tempProp setObject:document.lifecycle forKey:@"Lifecycle"];
-        [tempProp setObject:document.status forKey:@"Status"];
-        
-        [docProperties.userCreated setObject:document.owner forKey:document.documentId];
-        [docProperties.userLastMod setObject:document.lastModifier forKey:document.documentId];
-        [docProperties.genProperties setObject:tempProp forKey:document.documentId];
     }
     
     return categoryArr;
@@ -826,6 +874,10 @@ extern BOOL initLogin;
         dateButton.frame = CGRectMake(DOCTYPEIMAGE_WIDTHLANDSCAPE + DOCNAME_WIDTHLANDSCAPE + DOCTYPE_WIDTHLANDSCAPE + 2, 44, DOCLASTMODIFIED_WIDTHLANDSCAPE - 3, 36);
     }
     
+    nameButton.imageView.image = nil;
+    dateButton.imageView.image = nil;
+    typeButton.imageView.image = nil;
+    
     [mainView setNeedsDisplay];
     [self.documents reloadData];
     
@@ -836,16 +888,58 @@ extern BOOL initLogin;
     
     if ([changedDocs count] != 0) {
         NSString *fileResourcePath = BASE_URL;                /* Resource path for rest call to document */
-        NSString *pdfOwnerPath = [USERS stringByAppendingFormat:[changedDocs objectAtIndex:currentDoc]];
-        NSString *pdfLastModUserPath = [USERS stringByAppendingFormat:[changedDocs objectAtIndex:currentDoc]];
         
         NSMutableURLRequest *pdfRequest = [[NSMutableURLRequest alloc] init];
-        NSURLConnection *pdfConnect = [NSURLConnection alloc];
+        NSURLConnection *pdfConnect = [[NSURLConnection alloc] init];
+        
+        NSString *pdfOwnerPath = [USERS stringByAppendingFormat:
+                                  [docData.createdUsers objectForKey:[changedDocs objectAtIndex:currentDoc]]];
+        
+        NSString *pdfLastModUserPath = [USERS stringByAppendingFormat:
+                                        [docData.lastModUsers objectForKey:[changedDocs objectAtIndex:currentDoc]]];
         
         /* Set up the resource path to grab the pdf from */
         fileResourcePath = [fileResourcePath stringByAppendingString:DOCUMENT_INFO];
         fileResourcePath = [fileResourcePath stringByAppendingString:[changedDocs objectAtIndex:currentDoc]];
         fileResourcePath = [fileResourcePath stringByAppendingString:RENDITIONS];
+        
+        if (currentDoc == [changedDocs count] - 1) {
+            /* GET request to grab recent documents */
+            [[RKObjectManager sharedManager] loadObjectsAtResourcePath:pdfOwnerPath          
+                                                            usingBlock:^(RKObjectLoader *loader) {
+                                                                loader.method = RKRequestMethodGET;
+                                                                loader.delegate = self;
+                                                                loader.username = @"OWNER";
+                                                                loader.password = [changedDocs objectAtIndex:currentDoc];
+                                                            }];
+            /* GET request to grab recent documents */
+            [[RKObjectManager sharedManager] loadObjectsAtResourcePath:pdfLastModUserPath         
+                                                            usingBlock:^(RKObjectLoader *loader) {
+                                                                loader.method = RKRequestMethodGET;
+                                                                loader.delegate = self;
+                                                                loader.username = @"LASTMOD LAST";
+                                                                loader.password = [changedDocs objectAtIndex:currentDoc];
+                                                            }];
+        }
+        
+        else {
+            /* GET request to grab recent documents */
+            [[RKObjectManager sharedManager] loadObjectsAtResourcePath:pdfOwnerPath          
+                                                            usingBlock:^(RKObjectLoader *loader) {
+                                                                loader.method = RKRequestMethodGET;
+                                                                loader.delegate = self;
+                                                                loader.username = @"OWNER";
+                                                                loader.password = [changedDocs objectAtIndex:currentDoc];
+                                                            }];
+            /* GET request to grab recent documents */
+            [[RKObjectManager sharedManager] loadObjectsAtResourcePath:pdfLastModUserPath         
+                                                            usingBlock:^(RKObjectLoader *loader) {
+                                                                loader.method = RKRequestMethodGET;
+                                                                loader.delegate = self;
+                                                                loader.username = @"LASTMOD";
+                                                                loader.password = [changedDocs objectAtIndex:currentDoc];
+                                                            }];
+        }
         
         /* Set up a request to be sent for the binary PDF file */
         pdfRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:fileResourcePath]];
@@ -870,12 +964,18 @@ extern BOOL initLogin;
     datePressCount = 0;
     namePressCount = 0;
     typePressCount = 0;
+    nameButton.imageView.image = nil;
+    typeButton.imageView.image = nil;
+    dateButton.imageView.image = nil;
 }
 
 - (IBAction)filterPressed:(id)sender {
     
     if (filters.selectedSegmentIndex == MY_DOCS_FILTER) 
         filterIdentifier = MY_DOCUMENTS;
+    
+    else if (filters.selectedSegmentIndex == WIP_FILTER)
+        filterIdentifier = WORK_IN_PROGRESS;
     
     else if (filters.selectedSegmentIndex == FAV_FILTER) 
         filterIdentifier = FAVORITES;
@@ -933,10 +1033,12 @@ extern BOOL initLogin;
     for (object in sortedResults){
         keyArray = [docInformation allKeysForObject:object];
         if([typeToSort isEqualToString:@"Type"]){
-            
-            for (int i=0; i<[keyArray count]; i++){
-                objectToKey = [keyArray objectAtIndex:i];
-                [localSortedKeys addObject:objectToKey];
+            for (key in keyArray){
+                for (int i = 0; i<searchResults.count; i++){
+                    if ([key isEqualToString:[searchResults objectAtIndex:i]]){
+                        [localSortedKeys addObject:key];
+                    }
+                }
             }
         }
         else{
@@ -982,12 +1084,17 @@ extern BOOL initLogin;
         for (object in sortedResults){
             /* Convert the strings back to their keys */
             keyArray = [docInformation allKeysForObject:object];
-            /* If we arent sorting by type, we go into the if. Sorting by type requires a for loop to correctly sort */
+            /* If we need to sort by Type, it takes a little work */
             if([typeToSort isEqualToString:@"Type"]){
-                
-                for (int i=0; i<[keyArray count]; i++){
-                    objectToKey = [keyArray objectAtIndex:i];
-                    [localSortedKeys addObject:objectToKey];
+                /* The keyArray may have keys in it from the filter we aren't in, we are going to test that */
+                for (key in keyArray){
+                    /* We'll take each key and test it against the keys in the filter array */
+                    for (int i = 0; i<myDocumentDocsIds.count; i++){
+                        /* If the key is in the filter array, we add it so it appears, otherwise it doesn't belong */
+                        if ([key isEqualToString:[myDocumentDocsIds objectAtIndex:i]]){
+                            [localSortedKeys addObject:key];
+                        }
+                    }
                 }
             }
             else{
@@ -1015,9 +1122,12 @@ extern BOOL initLogin;
         for (object in sortedResults){
             keyArray = [docInformation allKeysForObject:object];
             if([typeToSort isEqualToString:@"Type"]){
-                for (int i=0; i<[keyArray count]; i++){
-                    objectToKey = [keyArray objectAtIndex:i];
-                    [localSortedKeys addObject:objectToKey];
+                for (key in keyArray){
+                    for (int i = 0; i<favoriteDocsIds.count; i++){
+                        if ([key isEqualToString:[favoriteDocsIds objectAtIndex:i]]){
+                            [localSortedKeys addObject:key];
+                        }
+                    }
                 }
             }
             else{
@@ -1045,9 +1155,12 @@ extern BOOL initLogin;
         for (object in sortedResults){
             keyArray = [docInformation allKeysForObject:object];
             if([typeToSort isEqualToString:@"Type"]){
-                for (int i=0; i<[keyArray count]; i++){
-                    objectToKey = [keyArray objectAtIndex:i];
-                    [localSortedKeys addObject:objectToKey];
+                for (key in keyArray){
+                    for (int i = 0; i<recentDocsIds.count; i++){
+                        if ([key isEqualToString:[recentDocsIds objectAtIndex:i]]){
+                            [localSortedKeys addObject:key];
+                        }
+                    }
                 }
             }
             else{
@@ -1075,9 +1188,12 @@ extern BOOL initLogin;
         for (object in sortedResults){
             keyArray = [docInformation allKeysForObject:object];
             if([typeToSort isEqualToString:@"Type"]){
-                for (int i=0; i<[keyArray count]; i++){
-                    objectToKey = [keyArray objectAtIndex:i];
-                    [localSortedKeys addObject:objectToKey];
+                for (key in keyArray){
+                    for (int i = 0; i<allDocIds.count; i++){
+                        if ([key isEqualToString:[allDocIds objectAtIndex:i]]){
+                            [localSortedKeys addObject:key];
+                        }
+                    }
                 }
             }
             else{
@@ -1094,15 +1210,31 @@ extern BOOL initLogin;
     dateButton.imageView.image = nil;
     typeButton.imageView.image = nil;
     
-    if (namePressCount % 2 == 0) {
-        [nameButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
-        [nameButton setImageEdgeInsets:UIEdgeInsetsMake(0, 275, 0, 0)];
-        [nameButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
-    }
-    else {
-        [nameButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
-        [nameButton setImageEdgeInsets:UIEdgeInsetsMake(5, 275, 0, 0)];
-        [nameButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
+    
+    /* Position the arrow buttons for Portrait */
+    if ([[UIApplication sharedApplication] statusBarOrientation ] == UIInterfaceOrientationPortrait || [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown){
+        if (namePressCount % 2 == 0) {
+            [nameButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+            [nameButton setImageEdgeInsets:UIEdgeInsetsMake(0, 275, 0, 0)];
+            [nameButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
+        }
+        else {
+            [nameButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+            [nameButton setImageEdgeInsets:UIEdgeInsetsMake(5, 275, 0, 0)];
+            [nameButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
+        }
+        /* Position the arrow buttons for Landscape */
+    }else {
+        if (namePressCount % 2 == 0) {
+            [nameButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+            [nameButton setImageEdgeInsets:UIEdgeInsetsMake(0, 400, 0, 0)];
+            [nameButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
+        }
+        else {
+            [nameButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+            [nameButton setImageEdgeInsets:UIEdgeInsetsMake(5, 400, 0, 0)];
+            [nameButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
+        }
     }
     
     namePressCount++;
@@ -1143,15 +1275,30 @@ extern BOOL initLogin;
     nameButton.imageView.image = nil;
     typeButton.imageView.image = nil;
     
-    if (datePressCount % 2 == 0) {
-        [dateButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
-        [dateButton setImageEdgeInsets:UIEdgeInsetsMake(0, 210, 2, 0)];
-        [dateButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
-    }
-    else {
-        [dateButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
-        [dateButton setImageEdgeInsets:UIEdgeInsetsMake(5, 210, 0, 0)];
-        [dateButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
+    /* Position the arrow buttons for Portrait */
+    if ([[UIApplication sharedApplication] statusBarOrientation ] == UIInterfaceOrientationPortrait || [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown){
+        if (datePressCount % 2 == 0) {
+            [dateButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+            [dateButton setImageEdgeInsets:UIEdgeInsetsMake(0, 205, 0, 0)];
+            [dateButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
+        }
+        else {
+            [dateButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+            [dateButton setImageEdgeInsets:UIEdgeInsetsMake(5, 205, 0, 0)];
+            [dateButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
+        }
+        /* Position the arrow buttons for Landscape */
+    }else {
+        if (datePressCount % 2 == 0) {
+            [dateButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+            [dateButton setImageEdgeInsets:UIEdgeInsetsMake(0, 255, 0, 0)];
+            [dateButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
+        }
+        else {
+            [dateButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+            [dateButton setImageEdgeInsets:UIEdgeInsetsMake(5, 255, 0, 0)];
+            [dateButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
+        }
     }
     
     datePressCount++;
@@ -1190,17 +1337,32 @@ extern BOOL initLogin;
 - (IBAction)sortbyType:(id)sender {
     
     nameButton.imageView.image = nil;
-    typeButton.imageView.image = nil;
+    dateButton.imageView.image = nil;
     
-    if (typePressCount % 2 == 0) {
-        [typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
-        [typeButton setImageEdgeInsets:UIEdgeInsetsMake(0, 150, 1, 0)];
-        [typeButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
-    }
-    else {
-        [typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
-        [typeButton setImageEdgeInsets:UIEdgeInsetsMake(5, 150, 0, 0)];
-        [typeButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
+    /* Position the arrow buttons for Portrait */
+    if ([[UIApplication sharedApplication] statusBarOrientation ] == UIInterfaceOrientationPortrait || [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown){
+        if (typePressCount % 2 == 0) {
+            [typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+            [typeButton setImageEdgeInsets:UIEdgeInsetsMake(0, 150, 0, 0)];
+            [typeButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
+        }
+        else {
+            [typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+            [typeButton setImageEdgeInsets:UIEdgeInsetsMake(5, 150, 0, 0)];
+            [typeButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
+        }
+        /* Position the arrow buttons for Landscape */
+    }else {
+        if (typePressCount % 2 == 0) {
+            [typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+            [typeButton setImageEdgeInsets:UIEdgeInsetsMake(0, 195, 0, 0)];
+            [typeButton setImage:[UIImage imageNamed:SORT_UP] forState:UIControlStateNormal];
+        }
+        else {
+            [typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+            [typeButton setImageEdgeInsets:UIEdgeInsetsMake(5, 195, 0, 0)];
+            [typeButton setImage:[UIImage imageNamed:SORT_DOWN] forState:UIControlStateNormal];
+        }
     }
     
     typePressCount++;
@@ -1212,7 +1374,7 @@ extern BOOL initLogin;
     if (sortedTypeFlag == 0) {
         sortedKeys = [self sortKeys:documentTypes withResults:sortedByType inOrderOf:@"Type"]; //NOTE: Being called every time
         if (searchFilterIdentifier == true){
-            sortedBySearch = [self sortKeys:documentTypes withResults:sortedByType inOrderOf:@"Type"];
+            sortedBySearch = [self sortSearchResults:documentTypes withResults:sortedByType inOrderOf:@"Type"];
             sortedSearchFlag = 1;
         }
         else {
@@ -1281,6 +1443,24 @@ extern BOOL initLogin;
 - (IBAction)hideKeyboard:(id)sender
 {
     [sender resignFirstResponder];
+}
+
+- (void)clearAllDataOnLogin {
+    /*Initialize dictionaries containing all document information */
+    [documentTypes removeAllObjects];
+    [documentNames removeAllObjects];
+    [rawDates removeAllObjects];
+    [datesModified removeAllObjects];
+    [fileFormats removeAllObjects];
+    [documentPaths removeAllObjects];
+    
+    
+    /* Allocate each mutable array to be used for filtering */
+    [recentDocsIds removeAllObjects];
+    [favoriteDocsIds removeAllObjects];
+    [myDocumentDocsIds removeAllObjects];
+    [allDocIds removeAllObjects];
+    
 }
 
 @end

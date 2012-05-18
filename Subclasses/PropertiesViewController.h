@@ -10,9 +10,6 @@
 
 @interface PropertiesViewController : UITableViewController
     
-@property (nonatomic, retain) NSMutableDictionary *generalProperties;
-@property (nonatomic, retain) NSString *productInformation;
-@property (nonatomic, retain) NSMutableDictionary *shareSettings;
-@property (nonatomic, retain) NSArray *supportingDocuments;
+@property (nonatomic, strong) NSArray *properties;
 
 @end
