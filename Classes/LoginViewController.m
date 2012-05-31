@@ -1,10 +1,20 @@
-//
-//  LoginViewController.m
-//  Vault
-//
-//  Created by Jace Allison on 12/22/11.
-//  Copyright (c) 2011 Issaquah High School. All rights reserved.
-//
+/* 
+ * LoginViewController.m
+ * Vault
+ *
+ * Created by Jace Allison on January 21, 2011
+ * Last modified on May 24, 2011 by Jace Allison
+ *
+ * Copyright © 2011-2012 Veeva Systems. All rights reserved.
+ *
+ * FILE DESCRIPTION
+ * 
+ * This class contains functions related to having the user
+ * manually login by entering his/her credentials.  These functions
+ * are performed when the Login View is loaded.  This class DOES NOT
+ * contain functions related to refreshing user information after initial
+ * login.
+ */
 
 #import "LoginViewController.h"
 
@@ -13,12 +23,12 @@ BOOL initLogin = FALSE;
 
 @implementation LoginViewController
 
-@synthesize emailField;
-@synthesize passwordField;
-@synthesize loginBtn;
-@synthesize clearBtn;
-@synthesize keychain;
-@synthesize authManager;
+@synthesize emailField;         /* Text field for user to enter username */
+@synthesize passwordField;      /* Text field for user to enter password */
+@synthesize loginBtn;           /* UIButton that logs the user in */
+@synthesize clearBtn;           /* UIButton that clears all text in text boxes */
+@synthesize keychain;           /* Keychain object to store user credentials */
+@synthesize authManager;        /* RKObjectManager for Vault authentication */
 
 
 #pragma mark - Memory management functions
@@ -29,6 +39,8 @@ BOOL initLogin = FALSE;
 {
     [super didReceiveMemoryWarning];
 }
+
+/* Uninitialize properties that are no longer being used */
 
 -(void)dealloc
 {
@@ -43,13 +55,18 @@ BOOL initLogin = FALSE;
 
 #pragma mark - View lifecycle
 
-/* Implement viewDidLoad to do additional setup after loading the view, typically from a nib */
+/* Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+ * This function maps JSON objects to native classes, like applicationdidfinishlaunching does.
+ * However, these mappings are only set up for the RKObjectManager authManager in this class.
+ */
 
-- (void)viewDidLoad {
+- (void)viewDidLoad 
+{
     
     /* Url for the login page */
     NSURL *authUrl = [NSURL URLWithString:LOGIN_URL];
     
+    /* Initialize keychain object for storing user credentials */
     keychain = [[KeychainItemWrapper alloc] initWithIdentifier:USER_CRED accessGroup:nil];
     
     /* Set up a unique objectmanager for authentication only when login view loads */
@@ -80,7 +97,8 @@ BOOL initLogin = FALSE;
 
 /* Function that determines which orientations will be supported.  Return YES for all orientations */
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
 	return YES;
 }
 
@@ -89,8 +107,8 @@ BOOL initLogin = FALSE;
 
 /* Function called when no request can be sent or recieved from Vault */
 
-- (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
-    
+- (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error 
+{
     /* If there is an error, show an alert */
     if (error) {
         
@@ -104,7 +122,10 @@ BOOL initLogin = FALSE;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
-- (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {
+/* Function that is called when a request is successfully sent and response is recieved from Vault */
+
+- (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects 
+{
     
     VaultUser *user = [objects objectAtIndex:0];            /* Load objects from response */
     
@@ -135,18 +156,24 @@ BOOL initLogin = FALSE;
 
 #pragma mark - Touches methods
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+/* Resign keyboard when the background view is touched anywhere */
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
+{
     [emailField resignFirstResponder];
     [passwordField resignFirstResponder];
 }
 
 
 #pragma mark - LoginViewController private methods
-
--(void)hideKeyboard:(id)sender 
+ 
+/* Resign keyboard when enter buttong on keyboard is pressed */
+ 
+- (void)hideKeyboard:(id)sender 
 {
     [sender resignFirstResponder];
 }
+
 /* Function to clear all fields in the text boxes on the Login screen */
 
 - (IBAction)clearFields:(id)sender 
@@ -164,6 +191,7 @@ BOOL initLogin = FALSE;
     userLogin.username =emailField.text;
     userLogin.password = passwordField.text;
     
+    /* Add user credentials to keychain */
     [keychain setObject:@"Myappstring" forKey: (__bridge id)kSecAttrService];
     
     [keychain setObject:userLogin.username forKey:(__bridge id)kSecAttrAccount];

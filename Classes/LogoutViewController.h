@@ -1,10 +1,12 @@
-//
-//  LogoutViewController.h
-//  Vault
-//
-//  Created by Jace Allison on 3/8/12.
-//  Copyright (c) 2012 Issaquah High School. All rights reserved.
-//
+/* 
+ * LogoutViewController.h
+ * Vault
+ *
+ * Created by Jace Allison on January 21, 2012
+ * Last modified on May 24, 2012 by Jace Allison
+ *
+ * Copyright © 2011-2012 Veeva Systems. All rights reserved.
+ */
 
 #import <UIKit/UIKit.h>
 

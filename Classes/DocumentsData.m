@@ -1,41 +1,52 @@
-//
-//  DocumentsData.m
-//  Vault
-//
-//  Created by Jace Allison on 5/1/12.
-//  Copyright (c) 2012 Issaquah High School. All rights reserved.
-//
+/* 
+ * DocumentsData.m
+ * Vault
+ *
+ * Created by Jace Allison on May 5, 2012
+ * Last modified on May 10, 2012 by Jace Allison
+ *
+ * Copyright © 2011-2012 Veeva Systems. All rights reserved.
+ *
+ * FILE DESCRITION
+ *
+ * This class holds all the data that needs to be saved for a document.
+ * 
+ * TODO:
+ * 
+ *  - convert properties from FirstViewController to Documents Data. This will
+ *    minimize the number of properties in FirstViewController
+ */
 
 #import "DocumentsData.h"
 
 @implementation DocumentsData
 
-@synthesize docTypes;      /* Dictionary with all the document types for id */
-@synthesize loadingTypes;
+@synthesize createdUsers;       /* Dictionary of users who created Vault documents */
+@synthesize lastModUsers;       /* Dictionary of users who last modified Vault documents */
 
-@synthesize docNames;      /* Dictionary with all the document names for id */
-@synthesize loadingNames;
+/* Preforms initilization of a class object.  Initializes all properties so they can be used
+ *
+ * RETURN VALUE(S)
+ *
+ *  id          object with properly initialized properties 
+ */
 
-@synthesize rawDates;           /* Dictionary with all actualy document dates */
-@synthesize loadingDates;
+- (id)init 
+{
+    
+    if (self = [super init]) {
+        self.createdUsers = [NSMutableDictionary dictionary];
+        self.lastModUsers = [NSMutableDictionary dictionary];
+    }
+    
+    return self;
+}
 
-@synthesize lastMod;      /* Dates with all the last modified times for id */
-@synthesize loadingMod;
+/* Uninitialize properties that are no longer used */
 
-@synthesize docFormats;        /* Dictionary with all the file formats for id */
-@synthesize loadingFormats;
-
-@synthesize docPaths;      /* Dictionary will all the document paths for each file */
-@synthesize loadingPaths;
-
-@synthesize recentIds;      /* Array containing id's for all recent documents */
-@synthesize favoriteIds;    /* Array containing id's for all favorite documents */
-@synthesize myDocIds;  /* Array containing id's for all "my documents" documents */
-@synthesize allDocIds;          /* Array containing all id's in documentNames dictionary */
-
-@synthesize changedDocs;
-
-@synthesize pdfData;
-@synthesize currentDocWithData;
-
+-(void)dealloc 
+{
+    createdUsers = nil;
+    lastModUsers = nil;
+}
 @end

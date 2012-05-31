@@ -1,10 +1,12 @@
-//
-//  LoginViewController.h
-//  Vault
-//
-//  Created by Jace Allison on 12/22/11.
-//  Copyright (c) 2011 Issaquah High School. All rights reserved.
-//
+/* 
+ * LoginViewController.h
+ * Vault
+ *
+ * Created by Jace Allison on January 21, 2012
+ * Last modified on May 24, 2012 by Jace Allison
+ *
+ * Copyright © 2011-2012 Veeva Systems. All rights reserved.
+ */
 
 #import <UIKit/UIKit.h>
 #import <RestKit/RestKit.h>
@@ -20,7 +22,7 @@
 @property(strong, nonatomic) IBOutlet UITextField *passwordField;   /* Text field where user inputs password */
 @property(strong, nonatomic) IBOutlet UIButton *loginBtn;           /* Button user presses to login */
 @property(strong, nonatomic) IBOutlet UIButton *clearBtn;           /* Button to clear everything in the text fields */
-@property(strong, nonatomic) KeychainItemWrapper *keychain;         
+@property(strong, nonatomic) KeychainItemWrapper *keychain;         /* Keychain object to save user credntials securely */
 @property (nonatomic, retain) RKObjectManager * authManager;        /* Object Manager for authentication only */
 
 - (IBAction)hideKeyboard:(id)sender;

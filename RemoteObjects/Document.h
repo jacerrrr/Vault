@@ -1,29 +1,31 @@
-//
-//  Document.h
-//  Vault
-//
-//  Created by Jace Allison on 2/8/12.
-//  Copyright (c) 2012 Issaquah High School. All rights reserved.
-//
+/* 
+ * Document.h
+ * Vault
+ *
+ * Created by Jace Allison on February 15, 2012
+ * Last modified on May 24, 2012 by Jace Allison
+ *
+ * Copyright © 2011-2012 Veeva Systems. All rights reserved.
+ */
 
 #import <Foundation/Foundation.h>
 
 @interface Document : NSObject <NSCopying>
 
-@property (nonatomic, retain) NSString *documentId;
-@property (nonatomic, retain) NSString *type;
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSString *format;
-@property (nonatomic, retain) NSString *dateLastModified;
-@property (nonatomic, retain) NSString *title;
-@property (nonatomic, retain) NSString *docNumber;
-@property (nonatomic, retain) NSString *size;
-@property (nonatomic, retain) NSString *majorVNum;
-@property (nonatomic, retain) NSString *minorVNum;
-@property (nonatomic, retain) NSString *lifecycle;
-@property (nonatomic, retain) NSString *status;
-@property (nonatomic, retain) NSString *owner;
-@property (nonatomic, retain) NSString *lastModifier;
+@property (nonatomic, retain) NSString *documentId;         /* A Vault document's id */
+@property (nonatomic, retain) NSString *type;               /* A Vault document's type */
+@property (nonatomic, retain) NSString *name;               /* A Vault document's name */
+@property (nonatomic, retain) NSString *format;             /* A Vault document's format */
+@property (nonatomic, retain) NSString *dateLastModified;   /* A Vault document's date last modified */
+@property (nonatomic, retain) NSString *title;              /* A Vault document's title */
+@property (nonatomic, retain) NSString *docNumber;          /* A Vault document's document number */
+@property (nonatomic, retain) NSString *size;               /* A Vault document's size in KB */
+@property (nonatomic, retain) NSString *majorVNum;          /* A Vault document's major version number */
+@property (nonatomic, retain) NSString *minorVNum;          /* A Vault document's minor version number */
+@property (nonatomic, retain) NSString *lifecycle;          /* A Vault document's lifecycle */
+@property (nonatomic, retain) NSString *status;             /* A Vault document's status */
+@property (nonatomic, retain) NSString *owner;              /* A Vault document's owner */
+@property (nonatomic, retain) NSString *lastModifier;       /* A Vault documents last modifier user */
 
 
 

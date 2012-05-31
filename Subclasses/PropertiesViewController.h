@@ -1,10 +1,12 @@
-//
-//  PropertiesViewController.h
-//  Vault
-//
-//  Created by Jace Allison on 4/18/12.
-//  Copyright (c) 2012 Issaquah High School. All rights reserved.
-//
+/* 
+ * PropertiesViewController.h
+ * Vault
+ *
+ * Created by Jace Allison on May 5, 2011
+ * Last modified on May 25, 2012 by Jace Allison
+ *
+ * Copyright © 2011-2012 Veeva Systems. All rights reserved.
+ */
 
 #import <UIKit/UIKit.h>
 

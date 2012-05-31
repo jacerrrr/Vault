@@ -1,11 +1,19 @@
 /* 
- * AppDelegate.h
+ * AppDelegate.m
  * Vault
  *
  * Created by Jace Allison on December 21, 2011
- * Last modified on December 22, 2011 by Jace Allison
+ * Last modified on May 5, 2011 by Jace Allison
  *
- * Copyright 2011 Oregon State University. All rights reserved.
+ * Copyright © 2011-2012 Veeva Systems. All rights reserved.
+ *
+ * FILE DESCRIPTION
+ * 
+ * The functions in this file are called when the user interacts
+ * with the application.  The only functions used are:
+ *  
+ *  - applicationDidFinishLaunchingWithOptions
+ *  - applicationWillEnterForeground
  */
 
 #import "AppDelegate.h"
@@ -14,7 +22,22 @@
 
 @synthesize window = _window;
 
--(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+/* 
+ * Sets up JSON mappings to native object classes and prepares the application to send
+ * and recieve requests from Veeva Vaults' servers. This function is called when the application is
+ * launched from a not already running state.
+ *
+ * PARAMETERS
+ *
+ *  lanchOptions        Options for launch (Usually set by the OS itself)
+ *
+ * RETURN VALUE(S)
+ *
+ *  YES                 Application launched successfully
+ */
+
+-(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
+{
     NSURL *baseUrl = [NSURL URLWithString:BASE_URL];
     
     /* Set up a general object manager for Vault and make it shraed */
@@ -44,12 +67,15 @@
     [documentMapping mapKeyPath:@"version_created_by__v" toAttribute:@"owner"];
     [documentMapping mapKeyPath:@"last_modified_by__v" toAttribute:@"lastModifier"];
     
+    /* Map the user attributes for requests retreiving user information */
     RKObjectMapping *docUserMapping = [RKObjectMapping mappingForClass:[DocumentUser class]];
     [docUserMapping mapKeyPath:@"user_first_name__v" toAttribute:@"firstName"];
     [docUserMapping mapKeyPath:@"user_last_name__v" toAttribute:@"lastName"];
     
+    /* Determine where the text in the JSON should be parsed to retrieve correct information */
     [[RKObjectManager sharedManager].mappingProvider setMapping:docUserMapping forKeyPath:@"users.user"];
     
+    /* Determine where the text in the JSON should be parsed to retrieve correct information */
     [[RKObjectManager sharedManager].mappingProvider setMapping:documentMapping forKeyPath:@"documents.document"];
     
     /* Set the mapping attributes to obtain relevent information from Vault */
@@ -70,7 +96,8 @@
  * down OpenGL ES frame rates. Games should use this method to pause the game.
  */
 
-- (void)applicationWillResignActive:(UIApplication *)application {
+- (void)applicationWillResignActive:(UIApplication *)application
+{
     
 }
 
@@ -80,7 +107,8 @@
  * If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
  */
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
+- (void)applicationDidEnterBackground:(UIApplication *)application 
+{
    
 }
 
@@ -89,26 +117,34 @@
  * made on entering the background.
  */
 
-- (void)applicationWillEnterForeground:(UIApplication *)application {
+- (void)applicationWillEnterForeground:(UIApplication *)application 
+{
 
 }
 
  /*
   * Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was
-  * previously in the background, optionally refresh the user interface.
+  * previously in the background, optionally refresh the user interface. The task this function performs is to load the 
+  * login view when the application is used for the very first time.
+  *
+  * PARAMETERS
+  *
+  * application             The application currently running
   */
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     
-    NSString *session = [VaultUser loadSession];                /* Load last session */
+    NSString *session = [VaultUser loadSession];    /* Load last session, if it exists */
     
-    if (session == nil) {
+    
+    if (session == nil) {                           /* No session exists */
         
+        /* Instantiate Storyboard and view controllers to present modal transition for login */
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
         UIViewController *loginScreen = [storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
         loginScreen.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         
-        /* Present next run loop. Prevents "unbalanced VC display" warnings. */
+        /* Present next run loop. Prevents "unbalanced VC display" warnings. Displays modal view */
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){

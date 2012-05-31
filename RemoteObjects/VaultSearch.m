@@ -16,4 +16,13 @@
 @synthesize resultSet;
 @synthesize totalFound;
 
+- (void)dealloc
+{
+    responseStatus = nil;
+    responseMessage = nil;
+    columns = nil;
+    resultSet = nil;
+    totalFound = nil;
+}
+
 @end

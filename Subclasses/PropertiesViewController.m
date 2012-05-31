@@ -1,16 +1,35 @@
-//
-//  PropertiesViewController.m
-//  Vault
-//
-//  Created by Jace Allison on 4/18/12.
-//  Copyright (c) 2012 Issaquah High School. All rights reserved.
-//
+/* 
+ * PropertiesViewController.m
+ * Vault
+ *
+ * Created by Jace Allison on May 5, 2011
+ * Last modified on May 24, 2012 by Jace Allison
+ *
+ * Copyright © 2011-2012 Veeva Systems. All rights reserved.
+ *
+ * FILE DESCRIPTION
+ *
+ * This class contains functions that display a documents specific properties in a UIPopOverController.
+ * These properties are displayed when the gear button is clicked in the PDF Reader.
+ */
 
 #import "PropertiesViewController.h"
 
 @implementation PropertiesViewController
 
 @synthesize properties;
+
+/*
+ * Initilizes a table view with a given style.
+ *
+ * PARAMETER(S)
+ *
+ * (UITableViewStyle)style              Style that the table view will have when initialized
+ *
+ * RETURN VALUE(S)
+ *
+ *  (id)                                Table view with a given style
+ */
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -21,12 +40,13 @@
     return self;
 }
 
+/* Releases the view if it doesn't have a superview.  Can release any cached data, images,
+ * etc that aren't in use.
+ */
+ 
 - (void)didReceiveMemoryWarning
 {
-    // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark - View lifecycle
@@ -34,12 +54,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewDidUnload
@@ -69,13 +83,25 @@
     [super viewDidDisappear:animated];
 }
 
+/* Return YES for supported orientations */
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
 	return YES;
 }
 
 #pragma mark - Table view data source
+
+/* Return only one section for the table view.  This section will be for general properties.
+ *
+ * PARAMETER(S)
+ *
+ *  (UITableView *)tableView                    Tableview that is being used
+ *
+ * RETURN VALUE(S)
+ *
+ *  (NSInteger)                                 Number of sections to be in the Tableview
+ */
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

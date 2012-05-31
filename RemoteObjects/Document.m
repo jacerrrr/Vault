@@ -1,34 +1,54 @@
-//
-//  Document.m
-//  Vault
-//
-//  Created by Jace Allison on 2/8/12.
-//  Copyright (c) 2012 Issaquah High School. All rights reserved.
-//
+/* 
+ * Document.m
+ * Vault
+ *
+ * Created by Jace Allison on February 15, 2012
+ * Last modified on May 24, 2012 by Jace Allison
+ *
+ * Copyright © 2011-2012 Veeva Systems. All rights reserved.
+ *
+ * FILE DESCRIPTION
+ *
+ * This file contains properties which map to JSON objects returned from Vault when requesting a
+ * document.  These properties can then be stored programmatically.  This class also contains functions
+ * that perform tasks on documents, such as saving and loading documents locally,saving and loading document
+ * information, and converting dates to strings.
+ */
+
 
 #import "Document.h"
 
 @implementation Document
 
-@synthesize documentId;
-@synthesize type;
-@synthesize name;
-@synthesize format;
-@synthesize dateLastModified;
-@synthesize title;
-@synthesize docNumber;
-@synthesize size;
-@synthesize majorVNum;
-@synthesize minorVNum;
-@synthesize lifecycle;
-@synthesize status;
-@synthesize owner;
-@synthesize lastModifier;
+@synthesize documentId;                                     /* Vault Document id */
+@synthesize type;                                           /* Vault Document type */
+@synthesize name;                                           /* Vault Document name */
+@synthesize format;                                         /* Vault Document format */
+@synthesize dateLastModified;                               /* Vault Docment last modified date */
+@synthesize title;                                          /* Vault Document title */
+@synthesize docNumber;                                      /* Vault Document document number */
+@synthesize size;                                           /* Vault Document size in KB */
+@synthesize majorVNum;                                      /* Vault Document major version number */
+@synthesize minorVNum;                                      /* Vault Document minor version number */
+@synthesize lifecycle;                                      /* Vault Document lifecycle */
+@synthesize status;                                         /* Vault Document status */
+@synthesize owner;                                          /* Vault Document owner */
+@synthesize lastModifier;                                   /* Vault Document last modified date */
 
 /* Function that takes binary PDF data and a file name as parameters, and determines
  * if the PDF data from the parameter is the same as the PDF data already stored.
  * If it is not the same, the function overwrites the old PDF data with the new
- * PDF data.  The function returns where the path string */
+ * PDF data.  The function returns where the path string 
+ *
+ * PARAMETER(S)
+ *
+ * (NSData *)newPdfContent              Data of pdf to be saved
+ * (NSString *)fileName                 Filename of pdf to be saved
+ *
+ * RETURN VALUE(S)
+ *
+ * (NSString *)                         A String that contains the final path
+ */
 
 + (NSString *)savePDF:(NSData *)newPdfContent withFileName:(NSString *)fileName {
     NSArray *paths = NSSearchPathForDirectoriesInDomains
@@ -56,6 +76,17 @@
     
 }
 
+/* Function that returns the filepath of a pdf on the iPad given a PDF Name.
+ *
+ * PARAMETER(S)
+ *
+ *  (NSString *)pdfName                 Name of a pdf from Vault
+ *
+ * RETURN VALUE(S)
+ *
+ *  (NSString *)                        A string that holds the path of the pdf given by the parameter
+ */
+
 + (NSString *)loadPDF:(NSString *)pdfName {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -67,6 +98,14 @@
     return pdfFilePath;
 }
 
+/* Function that saves document information in dictionary form to NSUserDefaults for later use.
+ *
+ * PARAMETER(S)
+ *
+ *  (NSMutableDictionary *)infoToSave   A Dictionary to save to NSUserDefaults
+ *  (NSString *)key                     The key that will retreive the dictionary for later use
+ */
+
 + (void)saveDocInfo:(NSMutableDictionary *)infoToSave forKey:(NSString *)key {
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
     
@@ -77,12 +116,32 @@
     
 }
 
+/* Function that loads a dictionary for a key given to the NSUserDefaults.
+ *
+ * PARAMETER(S)
+ *
+ *  (NSString *)key                     The key that will retreive the dictionary for later use
+ *
+ * RETURN VALUE(S)
+ *
+ *  (NSMutableDictionary *)infoToSave   A Dictionary to retrieve from NSUserDefaults
+ */
+
 + (NSMutableDictionary *)loadDocInfoForKey:(NSString *)key {
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
     
     return [standardDefaults objectForKey:key];
     
 }
+
+/* 
+ * Function that loads an array for a key given to the NSUserDefaults. 
+ *
+ * PARAMETER(S)
+ *
+ *  (NSMutableArray *)array             An array to save to NSUserDefaults
+ *  (NSString *)key                     The key to save in user defaults for the filter
+ */
 
 + (void)saveFilters:(NSMutableArray *)array forKey:(NSString *)filterName {
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
@@ -93,13 +152,34 @@
     }
 }
 
+/* Function that loads an array for a key given to the NSUserDefaults
+ *
+ * PAREMETER(S)
+ *
+ *  (NSString *)key                     A key to retrieve an array from the dictionary
+ *
+ * RETURN VALUE(S)
+ *
+ * (NSMutableArray *)loadFiltersForKey  An array that is returned for a specific key given in the parameter
+ */
+
 + (NSMutableArray *)loadFiltersForKey:(NSString *)key {
     NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
     
     return [standardDefaults objectForKey:key];
 }
 
-/* Convert NSString to NSDate */
+/* Convert A String into an NSDate for iOS. 
+ * 
+ * PAREMETER(S)
+ *
+ *  (NSString *)dateString              A string that represents a date
+ *
+ * RETURN VALUE(S)
+ *
+ *  (NSDate *)                          A date the is returned after formatted from string
+ */
+
 + (NSDate *)convertStringToDate:(NSString *)dateString{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterNoStyle];
@@ -108,6 +188,20 @@
     dateFromString = [dateFormatter dateFromString:dateString];
     return dateFromString;
 }
+
+/* This function takes an NSDate and determines how far away that date is from the current
+ * date.  The function converts this time in to years, weeks, days, minutes, or seconds and 
+ * then displays a string telling the user how long it has been since a document has been 
+ * modified.
+ *
+ * PARAMETER(S)
+ *
+ *  (NSDate *)docDate                   The date since a document has been last modified
+ *
+ * RETURN VALUE(S)
+ *
+ *  (NSString *)                        The string that tells the user how long its been since the document has been modified
+ */
 
 + (NSString *)timeSinceModified:(NSDate *)docDate {
     NSString *todaysDateString;
@@ -189,6 +283,24 @@
     documentCopy.format = self.format;
     
     return documentCopy;
+}
+
+- (void)dealloc
+{
+    documentId = nil;
+    type = nil;
+    name = nil;
+    format = nil;
+    dateLastModified = nil;
+    title = nil;
+    docNumber = nil;
+    size = nil;
+    majorVNum = nil;
+    minorVNum = nil;
+    lifecycle = nil;
+    status = nil;
+    owner = nil;
+    lastModifier = nil;
 }
 
 @end

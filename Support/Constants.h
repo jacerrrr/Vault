@@ -1,10 +1,12 @@
-//
-//  Header.h
-//  Vault
-//
-//  Created by Jace Allison on 1/13/12.
-//  Copyright (c) 2012 Issaquah High School. All rights reserved.
-//
+/* 
+ * Constants.h
+ * Vault
+ *
+ * Created by Jace Allison on December 21, 2011
+ * Last modified on May 28, 2012 by Jace Allison
+ *
+ * Copyright © 2011-2012 Veeva Systems. All rights reserved.
+ */
 
 #ifndef Vault_Header_h
 #define Vault_Header_h

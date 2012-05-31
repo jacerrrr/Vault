@@ -1,16 +1,29 @@
-//
-//  DocumentsView.m
-//  Vault
-//
-//  Created by Jace Allison on 3/1/12.
-//  Copyright (c) 2012 Issaquah High School. All rights reserved.
-//
+/* 
+ * DocumentsView.m
+ * Vault
+ *
+ * Created by Jace Allison on March 11, 2012
+ * Last modified on May 24, 2012 by Jace Allison
+ *
+ * Copyright © 2011-2012 Veeva Systems. All rights reserved.
+ *
+ * FILE DESCRIPTION
+ *
+ * This file contains a function to draw on a specified view.  In this case, the view is the view
+ * in the FirstViewController which displays the documents
+ */
 
 #import "DocumentsView.h"
 
 @implementation DocumentsView
 
-/* Function that draws lines to the main view of FirstViewController */
+/* Function that draws lines to the main view of FirstViewController. These lines connect to the lines
+ * drawn on the table view which displays the documents.
+ *
+ * PARAMETER(S)
+ *
+ *  (CGRect)rect                CGRect that is being drawn on in the view
+ */
 
 - (void)drawRect:(CGRect)rect {
     

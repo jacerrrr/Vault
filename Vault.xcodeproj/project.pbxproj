@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		700DD5B21565C778001A037E /* DocumentUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 700DD5B11565C778001A037E /* DocumentUser.m */; };
 		70240FD015469495001102E4 /* Folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 70240FCF15469495001102E4 /* Folder.png */; };
 		70240FD21546949E001102E4 /* Folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70240FD11546949E001102E4 /* Folder@2x.png */; };
 		70240FD4154694A6001102E4 /* Key@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70240FD3154694A6001102E4 /* Key@2x.png */; };
@@ -17,7 +16,6 @@
 		70240FEC15469959001102E4 /* My-Tasks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70240FEB15469959001102E4 /* My-Tasks@2x.png */; };
 		70240FEE154699DD001102E4 /* sortUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70240FED154699DD001102E4 /* sortUp@2x.png */; };
 		70240FF0154699EB001102E4 /* sortDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 70240FEF154699EB001102E4 /* sortDown@2x.png */; };
-		70286BC315632BA90039C61E /* DocumentProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 70286BC215632BA90039C61E /* DocumentProperties.m */; };
 		70286BDF156361520039C61E /* VaultSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 70286BDE156361520039C61E /* VaultSearch.m */; };
 		70286BF915642B570039C61E /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70B5CAA61547447400657EC4 /* MainStoryboard.storyboard */; };
 		70286C07156431EC0039C61E /* Unknown.png in Resources */ = {isa = PBXBuildFile; fileRef = 70286C06156431EC0039C61E /* Unknown.png */; };
@@ -27,7 +25,6 @@
 		704AD61E14BF8B1D0088E76B /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 704AD61814BF8B1D0088E76B /* MobileCoreServices.framework */; };
 		704AD61F14BF8B1D0088E76B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 704AD61914BF8B1D0088E76B /* Security.framework */; };
 		704AD62014BF8B1D0088E76B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 704AD61A14BF8B1D0088E76B /* SystemConfiguration.framework */; };
-		7079B26015649D370069EAE2 /* DocumentsData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7079B25F15649D370069EAE2 /* DocumentsData.m */; };
 		7086D9FB1545DD3300C2B4B5 /* VaultIcon-072.png in Resources */ = {isa = PBXBuildFile; fileRef = 7086D9FA1545DD3300C2B4B5 /* VaultIcon-072.png */; };
 		7086D9FD1545DD3D00C2B4B5 /* VaultIcon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = 7086D9FC1545DD3D00C2B4B5 /* VaultIcon-144.png */; };
 		708D003414D1F80500C91AC6 /* libRestKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 708D001114D1F2CD00C91AC6 /* libRestKit.a */; };
@@ -94,6 +91,12 @@
 		70BEACEF153C0C3000EED0C6 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70BEACEE153C0C3000EED0C6 /* ImageIO.framework */; };
 		70BEACF1153C0C4500EED0C6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70BEACF0153C0C4500EED0C6 /* QuartzCore.framework */; };
 		70BEACF3153C0C5800EED0C6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70BEACF2153C0C5800EED0C6 /* MessageUI.framework */; };
+		70CBA83F1574511F000D1507 /* DocumentUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 70CBA83E1574511F000D1507 /* DocumentUser.m */; };
+		70CBA8401574511F000D1507 /* DocumentUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 70CBA83E1574511F000D1507 /* DocumentUser.m */; };
+		70CBA84315745137000D1507 /* DocumentProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 70CBA84215745137000D1507 /* DocumentProperties.m */; };
+		70CBA84415745137000D1507 /* DocumentProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 70CBA84215745137000D1507 /* DocumentProperties.m */; };
+		70CBA84715745148000D1507 /* DocumentsData.m in Sources */ = {isa = PBXBuildFile; fileRef = 70CBA84615745148000D1507 /* DocumentsData.m */; };
+		70CBA84815745148000D1507 /* DocumentsData.m in Sources */ = {isa = PBXBuildFile; fileRef = 70CBA84615745148000D1507 /* DocumentsData.m */; };
 		70F164B414A3D8D400532A35 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F164B314A3D8D400532A35 /* UIKit.framework */; };
 		70F164B614A3D8D400532A35 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F164B514A3D8D400532A35 /* Foundation.framework */; };
 		70F164B814A3D8D400532A35 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F164B714A3D8D400532A35 /* CoreGraphics.framework */; };
@@ -150,8 +153,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		700DD5B01565C778001A037E /* DocumentUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentUser.h; sourceTree = SOURCE_ROOT; };
-		700DD5B11565C778001A037E /* DocumentUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentUser.m; sourceTree = SOURCE_ROOT; };
 		70240FCF15469495001102E4 /* Folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Folder.png; path = Graphics/Folder.png; sourceTree = SOURCE_ROOT; };
 		70240FD11546949E001102E4 /* Folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Folder@2x.png"; path = "Graphics/Folder@2x.png"; sourceTree = SOURCE_ROOT; };
 		70240FD3154694A6001102E4 /* Key@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Key@2x.png"; path = "Graphics/Key@2x.png"; sourceTree = SOURCE_ROOT; };
@@ -161,8 +162,6 @@
 		70240FEB15469959001102E4 /* My-Tasks@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "My-Tasks@2x.png"; path = "Graphics/My-Tasks@2x.png"; sourceTree = SOURCE_ROOT; };
 		70240FED154699DD001102E4 /* sortUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sortUp@2x.png"; path = "Graphics/sortUp@2x.png"; sourceTree = SOURCE_ROOT; };
 		70240FEF154699EB001102E4 /* sortDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sortDown@2x.png"; path = "Graphics/sortDown@2x.png"; sourceTree = SOURCE_ROOT; };
-		70286BC115632BA90039C61E /* DocumentProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentProperties.h; sourceTree = SOURCE_ROOT; };
-		70286BC215632BA90039C61E /* DocumentProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentProperties.m; sourceTree = SOURCE_ROOT; };
 		70286BDD156361520039C61E /* VaultSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VaultSearch.h; path = RemoteObjects/VaultSearch.h; sourceTree = SOURCE_ROOT; };
 		70286BDE156361520039C61E /* VaultSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VaultSearch.m; path = RemoteObjects/VaultSearch.m; sourceTree = SOURCE_ROOT; };
 		70286C06156431EC0039C61E /* Unknown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Unknown.png; path = Graphics/Unknown.png; sourceTree = SOURCE_ROOT; };
@@ -172,8 +171,6 @@
 		704AD61814BF8B1D0088E76B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		704AD61914BF8B1D0088E76B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		704AD61A14BF8B1D0088E76B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		7079B25E15649D370069EAE2 /* DocumentsData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentsData.h; sourceTree = SOURCE_ROOT; };
-		7079B25F15649D370069EAE2 /* DocumentsData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentsData.m; sourceTree = SOURCE_ROOT; };
 		7086D9FA1545DD3300C2B4B5 /* VaultIcon-072.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VaultIcon-072.png"; sourceTree = SOURCE_ROOT; };
 		7086D9FC1545DD3D00C2B4B5 /* VaultIcon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VaultIcon-144.png"; sourceTree = SOURCE_ROOT; };
 		708D000614D1F2CD00C91AC6 /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = RestKit/RestKit.xcodeproj; sourceTree = "<group>"; };
@@ -278,6 +275,12 @@
 		70BEACEE153C0C3000EED0C6 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		70BEACF0153C0C4500EED0C6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		70BEACF2153C0C5800EED0C6 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		70CBA83D1574511F000D1507 /* DocumentUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentUser.h; path = RemoteObjects/DocumentUser.h; sourceTree = SOURCE_ROOT; };
+		70CBA83E1574511F000D1507 /* DocumentUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentUser.m; path = RemoteObjects/DocumentUser.m; sourceTree = SOURCE_ROOT; };
+		70CBA84115745137000D1507 /* DocumentProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentProperties.h; path = Classes/DocumentProperties.h; sourceTree = SOURCE_ROOT; };
+		70CBA84215745137000D1507 /* DocumentProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentProperties.m; path = Classes/DocumentProperties.m; sourceTree = SOURCE_ROOT; };
+		70CBA84515745148000D1507 /* DocumentsData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentsData.h; path = Classes/DocumentsData.h; sourceTree = SOURCE_ROOT; };
+		70CBA84615745148000D1507 /* DocumentsData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentsData.m; path = Classes/DocumentsData.m; sourceTree = SOURCE_ROOT; };
 		70F164AF14A3D8D400532A35 /* Vault.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vault.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70F164B314A3D8D400532A35 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		70F164B514A3D8D400532A35 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -333,8 +336,8 @@
 				70B5CAC9154744EE00657EC4 /* AuthUserDetail.m */,
 				70B5CACA154744EE00657EC4 /* Document.h */,
 				70B5CACB154744EE00657EC4 /* Document.m */,
-				700DD5B01565C778001A037E /* DocumentUser.h */,
-				700DD5B11565C778001A037E /* DocumentUser.m */,
+				70CBA83D1574511F000D1507 /* DocumentUser.h */,
+				70CBA83E1574511F000D1507 /* DocumentUser.m */,
 				70B5CACC154744EE00657EC4 /* SessionTest.h */,
 				70B5CACD154744EE00657EC4 /* SessionTest.m */,
 				70B5CACE154744EE00657EC4 /* VaultUser.h */,
@@ -349,8 +352,6 @@
 			children = (
 				70B5CABF154744C700657EC4 /* DocumentsView.h */,
 				70B5CAC0154744C700657EC4 /* DocumentsView.m */,
-				70B5CAC1154744C700657EC4 /* PropertiesViewController.h */,
-				70B5CAC2154744C700657EC4 /* PropertiesViewController.m */,
 				70B5CAC3154744C700657EC4 /* TableView.h */,
 				70B5CAC4154744C700657EC4 /* TableView.m */,
 			);
@@ -472,10 +473,10 @@
 			children = (
 				70B5CAAA154744A900657EC4 /* AppDelegate.h */,
 				70B5CAAB154744A900657EC4 /* AppDelegate.m */,
-				7079B25E15649D370069EAE2 /* DocumentsData.h */,
-				7079B25F15649D370069EAE2 /* DocumentsData.m */,
-				70286BC115632BA90039C61E /* DocumentProperties.h */,
-				70286BC215632BA90039C61E /* DocumentProperties.m */,
+				70CBA84115745137000D1507 /* DocumentProperties.h */,
+				70CBA84215745137000D1507 /* DocumentProperties.m */,
+				70CBA84515745148000D1507 /* DocumentsData.h */,
+				70CBA84615745148000D1507 /* DocumentsData.m */,
 				70B5CAAC154744A900657EC4 /* FirstViewController.h */,
 				70B5CAAD154744A900657EC4 /* FirstViewController.m */,
 				70B5CAAE154744A900657EC4 /* FourthViewController.h */,
@@ -484,6 +485,8 @@
 				70B5CAB1154744A900657EC4 /* LoginViewController.m */,
 				70B5CAB2154744A900657EC4 /* LogoutViewController.h */,
 				70B5CAB3154744A900657EC4 /* LogoutViewController.m */,
+				70B5CAC1154744C700657EC4 /* PropertiesViewController.h */,
+				70B5CAC2154744C700657EC4 /* PropertiesViewController.m */,
 				70B5CAB4154744A900657EC4 /* SecondViewController.h */,
 				70B5CAB5154744A900657EC4 /* SecondViewController.m */,
 				70B5CAB6154744A900657EC4 /* ThirdViewController.h */,
@@ -822,10 +825,10 @@
 				70B5CB0E1547461B00657EC4 /* ReaderThumbsView.m in Sources */,
 				70B5CB0F1547461B00657EC4 /* ReaderThumbView.m in Sources */,
 				70B5CB101547461B00657EC4 /* UIXToolbarView.m in Sources */,
-				70286BC315632BA90039C61E /* DocumentProperties.m in Sources */,
 				70286BDF156361520039C61E /* VaultSearch.m in Sources */,
-				7079B26015649D370069EAE2 /* DocumentsData.m in Sources */,
-				700DD5B21565C778001A037E /* DocumentUser.m in Sources */,
+				70CBA83F1574511F000D1507 /* DocumentUser.m in Sources */,
+				70CBA84315745137000D1507 /* DocumentProperties.m in Sources */,
+				70CBA84715745148000D1507 /* DocumentsData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -834,6 +837,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				70F164EA14A3D8D400532A35 /* VaultTests.m in Sources */,
+				70CBA8401574511F000D1507 /* DocumentUser.m in Sources */,
+				70CBA84415745137000D1507 /* DocumentProperties.m in Sources */,
+				70CBA84815745148000D1507 /* DocumentsData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,11 +1,22 @@
 /* 
- * AppDelegate.h
+ * FirstViewController.m
  * Vault
  *
  * Created by Jace Allison on December 21, 2011
- * Last modified on December 22, 2011 by Jace Allison
+ * Last modified on May 24, 2011 by Jace Allison
  *
- * Copyright 2011 Oregon State University. All rights reserved.
+ * Copyright © 2011-2012 Veeva Systems. All rights reserved.
+ *
+ * FILE DESCRIPTION
+ * 
+ * This class contains all functions that pertain to the User Interface
+ * for filters, selecting, and viewing all documents. This Interface is the
+ * first tab on the tab bar named "Documents".  Examples of functions this
+ * class holds are:
+ *
+ *  - A function called when the user uses the search bar
+ *  - A function called when the user clicks on a document
+ *  - A function called when a request from vault is finished
  */
 
 #import "FirstViewController.h"
@@ -459,7 +470,8 @@ extern BOOL initLogin;
         
         cell.docName.text = [documentNames objectForKey:docId];
         cell.docType.text = [documentTypes objectForKey:docId];
-        cell.docLastModified.text = [datesModified objectForKey:docId];
+        cell.docLastModified.text = [Document timeSinceModified:[datesModified objectForKey:docId]];
+        //cell.docLastModified.text = [datesModified objectForKey:docId];
     }
             
     return cell;
@@ -791,7 +803,7 @@ extern BOOL initLogin;
 }
 
 
-#pragma mark - FirstViewController private methods
+#pragma mark - FirstViewController misc. methods
 
 - (NSMutableArray *)setDwnldInfoForDocs:(NSArray *)objects
 { 
@@ -849,7 +861,8 @@ extern BOOL initLogin;
         [rawDates setObject:document.dateLastModified forKey:document.documentId];  /* Store raw date last modified */
         NSDate *date = [Document convertStringToDate:[rawDates objectForKey:document.documentId]];
         NSLog(@"RAW DATE IS %@", [rawDates objectForKey:document.documentId]);
-        [datesModified setObject: [Document timeSinceModified:date] forKey:document.documentId];   
+        [datesModified setObject:date forKey:document.documentId];
+        //[datesModified setObject: [Document timeSinceModified:date] forKey:document.documentId];   
         
     }
     
