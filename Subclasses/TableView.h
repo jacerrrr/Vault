@@ -19,11 +19,11 @@
     UIButton *downloadButton;
 }
 
-@property (nonatomic, retain) UIColor* lineColor;
+@property (nonatomic, strong) UIColor* lineColor;
 @property (readonly) UIImageView* docTypeImage;
 @property (readonly) UILabel* docName;
 @property (readonly) UILabel* docType;
 @property (readonly) UILabel* docLastModified;
-@property (nonatomic, retain) UIButton* downloadButton;
+@property (nonatomic, strong) UIButton* downloadButton;
 
 @end

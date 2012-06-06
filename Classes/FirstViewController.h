@@ -110,14 +110,19 @@
 - (void) resetSorting;
 - (IBAction)filterPressed:(id)sender;
 - (NSMutableArray *)removeDuplicates:(NSMutableArray *)sortedArray;
+
 -(NSMutableArray *) sortSearchResults:(NSMutableDictionary *)docInformation 
                           withResults:(NSMutableArray *)sortedResults inOrderOf:(NSString *)typeToSort;
+
 - (NSMutableArray *) sortKeys:(NSMutableDictionary *)docInformation 
                   withResults:(NSMutableArray *)sortedResults inOrderOf:(NSString *)typeToSort;
 - (IBAction)sortByName:(id)sender;
+
 - (IBAction)sortbyType:(id)sender;
 - (IBAction)sortByDateModified:(id)sender;
 - (void)loginWithKeychain;
 - (void)refreshDocuments;
+- (IBAction)hideKeyboard:(id)sender;
+- (void)clearAllDataOnLogin;
 
 @end

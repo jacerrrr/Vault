@@ -1,10 +1,23 @@
-//
-//  FourthViewController.m
-//  Vault
-//
-//  Created by Jace Allison on 12/22/11.
-//  Copyright (c) 2011 Issaquah High School. All rights reserved.
-//
+/* 
+ * FourthViewController.m
+ * Vault
+ *
+ * Created by Jace Allison on December 21, 2011
+ * Last modified on May 24, 2011 by Jace Allison
+ *
+ * Copyright © 2011-2012 Veeva Systems. All rights reserved.
+ *
+ * FILE DESCRIPTION
+ * 
+ * This class contains all functions that pertain to the User Interface
+ * for searching Veeva Vault to obtain new documents on the iPad. This Interface is the
+ * fourth tab on the tab bar named "Search".  Examples of functions this
+ * class holds are:
+ *
+ *  - A function called when the user uses the search bar
+ *  - A function called when the user clicks on the download button
+ *  - A function called when a request from vault is finished
+ */
 
 #import "FourthViewController.h"
 
@@ -14,14 +27,7 @@
 @synthesize mySearchBar;
 @synthesize vaultSearchResults;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+#pragma mark - Memory management methods
 
 - (void)didReceiveMemoryWarning
 {
@@ -32,15 +38,6 @@
 }
 
 #pragma mark - View lifecycle
-
-/*
- // Implement loadView to create a view hierarchy programmatically, without using a nib.
- - (void)loadView
- {
- }
- */
-
-
 
 - (void)viewDidLoad
 {
@@ -59,7 +56,10 @@
     /* Set object mappings */
     [[RKObjectManager sharedManager].mappingProvider addObjectMapping:vaultSearchMapping];
     
-    /* Find the 'X' button's text field in the searchBar */
+    /* 
+     * Find the 'X' button's text field in the searchBar and set its delegate to this view so
+     * we can call a function when a user clicks on it
+     */
     for (UIView *view in mySearchBar.subviews){
         if ([view isKindOfClass: [UITextField class]]) {
             UITextField *tf = (UITextField *)view;
@@ -72,7 +72,6 @@
     self.documents.separatorStyle = UITableViewCellSeparatorStyleNone;
     
 }
-
 
 - (void)viewDidUnload
 {
@@ -97,24 +96,28 @@
     
 }
 
+#pragma mark - UITableViewCellDelegate methods
+
 /* Customize the number of sections in the Table View */
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    
+    /* Only one section in this tableView */
 	return 1;
 }
 
-/* Customize the number of visible cells depending on the orientation */
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    /* Customize the number of visible cells depending on the orientation */
     if ([vaultSearchResults count] > 24)
         return [vaultSearchResults count];
     else
         return PORTRAIT_COUNT;
 }
 
-/* Set the cells up to have alternating background colors */
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    /* Set the cells up to have alternating background colors */
     if ( indexPath.row % 2 == 0) {
         UIColor *altCellColor = [UIColor colorWithRed:237/256.0 green:243/256.0 blue:254/256.0 alpha:1.0];
         cell.backgroundColor = altCellColor;
@@ -123,11 +126,6 @@
         UIColor *altCellColor2 = [UIColor whiteColor];
         cell.backgroundColor = altCellColor2;
     }
-}
-
-/* Function called when a cell is clicked on by the user */
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -146,19 +144,23 @@
     if (cell == nil) {
         cell = [[TableView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.lineColor = [UIColor blackColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
+    /* Set up the cell if there are search results and the tableView row is in bounds */
     if (vaultSearchResults.count != 0 && (indexPath.row > -1 && indexPath.row < vaultSearchResults.count)) {
         Document *myDoc = [vaultSearchResults objectAtIndex:indexPath.row];
+        
         cell.docName.text = myDoc.name;
         cell.docType.text = myDoc.type;
         cell.downloadButton.hidden = NO;
         [cell.downloadButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        
+        /* Get the format of the file */ 
         fileType = myDoc.format;
+        /* Strip everything but the last component so it can be easily checked. */
         fileType = [fileType lastPathComponent];
         
-        /* Same as FirstViewController */
+        /* Determine what type of file the document is */
         if ([fileType isEqualToString:PDF_FORMAT]) 
             cell.docTypeImage.image = [UIImage imageNamed:PDF_IMG];
         else if ([fileType isEqualToString:MSWORD_FORMAT]) 
@@ -171,6 +173,7 @@
             cell.docTypeImage.image = [UIImage imageNamed:UNKOWN_IMG];
     }
     
+    /* Format empty cells to be blank and not show the download button */
     else{
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.docName.text = @"";
@@ -181,6 +184,8 @@
     
     return cell;
 }
+
+#pragma mark - UISearchBarDelegate methods
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     
@@ -203,13 +208,17 @@
     }
 } 
 
-/* Clear the table of any search results when a user clicks on the 'X' button in the searchBar */
+#pragma mark - UITextFieldDelegate methods
+
 - (BOOL)textFieldShouldClear:(UITextField *)textField {
     
+    /* Clear the search contents and reload the cells to create a blank screen */
     [self updateVaultSearchResults:nil];
     [self.documents reloadData];
     return YES;
 }
+
+#pragma mark - RKObjectLoader Delegate methods
 
 - (void)objectLoader:(RKObjectLoader *)objectLoader didLoadObjects:(NSArray *)objects {
     
@@ -222,9 +231,6 @@
     
 }
 
-
-/* Function called when no request can be sent or recieved from Vault */
-
 - (void)objectLoader:(RKObjectLoader *)objectLoader didFailWithError:(NSError *)error {
     
     /* If there is an error, show an alert */
@@ -233,6 +239,21 @@
     }
 }
 
+#pragma mark - FourthViewController misc. methods
+
+
+/* 
+ * This function will format the JSON data onto a document and then add it to an
+ * array. The array, vaultSearchResults will be used to populate the cells in the tableView.
+ *
+ * PARAMETERS
+ *
+ * resultSet        Array containing the JSON data
+ *
+ * RETURN VALUES
+ * 
+ * nil
+ */
 - (void)updateVaultSearchResults:(NSArray *)resultSet {
     
     Document *doc = [[Document alloc] init];
@@ -263,12 +284,27 @@
     [self.documents reloadData];
 }
 
-/* When the Download button is pressed we need to determine what row was pressed then download the document */
+
+/* 
+ * This function will download the document the user indicates.
+ *
+ * PARAMETERS
+ *
+ * sender           User clicks on the button 'Download' button in the tableView.
+ *
+ * RETURN VALUES
+ * 
+ * nil
+ */
 -(void)buttonPressed:(id)sender {
+    
+    /* Determine what the cell is by asking for the superview of the button */
     UITableViewCell *clickedCell = (UITableViewCell *)[sender superview];
+    /* Then convert the cell to an indexPath so we can later access the row */
     NSIndexPath *clickedButtonPath = [self.documents indexPathForCell:clickedCell];
     
     //Add Code to download file
+    
     
     Document *myDoc = [vaultSearchResults objectAtIndex:clickedButtonPath.row];
     NSString *downloadString = [NSString stringWithFormat:@"%@ has successfully been added to the iPad", myDoc.name];

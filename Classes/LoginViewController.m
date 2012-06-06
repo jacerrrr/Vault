@@ -167,7 +167,7 @@ BOOL initLogin = FALSE;
 
 #pragma mark - LoginViewController private methods
  
-/* Resign keyboard when enter buttong on keyboard is pressed */
+/* Resign keyboard when enter button on keyboard is pressed */
  
 - (void)hideKeyboard:(id)sender 
 {

@@ -13,8 +13,64 @@
  * document.  These properties can then be stored programmatically.  This class also contains functions
  * that perform tasks on documents, such as saving and loading documents locally,saving and loading document
  * information, and converting dates to strings.
+ *
+ ************************************************
+ * EXAMPLE FOR JSON OBJECT MAPPING FOR DOCUMENT:
+ ************************************************
+ *
+ * {"responseStatus":"SUCCESS",
+ * "size":13,
+ * "start":0,
+ * "documents":[{
+ * "document":{
+ * "id":1,
+ * "document_number__v":"00001",
+ * "product__v":["1"],
+ * "country_b":[],
+ * "lifecycle__v":"General Lifecycle",
+ * "created_by__v":977,
+ * "document_creation_date__v":"2011-10-12T00:08:04.363Z",
+ * "document_last_modified_by__v":977,
+ * "document_modified_date__v":"2011-10-12T00:09:59.021Z",
+ * "reviewer__v":{"users":[],
+ * "groups":[]},
+ * "viewer__v":{
+ * "users":[],
+ * "groups":[1]},
+ * "distribution_contacts__v":{
+ * "users":[],
+ * "groups":[]},
+ * "consumer__v":{
+ * "users":[],
+ * "groups":[]},
+ * "approver__v":{
+ * "users":[],
+ * "groups":[]},
+ * "editor__v":{
+ * "users":[],
+ * "groups":[]},
+ * "owner__v":{
+ * "users":[977],
+ * "groups":[]},
+ * "coordinator__v":{
+ * "users":[],
+ * "groups":[]},
+ * "type__v":"Requirements",
+ * "version_modified_date__v":"2011-10-12T00:09:59.021Z",
+ * "size__v":118631,
+ * "classification__v":"",
+ * "last_modified_by__v":977,
+ * "name__v":"Original Project Submission",
+ * "version_created_by__v":977,
+ * "major_version_number__v":1,
+ * "status__v":"Approved",
+ * "minor_version_number__v":0,
+ * "version_creation_date__v":"2011-10-12T00:08:04.363Z",
+ * "subtype__v":"",
+ * "format__v":"application/pdf"}}
+ *
+ ********************************************************
  */
-
 
 #import "Document.h"
 
@@ -274,17 +330,6 @@
         return [NSString stringWithFormat:@"%d years ago", elapsed];
 }
 
--(id) copyWithZone: (NSZone *) zone
-{
-    Document *documentCopy = [[Document allocWithZone: zone] init];
-    documentCopy.documentId = self.documentId;
-    documentCopy.name = self.name;
-    documentCopy.type = self.type;
-    documentCopy.format = self.format;
-    
-    return documentCopy;
-}
-
 - (void)dealloc
 {
     documentId = nil;
@@ -301,6 +346,20 @@
     status = nil;
     owner = nil;
     lastModifier = nil;
+}
+
+
+#pragma mark - NSCopying methods
+
+-(id) copyWithZone: (NSZone *) zone
+{
+    Document *documentCopy = [[Document allocWithZone: zone] init];
+    documentCopy.documentId = self.documentId;
+    documentCopy.name = self.name;
+    documentCopy.type = self.type;
+    documentCopy.format = self.format;
+    
+    return documentCopy;
 }
 
 @end

@@ -12,6 +12,6 @@
 
 @interface SessionTest : NSObject
 
-@property (nonatomic, retain) NSString *responseStatus;     /* Status of REST reponse */
+@property (nonatomic, strong) NSString *responseStatus;     /* Status of REST reponse */
 
 @end

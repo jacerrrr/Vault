@@ -33,10 +33,10 @@
 
 @interface VaultSearch : NSObject
 
-@property (nonatomic, retain) NSString *responseStatus;
-@property (nonatomic, retain) NSString *responseMessage;
-@property (nonatomic, retain) NSObject *columns;
-@property (nonatomic, retain) NSArray *resultSet;
-@property (nonatomic, retain) NSString *totalFound;
+@property (nonatomic, strong) NSString *responseStatus;
+@property (nonatomic, strong) NSString *responseMessage;
+@property (nonatomic, strong) NSObject *columns;
+@property (nonatomic, strong) NSArray *resultSet;
+@property (nonatomic, strong) NSString *totalFound;
 
 @end

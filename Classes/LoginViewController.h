@@ -23,7 +23,7 @@
 @property(strong, nonatomic) IBOutlet UIButton *loginBtn;           /* Button user presses to login */
 @property(strong, nonatomic) IBOutlet UIButton *clearBtn;           /* Button to clear everything in the text fields */
 @property(strong, nonatomic) KeychainItemWrapper *keychain;         /* Keychain object to save user credntials securely */
-@property (nonatomic, retain) RKObjectManager * authManager;        /* Object Manager for authentication only */
+@property (nonatomic, strong) RKObjectManager * authManager;        /* Object Manager for authentication only */
 
 - (IBAction)hideKeyboard:(id)sender;
 - (IBAction)clearFields:(id)sender;
